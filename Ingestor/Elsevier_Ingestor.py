@@ -310,8 +310,3 @@ class ElsevierIngestionEngine(object):
             f.write("search between %d and %d \n" % self.dates)
             for term in self.search_terms:
                 f.write("-- %s \n" % term)
-
-
-
-
-

@@ -9,3 +9,127 @@
 2019-06-10 12:59:38,565 file corpus already exists
 2019-06-10 12:59:38,565 file corpus/soft robot already exists
 2019-06-10 12:59:38,565 searching for soft robot
+2019-06-10 13:08:04,856 Corpus Builder Initialised
+2019-06-10 13:08:04,856 Start
+2019-06-10 13:08:04,856 file corpus already exists
+2019-06-10 13:08:04,857 file corpus/soft robot already exists
+2019-06-10 13:08:04,857 searching for soft robot
+2019-06-10 13:08:04,857 Start retrieving soft robot in year 2000
+2019-06-10 13:08:48,375 Start retrieving soft robot in year 2001
+2019-06-10 13:09:37,591 Start retrieving soft robot in year 2002
+2019-06-10 13:10:33,399 Start retrieving soft robot in year 2003
+2019-06-10 13:11:38,218 Start retrieving soft robot in year 2004
+2019-06-10 13:13:22,000 End
+2019-06-10 13:16:28,162 Corpus Builder Initialised
+2019-06-10 13:16:28,163 Start
+2019-06-10 13:16:28,163 file corpus already exists
+2019-06-10 13:16:28,163 file corpus/soft robot already exists
+2019-06-10 13:16:28,163 searching for soft robot
+2019-06-10 13:16:28,163 Start retrieving soft robot in year 2000
+2019-06-10 13:17:37,467 Corpus Builder Initialised
+2019-06-10 13:17:37,467 Start
+2019-06-10 13:17:37,468 searching for soft robot
+2019-06-10 13:17:37,468 Start retrieving soft robot in year 1901
+2019-06-10 13:17:40,403  soft robot in year 1901 contains no results
+2019-06-10 13:17:40,403 Start retrieving soft robot in year 1902
+2019-06-10 13:17:42,686  soft robot in year 1902 contains no results
+2019-06-10 13:17:42,686 Start retrieving soft robot in year 1903
+2019-06-10 13:17:45,839  soft robot in year 1903 contains no results
+2019-06-10 13:17:45,839 Start retrieving soft robot in year 1904
+2019-06-10 13:17:48,898  soft robot in year 1904 contains no results
+2019-06-10 13:17:48,898 End
+2019-06-10 14:12:36,036 Corpus Builder Initialised
+2019-06-10 14:12:36,036 Start
+2019-06-10 14:12:36,036 file Raw_corpus already exists
+2019-06-10 14:12:36,036 file Raw_corpus/soft robot already exists
+2019-06-10 14:12:36,036 searching for soft robot
+2019-06-10 14:12:36,037 Start retrieving soft robot in year 1986
+2019-06-10 14:12:42,937 End
+2019-06-10 14:21:03,530 Corpus Builder Initialised
+2019-06-10 14:21:03,531 Start
+2019-06-10 14:21:03,531 file Raw_corpus already exists
+2019-06-10 14:21:03,531 file Raw_corpus/soft robot already exists
+2019-06-10 14:21:03,531 searching for soft robot
+2019-06-10 14:21:03,531 Start retrieving soft robot in year 1986
+2019-06-10 14:22:49,224 End
+2019-06-10 16:33:01,587 Start
+2019-06-10 16:33:02,730 End
+2019-06-10 16:55:29,330 Start
+2019-06-10 16:55:30,467 End
+2019-06-10 16:57:59,050 Start
+2019-06-10 16:57:59,050 file Corpus already exists
+2019-06-10 16:57:59,051 file Corpus/soft robot already exists
+2019-06-10 16:58:00,215 End
+2019-06-10 17:47:03,948 Start
+2019-06-10 17:47:03,949 file Corpus already exists
+2019-06-10 17:47:03,949 file Corpus/soft robot already exists
+2019-06-10 17:47:05,070 End
+2019-06-10 17:52:04,954 Start
+2019-06-10 17:52:06,115 End
+2019-06-10 17:56:27,802 Start
+2019-06-10 17:56:27,802 file Corpus already exists
+2019-06-10 17:56:29,054 End
+2019-06-10 17:58:29,184 Start
+2019-06-10 17:58:29,185 file Corpus already exists
+2019-06-10 17:58:30,301 End
+2019-06-10 18:02:48,459 Start
+2019-06-10 18:02:48,459 file Corpus already exists
+2019-06-10 18:02:48,459 file Corpus/1986 already exists
+2019-06-10 18:02:48,542 file Corpus/2000 already exists
+2019-06-10 18:02:48,579 file Corpus/2001 already exists
+2019-06-10 18:02:48,620 file Corpus/2002 already exists
+2019-06-10 18:02:48,668 file Corpus/2003 already exists
+2019-06-10 18:02:48,729 file Corpus/2004 already exists
+2019-06-10 18:02:48,839 file Corpus/2011 already exists
+2019-06-10 18:02:49,178 file Corpus/2019 already exists
+2019-06-10 18:02:49,777 End
+2019-06-10 18:05:13,682 Start
+2019-06-10 18:05:13,683 file Corpus already exists
+2019-06-10 18:05:13,683 file Corpus/1986 already exists
+2019-06-10 18:05:13,749 file Corpus/2000 already exists
+2019-06-10 18:05:13,784 file Corpus/2001 already exists
+2019-06-10 18:05:13,827 file Corpus/2002 already exists
+2019-06-10 18:05:13,878 file Corpus/2003 already exists
+2019-06-10 18:05:13,938 file Corpus/2004 already exists
+2019-06-10 18:05:14,055 file Corpus/2011 already exists
+2019-06-10 18:05:14,385 file Corpus/2019 already exists
+2019-06-10 18:05:15,020 End
+2019-06-10 18:08:01,026 Start
+2019-06-10 18:08:01,026 file Corpus already exists
+2019-06-10 18:08:01,027 file Corpus/1986 already exists
+2019-06-10 18:08:01,107 file Corpus/2000 already exists
+2019-06-10 18:08:01,142 file Corpus/2001 already exists
+2019-06-10 18:08:01,185 file Corpus/2002 already exists
+2019-06-10 18:08:01,235 file Corpus/2003 already exists
+2019-06-10 18:08:01,297 file Corpus/2004 already exists
+2019-06-10 18:08:01,416 file Corpus/2011 already exists
+2019-06-10 18:08:01,760 file Corpus/2019 already exists
+2019-06-10 18:08:02,369 End
+2019-06-10 18:08:38,470 Start
+2019-06-10 18:08:38,470 file Corpus already exists
+2019-06-10 18:08:38,471 file Corpus/1986 already exists
+2019-06-10 18:08:38,551 file Corpus/2000 already exists
+2019-06-10 18:08:38,591 file Corpus/2001 already exists
+2019-06-10 18:08:38,641 file Corpus/2002 already exists
+2019-06-10 18:08:38,697 file Corpus/2003 already exists
+2019-06-10 18:08:38,767 file Corpus/2004 already exists
+2019-06-10 18:08:38,890 file Corpus/2011 already exists
+2019-06-10 18:08:39,263 file Corpus/2019 already exists
+2019-06-10 18:08:39,878 End
+2019-06-11 16:05:50,997 Start
+2019-06-11 16:05:50,997 file Corpus already exists
+2019-06-11 16:05:50,997 file Corpus/1986 already exists
+2019-06-11 16:05:51,063 file Corpus/2000 already exists
+2019-06-11 16:05:51,096 file Corpus/2001 already exists
+2019-06-11 16:05:51,135 file Corpus/2002 already exists
+2019-06-11 16:05:51,180 file Corpus/2003 already exists
+2019-06-11 16:05:51,236 file Corpus/2004 already exists
+2019-06-11 16:05:51,339 file Corpus/2011 already exists
+2019-06-11 16:05:51,661 file Corpus/2019 already exists
+2019-06-11 16:05:52,243 End
+2019-06-11 16:14:28,507 Start
+2019-06-11 16:14:29,553 End
+2019-06-11 16:20:40,269 Start
+2019-06-11 16:22:02,425 Start
+2019-06-11 16:22:02,425 file Corpus/Processed_corpus already exists
+2019-06-11 16:22:03,458 End
