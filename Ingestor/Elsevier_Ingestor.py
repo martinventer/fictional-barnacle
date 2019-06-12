@@ -306,7 +306,9 @@ class ElsevierIngestionEngine(object):
     def gen_info_file(self):
         readme_location = self.file_path + '/info.txt'
         with open(readme_location, "w") as f:
-            f.write("source database : %s \n" % self.database)
+            f.write("Search Timestamep {}".format(datetime.today()))
+            f.write("Source database : %s \n" % self.database)
+            f.write("Search from home {}".format(self.home))
             f.write("search between %d and %d \n" % self.dates)
             for term in self.search_terms:
                 f.write("-- %s \n" % term)

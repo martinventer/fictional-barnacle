@@ -1,4 +1,4 @@
-# /home/martin/Documents/RESEARCH/fictional-barnacle/PreProcessor/
+# /home/martin/Documents/RESEARCH/fictional-barnacle/CorpusProcessingTools/
 """
 Elsevier_Corpus_Reader.py
 

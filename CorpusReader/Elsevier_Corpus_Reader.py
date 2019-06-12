@@ -13,11 +13,11 @@ import os
 
 from nltk.corpus.reader.api import CorpusReader
 from nltk.corpus.reader.api import CategorizedCorpusReader
-
 from nltk import wordpunct_tokenize
 
-import logging
+from datetime import datetime
 
+import logging
 
 logging.basicConfig(filename='logs/reader.log',
                     format='%(asctime)s %(message)s',
@@ -63,12 +63,14 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         the nltk ``CategorizedPlaintextCorpusReader``.
         Parameters
         ----------
-        fileids :
-        categories :
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
 
         Returns
         -------
-
+            a list of file Ids for the corpus
         """
         if fileids is not None and categories is not None:
             raise ValueError("Specify fileids or categories, not both")
@@ -77,86 +79,476 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             return self.fileids(categories)
         return fileids
 
-    def docs(self, fileids=None, categories=None):
+    def docs(self, fileids=None, categories=None) -> dict:
         """
         Returns the document loaded from a pickled object for every file in
         the corpus. Similar to the BaleenCorpusReader, this uses a generator
         to archeive memory safe iteration.
-        """
-        # Resolve the fileids and the categories
-        fileids = self.resolve(fileids, categories)
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
 
+        Returns
+        -------
+            yields a dictionary containing all the metadata for a given document
+
+        Example output
+        --------------
+        {
+        '@_fa': 'true',
+        'load-date': '2003-07-30T00:00:00Z',
+        'link': [
+            {
+                '@_fa': 'true',
+                '@ref': 'self',
+                '@href': 'https://api.elsevier.com/content/article/pii/0167713686900351'
+            },
+            {
+                '@_fa': 'true',
+                '@ref': 'scidir',
+                '@href': 'https://www.sciencedirect.com/science/article/pii/0167713686900351?dgcid=api_sd_search-api-endpoint'
+            }
+                ],
+        'dc:identifier': 'DOI:10.1016/0167-7136(86)90035-1',
+        'prism:url': 'https://api.elsevier.com/content/article/pii/0167713686900351',
+        'dc:title': 'Knowledge resource tools for information access',
+        'dc:creator': 'D. E. Walker',
+        'prism:publicationName': 'Computer Compacts',
+        'prism:volume': '4',
+        'prism:coverDate': '1986-10-31',
+        'prism:startingPage': '182',
+        'prism:doi': '10.1016/0167-7136(86)90035-1',
+        'openaccess': False,
+        'pii': '0167713686900351',
+        'author_list':  {
+            'author': 'D. E. Walker'
+                    }
+        }
+
+
+        """
+        fileids = self.resolve(fileids, categories)
         # Create a generator, loading one document into memory at a time.
         for path, enc, fileid in self.abspaths(fileids, True, True):
             with open(path, 'rb') as f:
                 yield pickle.load(f)
 
-    def titles(self, fileids=None, categories=None):
-        for doc in self.docs(fileids, categories):
-            for entity in doc:
-                try:
-                    yield entity['dc:title']
-                except:
-                    yield 'NO TITLE'
+    def titles(self, fileids=None, categories=None) -> str:
+        """
+        generates the title of the next document in the corpus
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
 
-    def words(self, fileids=None, categories=None):
-        for doc in self.docs(fileids, categories):
-            for entity in doc:
-                for word in wordpunct_tokenize(entity['dc:title']):
-                    try:
-                        yield word
-                    except:
-                        yield 'NO WORD'
+        Returns
+        -------
+            yields a string containing the next document title
+        or
+            'NO TITLE'
 
-    def doc_ids(self, fileids=None, categories=None):
+        Example output
+        --------------
+        'Knowledge resource tools for information access'
+        """
         for doc in self.docs(fileids, categories):
-            for entity in doc:
-                try:
-                    yield entity['dc:identifier']
-                except:
-                    yield 'NO DOC ID'
+            try:
+                yield doc['dc:title']
+            except KeyError:
+                yield 'NO TITLE'
 
-    def publication(self, fileids=None, categories=None):
-        for doc in self.docs(fileids, categories):
-            for entity in doc:
-                try:
-                    yield entity['prism:publicationName']
-                except:
-                    yield 'NO PUBLICATION'
+    def title_words(self, fileids=None, categories=None) -> str:
+        """
+        generates the next title word in the corpus
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
 
-    def pub_date(self, fileids=None, categories=None):
-        for doc in self.docs(fileids, categories):
-            for entity in doc:
-                try:
-                    yield entity['prism:coverDate']
-                except:
-                    yield 'NO PUB DATE'
+        Returns
+        -------
+            yields a string containing the next title word
+        or
+            'NO WORD'
 
-    def pub_type(self, fileids=None, categories=None):
+        Example output
+        --------------
+        'Knowledge'
+        """
         for doc in self.docs(fileids, categories):
-            for entity in doc:
-                try:
-                    yield entity['subtypeDescription']
-                except:
-                    yield 'NO PUB TYPE'
+            try:
+                for word in wordpunct_tokenize(doc['dc:title']):
+                    yield word
+            except KeyError:
+                yield 'NO WORD'
 
-    def authors(self, fileids=None, categories=None):
-        for doc in self.docs(fileids, categories):
-            for entity in doc:
-                try:
-                    yield entity['author']
-                except:
-                    yield 'NO AUTHORS'
+    def doc_ids(self, fileids=None, categories=None) -> str:
+        """
+        generates the next document in the corpus. Typically a DOI Number or
+        similar
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
 
-    def author_keywords(self, fileids=None, categories=None):
+        Returns
+        -------
+            yields a string containing the next document ID
+
+        or
+            'NO DOC ID'
+
+        Example output
+        --------------
+        'DOI:10.1016/0167-7136(86)90035-1'
+        """
         for doc in self.docs(fileids, categories):
-            for entity in doc:
-                try:
-                    yield entity['authkeywords']
-                except:
-                    yield 'NO KEYWORDS'
+            try:
+                yield doc['dc:identifier']
+            except KeyError:
+                yield 'NO DOC ID'
+
+    def publication(self, fileids=None, categories=None) -> str:
+        """
+        generates the next journal or publication name in the corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next publication name
+
+        or
+            'NO PUBLICATION NAME'
+
+        Example output
+        --------------
+        'Computer Compacts'
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['prism:publicationName']
+            except KeyError:
+                yield 'NO PUBLICATION NAME'
+
+    def pub_date(self, fileids=None, categories=None, form=None) -> object:
+        """
+        generates the next date of publication in the corpus.
+        Parameters
+        ----------
+        form: str
+            'year' - restricts output to year of publication only
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a datetime object containing the next date of publication
+
+        or
+            'NO PUB DATE'
+
+        Example output
+        --------------
+        1986-10-31
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                date_string = doc['prism:coverDate']
+                if form is None:
+                    yield datetime.strptime(date_string, '%Y-%m-%d')
+                elif form is 'year':
+                    yield datetime.strptime(date_string, '%Y-%m-%d').year
+            except KeyError:
+                yield None
+
+    def pub_type(self, fileids=None, categories=None) -> str:
+        """
+        generates the next document type in the corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next  document type
+
+        or
+            'NO PUB TYPE'
+
+        Example output
+        --------------
+        'Article'
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['subtypeDescription']
+            except KeyError:
+                yield 'NO PUB TYPE'
+
+    def author_list(self, fileids=None, categories=None) -> dict:
+        """
+        generates the dictionary of author_list for the next in the corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a dictionary containing the author_list of the  next document
+            type
+
+        or
+            None
+
+        Example output
+        --------------
+        {'author':  [
+            {'$': 'H. Aiso'},
+            {'$': 'F. Kuo'},
+            {'$': 'R. P. van de Riet'}
+                    ]
+        }
+        or
+        {'author': 'Lung-Sing Liang'}
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['author_list']
+            except KeyError:
+                yield None
+
+    def author(self, fileids=None, categories=None) -> str:
+        """
+        generates the an author next in the corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the next author
+
+        or
+            None
+
+        Example output
+        --------------
+
+        """
+        for authors in self.author_list(fileids, categories):
+            try:
+                yield doc['author_list']
+            except KeyError:
+                yield None
+
+    def author_keywords(self, fileids=None, categories=None) -> str:
+        """
+        generates a string of author keywords for the next document in the
+        corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next  author keywords
+
+        or
+            'NO KEYWORDS'
+
+        Example output
+        --------------
+        'EGaIn | Liquid metal | Lorentz force | Mixer | Self-rotation'
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['authkeywords']
+            except KeyError:
+                yield 'NO KEYWORDS'
+
+    def doc_url(self, fileids=None, categories=None) -> str:
+        """
+        generates a string of document URL for the next document in the
+        corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next document URL
+
+        or
+            'NO URL'
+
+        Example output
+        --------------
+        'https://api.elsevier.com/content/article/pii/0167713686900351'
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['prism:url']
+            except KeyError:
+                yield 'NO URL'
+
+    def doc_volume(self, fileids=None, categories=None) -> int:
+        """
+        generates an intiger number for the volume of the next document in the
+        corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields an intiger number for the volume
+
+        or
+            None
+
+        Example output
+        --------------
+        4
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['prism:volume']
+            except KeyError:
+                yield None
+
+    def doc_first_page(self, fileids=None, categories=None) -> int:
+        """
+        generates an intiger number for the first page number of the next
+        document in the corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields an intiger number for the first page number
+
+        or
+            None
+
+        Example output
+        --------------
+        132
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['prism:startingPage']
+            except KeyError:
+                yield None
+
+    def doc_doi(self, fileids=None, categories=None) -> str:
+        """
+        generates a string of document DOI for the next document in the
+        corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next document DOI
+
+        or
+            'NO DOI'
+
+        Example output
+        --------------
+        '10.1016/0167-7136(86)90035-1'
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['prism:doi']
+            except KeyError:
+                yield 'NO DOI'
+
+    def doc_pii(self, fileids=None, categories=None) -> str:
+        """
+        generates a string of document PII for the next document in the
+        corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next document PII
+
+        or
+            'NO PII'
+
+        Example output
+        --------------
+        '0167713686900351'
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc['pii']
+            except KeyError:
+                yield 'NO PII'
 
     def read_single(self, fileid=None, root=None):
+        """
+        Depricated single read. with new method of preprocessing data,
+        each pickle file contains only one file.
+        Parameters
+        ----------
+        fileid: basestring
+            Name of file name
+        root: basestring
+            Root directoy
+
+        Returns
+        -------
+            a dictionary object containing a the meta-data for a single article
+        """
         root = self.root if (root is None) else root
         print(root)
         with open(os.path.join(root, fileid), 'rb') as f:

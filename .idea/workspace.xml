@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c6ef373e-a1aa-4e6d-9a39-035502ee3bed" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/CorpusProcessingTools/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notes/Notes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/martin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/martin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CorpusReader/Elsevier_Corpus_Reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/CorpusReader/Elsevier_Corpus_Reader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Elsivier_Pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/Elsivier_Pipeline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ingestor/Elsevier_Ingestor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ingestor/Elsevier_Ingestor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Play.py" beforeDir="false" afterPath="$PROJECT_DIR$/Play.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PreProcessor/Elsivier_Pre_Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/PreProcessor/Elsivier_Pre_Processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/corpus/info.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/corpus/soft robot/2019.pickle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/Ingestor.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/Ingestor.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PreProcessor/Elsivier_Pre_Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/CorpusProcessingTools/Elsivier_Corpus_Pre_Processor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PreProcessor/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/CorpusProcessingTools/Plotting_Tools.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,16 +20,28 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.49084017">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Ingestor/Elsevier_Ingestor.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="5066">
-                  <caret line="305" column="8" selection-start-line="305" selection-start-column="8" selection-end-line="305" selection-end-column="8" />
+                <state relative-caret-position="-790">
+                  <caret line="81" column="6" selection-start-line="81" selection-start-column="6" selection-end-line="81" selection-end-column="6" />
                   <folding>
                     <element signature="e#199#214#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/CorpusProcessingTools/Plotting_Tools.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="466">
+                  <caret line="152" column="4" selection-start-line="152" selection-start-column="4" selection-end-line="154" selection-end-column="73" />
+                  <folding>
+                    <element signature="e#214#261#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -37,17 +50,20 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/CorpusReader/Elsevier_Corpus_Reader.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-833">
-                  <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+                <state relative-caret-position="104">
+                  <caret line="306" column="11" selection-start-line="306" selection-start-column="8" selection-end-line="306" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#194#207#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/PreProcessor/Elsivier_Pre_Processor.py">
+            <entry file="file://$PROJECT_DIR$/CorpusProcessingTools/Elsivier_Corpus_Pre_Processor.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2286">
-                  <caret line="143" column="41" selection-start-line="143" selection-start-column="41" selection-end-line="143" selection-end-column="41" />
+                <state relative-caret-position="17">
+                  <caret line="4" column="9" lean-forward="true" selection-end-line="8" selection-end-column="3" />
                   <folding>
                     <element signature="e#222#235#0" expanded="true" />
                   </folding>
@@ -62,8 +78,20 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Play.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="365">
-                  <caret line="45" column="4" selection-start-line="45" selection-start-column="4" selection-end-line="47" selection-end-column="64" />
+                <state relative-caret-position="306">
+                  <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" selection-end-column="42" />
+                  <folding>
+                    <element signature="e#1#39#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Elsivier_Pipeline.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="737">
+                  <caret line="55" lean-forward="true" selection-end-line="57" />
                   <folding>
                     <element signature="e#1#39#0" expanded="true" />
                   </folding>
@@ -72,13 +100,13 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Elsivier_Pipeline.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="399">
-                  <caret line="49" lean-forward="true" selection-end-line="54" selection-end-column="35" />
-                  <folding>
-                    <element signature="e#1#39#0" expanded="true" />
-                  </folding>
+            <entry file="file://$PROJECT_DIR$/notes/Notes.md">
+              <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+                <state split_layout="SPLIT">
+                  <first_editor relative-caret-position="255">
+                    <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+                  </first_editor>
+                  <second_editor />
                 </state>
               </provider>
             </entry>
@@ -112,9 +140,12 @@
         <option value="$PROJECT_DIR$/test/test.py" />
         <option value="$PROJECT_DIR$/Ingestor/__init__.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/Ingestor/Elsevier_Ingestor.py" />
-        <option value="$PROJECT_DIR$/Play.py" />
         <option value="$PROJECT_DIR$/PreProcessor/Elsivier_Pre_Processor.py" />
+        <option value="$PROJECT_DIR$/Ingestor/Elsevier_Ingestor.py" />
+        <option value="$PROJECT_DIR$/notes/Notes.md" />
+        <option value="$PROJECT_DIR$/CorpusProcessingTools/Elsivier_Corpus_Pre_Processor.py" />
+        <option value="$PROJECT_DIR$/Play.py" />
+        <option value="$PROJECT_DIR$/CorpusProcessingTools/Plotting_Tools.py" />
         <option value="$PROJECT_DIR$/Elsivier_Pipeline.py" />
         <option value="$PROJECT_DIR$/CorpusReader/Elsevier_Corpus_Reader.py" />
       </list>
@@ -137,6 +168,11 @@
               <item name="fictional-barnacle" type="b2602c69:ProjectViewProjectNode" />
               <item name="fictional-barnacle" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="fictional-barnacle" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fictional-barnacle" type="462c0819:PsiDirectoryNode" />
+              <item name="CorpusProcessingTools" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -147,7 +183,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../lit_analysis" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RunDashboard">
@@ -185,14 +221,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1920" height="1055" extended-state="7" />
+    <frame x="0" y="17" width="1920" height="1062" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49676025" visible="true" weight="0.15368196" />
-      <window_info id="Structure" order="1" sideWeight="0.50323975" side_tool="true" visible="true" weight="0.15368196" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4962162" visible="true" weight="0.15528281" />
+      <window_info id="Structure" order="1" sideWeight="0.50378376" side_tool="true" visible="true" weight="0.15528281" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32972974" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -201,7 +237,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32829374" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32972974" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -220,8 +256,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Ingestor/Elsevier_Ingestor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5066">
-          <caret line="305" column="8" selection-start-line="305" selection-start-column="8" selection-end-line="305" selection-end-column="8" />
+        <state relative-caret-position="-790">
+          <caret line="81" column="6" selection-start-line="81" selection-start-column="6" selection-end-line="81" selection-end-column="6" />
           <folding>
             <element signature="e#199#214#0" expanded="true" />
           </folding>
@@ -230,18 +266,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Play.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="45" column="4" selection-start-line="45" selection-start-column="4" selection-end-line="47" selection-end-column="64" />
+        <state relative-caret-position="306">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" selection-end-column="42" />
           <folding>
             <element signature="e#1#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PreProcessor/Elsivier_Pre_Processor.py">
+    <entry file="file://$PROJECT_DIR$/CorpusProcessingTools/Plotting_Tools.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2286">
-          <caret line="143" column="41" selection-start-line="143" selection-start-column="41" selection-end-line="143" selection-end-column="41" />
+        <state relative-caret-position="466">
+          <caret line="152" column="4" selection-start-line="152" selection-start-column="4" selection-end-line="154" selection-end-column="73" />
+          <folding>
+            <element signature="e#214#261#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CorpusProcessingTools/Elsivier_Corpus_Pre_Processor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="4" column="9" lean-forward="true" selection-end-line="8" selection-end-column="3" />
           <folding>
             <element signature="e#222#235#0" expanded="true" />
           </folding>
@@ -250,8 +296,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Elsivier_Pipeline.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="49" lean-forward="true" selection-end-line="54" selection-end-column="35" />
+        <state relative-caret-position="737">
+          <caret line="55" lean-forward="true" selection-end-line="57" />
           <folding>
             <element signature="e#1#39#0" expanded="true" />
           </folding>
@@ -260,8 +306,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CorpusReader/Elsevier_Corpus_Reader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-833">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="104">
+          <caret line="306" column="11" selection-start-line="306" selection-start-column="8" selection-end-line="306" selection-end-column="19" />
+          <folding>
+            <element signature="e#194#207#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/notes/Notes.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="255">
+            <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
