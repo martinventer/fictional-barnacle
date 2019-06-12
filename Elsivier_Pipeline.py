@@ -1,5 +1,5 @@
 
-from Ingestor import Elsevier_Ingestor
+from Ingestor import Elsivier_Ingestor
 from CorpusProcessingTools import Elsivier_Corpus_Pre_Processor
 from CorpusReader import Elsevier_Corpus_Reader
 from CorpusProcessingTools import Plotting_Tools
@@ -15,13 +15,11 @@ def download_corpus():
     search_terms = ['soft robot']
     dates = (1986, 1987)
 
-    builder = Elsevier_Ingestor.ElsevierIngestionEngine(
+    builder = Elsivier_Ingestor.ScopusIngestionEngine(
         search_terms=search_terms,
         file_path="Corpus/Raw_corpus/",
         dates=dates,
         home=False,
-        # database='scopus',
-        database='science_direct',
         batch_size=25)
 
     builder.build_corpus()
@@ -53,5 +51,13 @@ if __name__ == '__main__':
         "Corpus/Processed_corpus/")
 
 
+    gen = corp.author()
+    # for i in range(10): print(type(next(gen)))
+    for i in range(10): print(next(gen))
 
+    gen = corp.author_list()
+    for i in range(20): print(next(gen))
+
+    gen = corp.author_count()
+    for i in range(20): print(next(gen))
 

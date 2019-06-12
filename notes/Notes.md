@@ -19,7 +19,7 @@ https://dev.elsevier.com/guides/ScienceDirectSearchViews.htm
 | prism:endingPage      | End page                          | X        |
 | prism:coverDate       | Publication date (YYYY-MM-DD)     | X        |
 | dc:creator            | First Author                      | X        |
-| author_list               | Full Author List                  | X        |
+| authors               | Full Author List                  | X        |
 | prism:doi             | Document Object Identifier        | X        |
 | pii                   | Publication Item Identifier       | X        |
 
@@ -48,7 +48,7 @@ https://dev.elsevier.com/guides/ScienceDirectSearchViews.htm
 * 'prism:doi': '10.1016/0167-7136(86)90035-1', 
 * 'openaccess': False, 
 * 'pii': '0167713686900351',
-* 'author_list': {'author': 'D. E. Walker'}}
+* 'authors': {'author': 'D. E. Walker'}}
 
 ### Included in Corpus Reader
 * docs() - full content of document

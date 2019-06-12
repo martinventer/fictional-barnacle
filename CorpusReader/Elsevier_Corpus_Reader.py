@@ -335,9 +335,43 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         """
         for doc in self.docs(fileids, categories):
             try:
-                yield doc['author_list']
+                yield doc['authors']
             except KeyError:
                 yield None
+
+
+    def author_count(self, fileids=None, categories=None) -> str:
+        """
+        generates the number of authors in the next document in the corpus.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the number of authors in the next document
+
+        or
+            None
+
+        Example output
+        --------------
+        1
+        """
+        for authors in self.author_list(fileids, categories):
+            try:
+                if type(authors['author']) is str:
+                    yield 1
+                elif type(authors['author']) is list:
+                    yield len(authors['author'])
+                elif type(authors['author']) is NoneType:
+                    yield 0
+            except (KeyError, TypeError):
+                yield None
+
 
     def author(self, fileids=None, categories=None) -> str:
         """
@@ -358,12 +392,16 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Example output
         --------------
-
+        'D. E. Walker'
         """
         for authors in self.author_list(fileids, categories):
             try:
-                yield doc['author_list']
-            except KeyError:
+                if type(authors['author']) is str:
+                    yield authors['author']
+                elif type(authors['author']) is list:
+                    for s in authors['author']:
+                        yield s['$']
+            except (KeyError, TypeError):
                 yield None
 
     def author_keywords(self, fileids=None, categories=None) -> str:

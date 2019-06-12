@@ -1,6 +1,6 @@
 # /home/martin/Documents/RESEARCH/fictional-barnacle/Ingestor/
 """
-Elsevier_Ingestor.py
+Elsivier_Ingestor.py
 
 @author: martinventer
 @date: 2019-06-10
@@ -79,7 +79,7 @@ def make_folder(path):
         pass
 
 
-class ElsevierIngestionEngine(object):
+class ScopusIngestionEngine(object):
     """
     An interface for the Elsevier search API capable of searching both the
     scopus and science direct databases, if you have the correct API key
@@ -90,16 +90,11 @@ class ElsevierIngestionEngine(object):
                  dates=(1900, datetime.today().year),
                  home=False,
                  batch_size=25,
-                 database='scopus',
-                 file_path="corpus/"):
+                 file_path="Corpus/"):
         """
         Initialize the elsevier searcher
         Parameters
         ----------
-        database : str
-            selection of which database to search
-                'scopus' is default
-                'science_direct'
         dates : object (list like)
             a list of dates covering the range of the search
         home : bool
@@ -116,9 +111,10 @@ class ElsevierIngestionEngine(object):
         self.search_terms = search_terms
         self.dates = dates
         self.dates_range = range(*dates)
-        self.database = database
         self.api_key = get_key()
         self.status_code = None
+        self.database = 'SCOPUS'
+        self.endpoint = "https://api.elsevier.com/content/search/scopus"
         logging.info("Corpus Builder Initialised")
 
     def search_by_term(self,
@@ -146,28 +142,17 @@ class ElsevierIngestionEngine(object):
         """
         headers = {"X-ELS-APIKey": self.api_key}
         view = 'COMPLETE' if (self.home is False) else 'STANDARD'
-        endpoints = {'scopus' :
-                         "https://api.elsevier.com/content/search/scopus",
-                     'science_direct':
-                         "https://api.elsevier.com/content/search/sciencedirect"}
 
-        endpoint = endpoints[self.database]
+        params = {"query": search_term,
+                  "start": start,
+                  "count": self.batch_size,
+                  "date": date,
+                  "view": view}
 
-        if subject is None:
-            params = {"query": search_term,
-                      "start": start,
-                      "count": self.batch_size,
-                      "date": date,
-                      "view": view}
-        else:
-            params = {"query": search_term,
-                      "start": start,
-                      "count": self.batch_size,
-                      "date": date,
-                      "subj": subject,
-                      "view": view}
+        if subject is not None:
+            params["subj"] = subject
 
-        search_results = requests.get(endpoint,
+        search_results = requests.get(self.endpoint,
                                       headers=headers,
                                       params=params)
 
@@ -306,9 +291,47 @@ class ElsevierIngestionEngine(object):
     def gen_info_file(self):
         readme_location = self.file_path + '/info.txt'
         with open(readme_location, "w") as f:
-            f.write("Search Timestamep {}".format(datetime.today()))
+            f.write("Search Time stamp {}".format(datetime.today()))
             f.write("Source database : %s \n" % self.database)
             f.write("Search from home {}".format(self.home))
             f.write("search between %d and %d \n" % self.dates)
             for term in self.search_terms:
                 f.write("-- %s \n" % term)
+
+
+class SciDirIngestionEngine(ScopusIngestionEngine):
+    """
+    An interface for the Elsevier search API capable of searching both the
+    scopus and science direct databases, if you have the correct API key
+    """
+
+    def __init__(self,
+                 search_terms=(),
+                 dates=(1900, datetime.today().year),
+                 home=False,
+                 batch_size=25,
+                 file_path="Corpus/"):
+        """
+        Initialize the elsevier searcher
+        Parameters
+        ----------
+        dates : object (list like)
+            a list of dates covering the range of the search
+        home : bool
+            in order to get full access to the databases you will need to be
+            on a network that has access
+        batch_size : int
+            the number of entities that will be downloaded in a single batch
+        file_path : str
+            the path to where the corpus should be stored
+        """
+        ScopusIngestionEngine.__init__(self,
+                                       search_terms=search_terms,
+                                       dates=dates,
+                                       home=home,
+                                       batch_size=batch_size,
+                                       file_path=file_path)
+        self.database = 'Science Direct'
+        self.endpoint = "https://api.elsevier.com/content/search/sciencedirect"
+        logging.info("Corpus Builder Initialised")
+
