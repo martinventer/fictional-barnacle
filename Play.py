@@ -6,7 +6,7 @@ from datetime import datetime
 
 from collections import Counter
 
-corp = Elsevier_Corpus_Reader.PickledCorpusReader(
+corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
     "Corpus/Processed_corpus/")
 
 for doc in corp.docs():

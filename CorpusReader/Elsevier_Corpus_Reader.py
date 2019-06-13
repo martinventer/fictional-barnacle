@@ -33,7 +33,7 @@ PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
 CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
 
 
-class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
+class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
     def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
         """
@@ -97,38 +97,72 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Example output
         --------------
-        {
-        '@_fa': 'true',
-        'load-date': '2003-07-30T00:00:00Z',
-        'link': [
-            {
-                '@_fa': 'true',
-                '@ref': 'self',
-                '@href': 'https://api.elsevier.com/content/article/pii/0167713686900351'
-            },
-            {
-                '@_fa': 'true',
-                '@ref': 'scidir',
-                '@href': 'https://www.sciencedirect.com/science/article/pii/0167713686900351?dgcid=api_sd_search-api-endpoint'
-            }
-                ],
-        'dc:identifier': 'DOI:10.1016/0167-7136(86)90035-1',
-        'prism:url': 'https://api.elsevier.com/content/article/pii/0167713686900351',
-        'dc:title': 'Knowledge resource tools for information access',
-        'dc:creator': 'D. E. Walker',
-        'prism:publicationName': 'Computer Compacts',
-        'prism:volume': '4',
-        'prism:coverDate': '1986-10-31',
-        'prism:startingPage': '182',
-        'prism:doi': '10.1016/0167-7136(86)90035-1',
-        'openaccess': False,
-        'pii': '0167713686900351',
-        'author_list':  {
-            'author': 'D. E. Walker'
-                    }
-        }
-
-
+        {'@_fa': 'true',
+         'link': [{'@_fa': 'true',
+           '@ref': 'self',
+           '@href': 'https://api.elsevier.com/content/abstract/scopus_id/85062801216'},
+          {'@_fa': 'true',
+           '@ref': 'author_name-affiliation',
+           '@href': 'https://api.elsevier.com/content/abstract/scopus_id/85062801216?field=author,affiliation'},
+          {'@_fa': 'true',
+           '@ref': 'scopus',
+           '@href': 'https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp=85062801216&origin=inward'},
+          {'@_fa': 'true',
+           '@ref': 'scopus-citedby',
+           '@href': 'https://www.scopus.com/inward/citedby.uri?partnerID=HzOxMe3b&scp=85062801216&origin=inward'}],
+         'prism:url': 'https://api.elsevier.com/content/abstract/scopus_id/85062801216',
+         'dc:identifier': 'SCOPUS_ID:85062801216',
+         'eid': '2-s2.0-85062801216',
+         'dc:title': 'Spatio-Temporal Reasoning within a Neural Network framework for Intelligent Physical Systems',
+         'dc:creator': 'Sathish Kumar A.',
+         'prism:publicationName': 'Proceedings of the 2018 IEEE Symposium Series on Computational Intelligence, SSCI 2018',
+         'prism:isbn': [{'@_fa': 'true', '$': '9781538692769'}],
+         'prism:pageRange': '274-280',
+         'prism:coverDate': '2019-01-28',
+         'prism:coverDisplayDate': '28 January 2019',
+         'prism:doi': '10.1109/SSCI.2018.8628748',
+         'dc:description': '© 2018 IEEE. Existing functionality for intelligent physical systems (IPS), such as autonomous vehicles (AV), generally lacks the ability to reason and evaluate the environment and to learn from other intelligent agents in an autonomous fashion. Such capabilities for IPS is required for scenarios where an human intervention is unlikely to be available and robust long-term autonomous operation is necessary in potentially dynamic environments. To address these issues, the IPS will then need to reason about the interactions with these items through time and space. Incorporating spatio-temporal reasoning into the IPS will provide the capability to understand these interactions. This paper describes our proposed neural network framework that incorporates spatio-temporal reasoning for IPS. The preliminary experimental results addressing research challenges related to spatio-temporal reasoning within neural network framework for IPS are promising.',
+         'citedby-count': '0',
+         'affiliation': [{'@_fa': 'true',
+           'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60019213',
+           'afid': '60019213',
+           'affilname': 'Coastal Carolina University',
+           'affiliation-city': 'Conway',
+           'affiliation-country': 'United States'},
+          {'@_fa': 'true',
+           'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/101522664',
+           'afid': '101522664',
+           'affilname': 'Research and Development Service',
+           'affiliation-city': 'San Antonio',
+           'affiliation-country': 'United States'}],
+         'prism:aggregationType': 'Conference Proceeding',
+         'subtype': 'cp',
+         'subtypeDescription': 'Conference Paper',
+         'author_name-count': {'@limit': '100', '$': '2'},
+         'author_name': [{'@_fa': 'true',
+           '@seq': '1',
+           'author_name-url': 'https://api.elsevier.com/content/author/author_id/57195136226',
+           'authid': '57195136226',
+           'authname': 'Sathish Kumar A.',
+           'surname': 'Sathish Kumar',
+           'given-name': 'A. P.',
+           'initials': 'A.P.',
+           'afid': [{'@_fa': 'true', '$': '60019213'}]},
+          {'@_fa': 'true',
+           '@seq': '2',
+           'author_name-url': 'https://api.elsevier.com/content/author/author_id/57207867215',
+           'authid': '57207867215',
+           'authname': 'Brown M.',
+           'surname': 'Brown',
+           'given-name': 'Michael A.',
+           'initials': 'M.A.',
+           'afid': [{'@_fa': 'true', '$': '101522664'}]}],
+         'authkeywords': 'Automated Vehicles | convolution neural networks | Spatio-Temporal Reasoning',
+         'article-number': '8628748',
+         'source-id': '21100901193',
+         'fund-no': 'undefined',
+         'openaccess': '0',
+         'openaccessFlag': False}
         """
         fileids = self.resolve(fileids, categories)
         # Create a generator, loading one document into memory at a time.
@@ -150,7 +184,7 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         -------
             yields a string containing the next document title
         or
-            'NO TITLE'
+            ''
 
         Example output
         --------------
@@ -160,7 +194,7 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             try:
                 yield doc['dc:title']
             except KeyError:
-                yield 'NO TITLE'
+                yield ''
 
     def title_words(self, fileids=None, categories=None) -> str:
         """
@@ -176,7 +210,7 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         -------
             yields a string containing the next title word
         or
-            'NO WORD'
+            ''
 
         Example output
         --------------
@@ -187,12 +221,11 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
                 for word in wordpunct_tokenize(doc['dc:title']):
                     yield word
             except KeyError:
-                yield 'NO WORD'
+                yield ''
 
-    def doc_ids(self, fileids=None, categories=None) -> str:
+    def abstracts(self, fileids=None, categories=None) -> str:
         """
-        generates the next document in the corpus. Typically a DOI Number or
-        similar
+        generates the abstracts of the next document in the corpus
         Parameters
         ----------
         fileids: basestring or None
@@ -202,26 +235,133 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Returns
         -------
-            yields a string containing the next document ID
-
+            yields a string containing the next document title
         or
-            'NO DOC ID'
+            ''
 
         Example output
         --------------
-        'DOI:10.1016/0167-7136(86)90035-1'
+        'Knowledge resource tools for information access'
         """
         for doc in self.docs(fileids, categories):
             try:
-                yield doc['dc:identifier']
+                yield doc['dc:description']
             except KeyError:
-                yield 'NO DOC ID'
+                yield ''
 
-    def publication(self, fileids=None, categories=None) -> str:
+    def abstract_paras(self, fileids=None, categories=None) -> str:
+        """
+        a generator for abstract paragraphs
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            basestring
+        """
+        for abstract in self.abstracts(fileids, categories):
+            try:
+                for paragraph in abstract.split("\n"):
+                    yield paragraph
+            except KeyError:
+                yield ''
+
+    def abstract_sents(self, fileids=None, categories=None) -> str:
+        """
+        a generator for abstract sents
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            basestring
+        """
+        for paragraph in self.abstract_paras(fileids, categories):
+            try:
+                for sent in paragraph.split(". "):
+                    yield sent
+            except KeyError:
+                yield ''
+
+    def abstract_words(self, fileids=None, categories=None) -> str:
+        """
+        a generator for abstract words
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            basestring
+        """
+        for sent in self.abstract_sents(fileids, categories):
+            try:
+                for word in wordpunct_tokenize(sent):
+                    yield word
+            except KeyError:
+                yield ''
+
+    def doc_ids(self, fileids=None, categories=None, form='prism:url') -> str:
+        """
+        generates the next document in the corpus. Typically a DOI Number or
+        similar
+        Parameters
+        ----------
+            form: str default 'prism:url'
+                form of document Identification
+                    'prism:url' - Content Abstract Retrieval API URI
+                    'dc:identifier' - Scopus ID
+                    'eid' - Electronic ID
+                    'prism:isbn' - Source Identifier
+                    'prism:doi' - Document Object Identifier
+                    'article-number' - Article Number
+
+            fileids: basestring or None
+                complete path to specified file
+            categories: basestring or None
+                path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next document ID
+
+        or
+            ''
+
+        Example output
+        --------------
+        'SCOPUS_ID:85062801216'
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc[form]
+            except KeyError:
+                yield ''
+
+    def publication(self, fileids=None, categories=None,
+                    form='prism:publicationName') -> str:
         """
         generates the next journal or publication name in the corpus.
         Parameters
         ----------
+        form: str default 'prism:publicationName'
+                form of document Identification
+                    'prism:publicationName' - Source Title
+                    'subtypeDescription' - Document Type description
+                    'prism:aggregationType' - Source Type
+                    'subtype' - Document Type code
+
         fileids: basestring or None
             complete path to specified file
         categories: basestring or None
@@ -232,7 +372,7 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             yields a string containing the next publication name
 
         or
-            'NO PUBLICATION NAME'
+            ''
 
         Example output
         --------------
@@ -240,9 +380,9 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         """
         for doc in self.docs(fileids, categories):
             try:
-                yield doc['prism:publicationName']
+                yield doc[form]
             except KeyError:
-                yield 'NO PUBLICATION NAME'
+                yield ''
 
     def pub_date(self, fileids=None, categories=None, form=None) -> object:
         """
@@ -261,11 +401,11 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             yields a datetime object containing the next date of publication
 
         or
-            'NO PUB DATE'
+            None
 
         Example output
         --------------
-        1986-10-31
+        2019-01-28 00:00:00
         """
         for doc in self.docs(fileids, categories):
             try:
@@ -277,34 +417,7 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             except KeyError:
                 yield None
 
-    def pub_type(self, fileids=None, categories=None) -> str:
-        """
-        generates the next document type in the corpus.
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a string containing the next  document type
-
-        or
-            'NO PUB TYPE'
-
-        Example output
-        --------------
-        'Article'
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield doc['subtypeDescription']
-            except KeyError:
-                yield 'NO PUB TYPE'
-
-    def author_list(self, fileids=None, categories=None) -> dict:
+    def author_list(self, fileids=None, categories=None) -> list:
         """
         generates the dictionary of author_list for the next in the corpus.
         Parameters
@@ -324,23 +437,33 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Example output
         --------------
-        {'author':  [
-            {'$': 'H. Aiso'},
-            {'$': 'F. Kuo'},
-            {'$': 'R. P. van de Riet'}
-                    ]
-        }
-        or
-        {'author': 'Lung-Sing Liang'}
+            [{'@_fa': 'true',
+              '@seq': '1',
+              'author_name-url': 'https://api.elsevier.com/content/author/author_id/57207938844',
+              'authid': '57207938844',
+              'authname': 'Tamatsukuri A.',
+              'surname': 'Tamatsukuri',
+              'given-name': 'Akihiro',
+              'initials': 'A.',
+              'afid': [{'@_fa': 'true', '$': '60003414'}]},
+             {'@_fa': 'true',
+              '@seq': '2',
+              'author_name-url': 'https://api.elsevier.com/content/author/author_id/7406460920',
+              'authid': '7406460920',
+              'authname': 'Takahashi T.',
+              'surname': 'Takahashi',
+              'given-name': 'Tatsuji',
+              'initials': 'T.',
+              'afid': [{'@_fa': 'true', '$': '60003414'},
+               {'@_fa': 'true', '$': '116598425'}]}]
         """
         for doc in self.docs(fileids, categories):
             try:
-                yield doc['authors']
+                yield doc['author']
             except KeyError:
-                yield None
+                yield []
 
-
-    def author_count(self, fileids=None, categories=None) -> str:
+    def author_count(self, fileids=None, categories=None) -> int:
         """
         generates the number of authors in the next document in the corpus.
         Parameters
@@ -361,27 +484,30 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         --------------
         1
         """
-        for authors in self.author_list(fileids, categories):
+        for doc in self.docs(fileids, categories):
             try:
-                if type(authors['author']) is str:
-                    yield 1
-                elif type(authors['author']) is list:
-                    yield len(authors['author'])
-                elif type(authors['author']) is NoneType:
-                    yield 0
+                yield int(doc['author-count']["$"])
             except (KeyError, TypeError):
                 yield None
 
-
-    def author(self, fileids=None, categories=None) -> str:
+    def author_name(self, fileids=None, categories=None, form='authname') -> \
+            str:
         """
         generates the an author next in the corpus.
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
+            form : str default 'authname'
+                form of the author name requested options:
+                    'author-url' - author scopus URL
+                    'authid' - scopus author ID
+                    'authname' - full author name and initial
+                    'surname' - author surname only
+                    'given-name' - author given name only
+                    'initials' - initials
+            fileids: basestring or None
+                complete path to specified file
+            categories: basestring or None
+                path to directory containing a subset of the fileids
 
         Returns
         -------
@@ -396,17 +522,15 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         """
         for authors in self.author_list(fileids, categories):
             try:
-                if type(authors['author']) is str:
-                    yield authors['author']
-                elif type(authors['author']) is list:
-                    for s in authors['author']:
-                        yield s['$']
+                if type(authors) is list:
+                    for author in authors:
+                        yield author[form]
             except (KeyError, TypeError):
                 yield None
 
-    def author_keywords(self, fileids=None, categories=None) -> str:
+    def author_keyword_list(self, fileids=None, categories=None) -> list:
         """
-        generates a string of author keywords for the next document in the
+        generates a list of author keywords for the next document in the
         corpus.
         Parameters
         ----------
@@ -420,21 +544,22 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             yields a string containing the next  author keywords
 
         or
-            'NO KEYWORDS'
+            []
 
         Example output
         --------------
-        'EGaIn | Liquid metal | Lorentz force | Mixer | Self-rotation'
+        ['Bio-inspired design', 'Minimally invasive', 'Paramecium']
         """
         for doc in self.docs(fileids, categories):
             try:
-                yield doc['authkeywords']
+                yield [keyword.strip() for keyword in doc[
+                    'authkeywords'].split("|")]
             except KeyError:
-                yield 'NO KEYWORDS'
+                yield []
 
-    def doc_url(self, fileids=None, categories=None) -> str:
+    def author_keyword(self, fileids=None, categories=None) -> str:
         """
-        generates a string of document URL for the next document in the
+        generates a string for author keywords for the next document in the
         corpus.
         Parameters
         ----------
@@ -445,20 +570,21 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Returns
         -------
-            yields a string containing the next document URL
+            yields a string containing the next  author keywords
 
         or
-            'NO URL'
+            ''
 
         Example output
         --------------
-        'https://api.elsevier.com/content/article/pii/0167713686900351'
+        'Automated Vehicles'
         """
-        for doc in self.docs(fileids, categories):
+        for keywords in self.author_keyword_list(fileids, categories):
             try:
-                yield doc['prism:url']
+                for keyword in keywords:
+                    yield keyword
             except KeyError:
-                yield 'NO URL'
+                yield ''
 
     def doc_volume(self, fileids=None, categories=None) -> int:
         """
@@ -488,9 +614,10 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             except KeyError:
                 yield None
 
-    def doc_first_page(self, fileids=None, categories=None) -> int:
+    def doc_page_range(self, fileids=None, categories=None) -> (int, int):
         """
-        generates an intiger number for the first page number of the next
+        generates an intiger tupple for the first and last page number of the
+        next
         document in the corpus.
         Parameters
         ----------
@@ -501,25 +628,56 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Returns
         -------
-            yields an intiger number for the first page number
+            yields an intiger tuple for the first and last page number
+
+        or
+            (None, None)
+
+        Example output
+        --------------
+        (274, 280)
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield tuple(int(p) for p in doc['prism:pageRange'].split('-'))
+            except (KeyError, AttributeError):
+                yield (None, None)
+
+    def doc_citation_number(self, fileids=None, categories=None) -> int:
+        """
+        generator for number of citations
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            int
 
         or
             None
 
         Example output
         --------------
-        132
+        4
         """
         for doc in self.docs(fileids, categories):
             try:
-                yield doc['prism:startingPage']
+                yield int(doc['citedby-count']['$'])
             except KeyError:
-                yield None
+                if type(doc['citedby-count']) is str:
+                    yield int(doc['author_name-count'])
+                else:
+                    yield int(doc['author_name-count']['$'])
+            except TypeError:
+                yield int(doc['citedby-count'])
 
-    def doc_doi(self, fileids=None, categories=None) -> str:
+    def affiliation_list(self, fileids=None, categories=None) -> list:
         """
-        generates a string of document DOI for the next document in the
-        corpus.
+        generates list of affiliatons.
         Parameters
         ----------
         fileids: basestring or None
@@ -529,48 +687,33 @@ class PickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Returns
         -------
-            yields a string containing the next document DOI
+            yields a dictionary containing the author_list of the  next document
+            type
 
         or
-            'NO DOI'
+            None
 
         Example output
         --------------
-        '10.1016/0167-7136(86)90035-1'
+            [{'@_fa': 'true',
+              'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60003414',
+              'afid': '60003414',
+              'affilname': 'Tokyo Denki University',
+              'affiliation-city': 'Tokyo',
+              'affiliation-country': 'Japan'},
+             {'@_fa': 'true',
+              'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/116598425',
+              'afid': '116598425',
+              'affilname': 'Dwango Artificial Intelligence Laboratory',
+              'affiliation-city': 'Tokyo',
+              'affiliation-country': 'Japan'}]
         """
         for doc in self.docs(fileids, categories):
             try:
-                yield doc['prism:doi']
+                yield doc['affiliation']
             except KeyError:
-                yield 'NO DOI'
+                yield []
 
-    def doc_pii(self, fileids=None, categories=None) -> str:
-        """
-        generates a string of document PII for the next document in the
-        corpus.
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a string containing the next document PII
-
-        or
-            'NO PII'
-
-        Example output
-        --------------
-        '0167713686900351'
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield doc['pii']
-            except KeyError:
-                yield 'NO PII'
 
     def read_single(self, fileid=None, root=None):
         """

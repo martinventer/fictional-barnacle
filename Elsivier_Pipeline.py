@@ -47,17 +47,16 @@ if __name__ == '__main__':
     # plot_features()
 
     # create a corpus reader object
-    corp = Elsevier_Corpus_Reader.PickledCorpusReader(
+    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
         "Corpus/Processed_corpus/")
 
-
-    gen = corp.author()
-    # for i in range(10): print(type(next(gen)))
+    gen = corp.affiliation_list(categories='soft robot/2019')
     for i in range(10): print(next(gen))
 
-    gen = corp.author_list()
-    for i in range(20): print(next(gen))
 
-    gen = corp.author_count()
-    for i in range(20): print(next(gen))
+    gen = corp.pub_date(categories='soft robot/2019', form='year')
+    for i in range(10): print(next(gen))
 
+
+    # gen = corp.docs(categories='soft robot/2019')
+    # next(gen)

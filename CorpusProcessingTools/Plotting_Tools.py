@@ -46,7 +46,7 @@ def document_feature_counter(path,
     -------
         dict like object, either a Counter object or an OrderedDict
     """
-    corp = Elsevier_Corpus_Reader.PickledCorpusReader(path)
+    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(path)
     feature_map = {'pub_date': corp.pub_date,
                    'pub_type': corp.pub_type,
                    'publication': corp.publication,
@@ -172,6 +172,6 @@ def plot_distribution_authors_per_document(corpus_path):
 
 if __name__ == "__main__":
     # plot_documents_per_pub_date("Corpus/Processed_corpus/")
-    # plot_documents_per_pub_type("Corpus/Processed_corpus/")
+    plot_documents_per_pub_type("Corpus/Processed_corpus/")
     # plot_distribution_of_docs_in_publications("Corpus/Processed_corpus/")
-    test = plot_distribution_authors_per_document("Corpus/Processed_corpus/")
+    # test = plot_distribution_authors_per_document("Corpus/Processed_corpus/")
