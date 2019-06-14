@@ -133,3 +133,182 @@
 2019-06-11 16:22:02,425 Start
 2019-06-11 16:22:02,425 file Corpus/Processed_corpus already exists
 2019-06-11 16:22:03,458 End
+2019-06-14 10:39:00,690 Corpus Builder Initialised
+2019-06-14 10:39:00,690 Start
+2019-06-14 10:39:00,690 file Corpus/Raw_corpus already exists
+2019-06-14 10:39:00,690 file Corpus/Raw_corpus/soft robot already exists
+2019-06-14 10:39:00,690 searching for soft robot
+2019-06-14 10:39:00,690 Start retrieving soft robot in year 1950
+2019-06-14 10:39:02,480  soft robot in year 1950 contains no results
+2019-06-14 10:39:02,481 Start retrieving soft robot in year 1951
+2019-06-14 10:39:03,920  soft robot in year 1951 contains no results
+2019-06-14 10:39:03,920 Start retrieving soft robot in year 1952
+2019-06-14 10:39:05,273  soft robot in year 1952 contains no results
+2019-06-14 10:39:05,274 Start retrieving soft robot in year 1953
+2019-06-14 10:39:06,805  soft robot in year 1953 contains no results
+2019-06-14 10:39:06,805 Start retrieving soft robot in year 1954
+2019-06-14 10:39:08,246  soft robot in year 1954 contains no results
+2019-06-14 10:39:08,246 Start retrieving soft robot in year 1955
+2019-06-14 10:39:09,647  soft robot in year 1955 contains no results
+2019-06-14 10:39:09,647 Start retrieving soft robot in year 1956
+2019-06-14 10:39:10,951  soft robot in year 1956 contains no results
+2019-06-14 10:39:10,952 Start retrieving soft robot in year 1957
+2019-06-14 10:39:12,291  soft robot in year 1957 contains no results
+2019-06-14 10:39:12,292 Start retrieving soft robot in year 1958
+2019-06-14 10:39:14,050  soft robot in year 1958 contains no results
+2019-06-14 10:39:14,050 Start retrieving soft robot in year 1959
+2019-06-14 10:39:15,480  soft robot in year 1959 contains no results
+2019-06-14 10:39:15,481 Start retrieving soft robot in year 1960
+2019-06-14 10:39:16,814  soft robot in year 1960 contains no results
+2019-06-14 10:39:16,815 Start retrieving soft robot in year 1961
+2019-06-14 10:39:18,145  soft robot in year 1961 contains no results
+2019-06-14 10:39:18,145 Start retrieving soft robot in year 1962
+2019-06-14 10:39:19,496  soft robot in year 1962 contains no results
+2019-06-14 10:39:19,496 Start retrieving soft robot in year 1963
+2019-06-14 10:39:20,842  soft robot in year 1963 contains no results
+2019-06-14 10:39:20,842 Start retrieving soft robot in year 1964
+2019-06-14 10:39:22,278  soft robot in year 1964 contains no results
+2019-06-14 10:39:22,279 Start retrieving soft robot in year 1965
+2019-06-14 10:39:23,819  soft robot in year 1965 contains no results
+2019-06-14 10:39:23,820 Start retrieving soft robot in year 1966
+2019-06-14 10:39:25,076  soft robot in year 1966 contains no results
+2019-06-14 10:39:25,077 Start retrieving soft robot in year 1967
+2019-06-14 10:39:26,424  soft robot in year 1967 contains no results
+2019-06-14 10:39:26,425 Start retrieving soft robot in year 1968
+2019-06-14 10:39:27,952  soft robot in year 1968 contains no results
+2019-06-14 10:39:27,952 Start retrieving soft robot in year 1969
+2019-06-14 10:39:29,300  soft robot in year 1969 contains no results
+2019-06-14 10:39:29,300 Start retrieving soft robot in year 1970
+2019-06-14 10:39:30,832  soft robot in year 1970 contains no results
+2019-06-14 10:39:30,833 Start retrieving soft robot in year 1971
+2019-06-14 10:39:32,276  soft robot in year 1971 contains no results
+2019-06-14 10:39:32,277 Start retrieving soft robot in year 1972
+2019-06-14 10:39:35,552 Start retrieving soft robot in year 1973
+2019-06-14 10:39:36,860  soft robot in year 1973 contains no results
+2019-06-14 10:39:36,860 Start retrieving soft robot in year 1974
+2019-06-14 10:39:38,303  soft robot in year 1974 contains no results
+2019-06-14 10:39:38,303 Start retrieving soft robot in year 1975
+2019-06-14 10:39:41,597 Start retrieving soft robot in year 1976
+2019-06-14 10:39:43,029  soft robot in year 1976 contains no results
+2019-06-14 10:39:43,029 Start retrieving soft robot in year 1977
+2019-06-14 10:39:45,863 Start retrieving soft robot in year 1978
+2019-06-14 10:39:48,565 Start retrieving soft robot in year 1979
+2019-06-14 10:39:51,717 Start retrieving soft robot in year 1980
+2019-06-14 10:39:54,771 Start retrieving soft robot in year 1981
+2019-06-14 10:39:57,932 Start retrieving soft robot in year 1982
+2019-06-14 10:40:00,849 Start retrieving soft robot in year 1983
+2019-06-14 10:40:04,134 Start retrieving soft robot in year 1984
+2019-06-14 10:40:07,286 Start retrieving soft robot in year 1985
+2019-06-14 10:40:10,706 Start retrieving soft robot in year 1986
+2019-06-14 10:40:14,066 Start retrieving soft robot in year 1987
+2019-06-14 10:40:17,814 Start retrieving soft robot in year 1988
+2019-06-14 10:40:21,248 Start retrieving soft robot in year 1989
+2019-06-14 10:40:25,118 Start retrieving soft robot in year 1990
+2019-06-14 10:40:28,619 Start retrieving soft robot in year 1991
+2019-06-14 10:48:35,524 Corpus Builder Initialised
+2019-06-14 10:48:35,524 Start
+2019-06-14 10:48:35,525 searching for soft robot
+2019-06-14 10:48:35,525 Start retrieving soft robot in year 1950
+2019-06-14 10:48:36,872  soft robot in year 1950 contains no results
+2019-06-14 10:48:36,872 Start retrieving soft robot in year 1951
+2019-06-14 10:48:38,312  soft robot in year 1951 contains no results
+2019-06-14 10:48:38,312 Start retrieving soft robot in year 1952
+2019-06-14 10:48:39,665  soft robot in year 1952 contains no results
+2019-06-14 10:48:39,665 Start retrieving soft robot in year 1953
+2019-06-14 10:48:41,104  soft robot in year 1953 contains no results
+2019-06-14 10:48:41,104 Start retrieving soft robot in year 1954
+2019-06-14 10:48:42,545  soft robot in year 1954 contains no results
+2019-06-14 10:48:42,545 Start retrieving soft robot in year 1955
+2019-06-14 10:48:43,983  soft robot in year 1955 contains no results
+2019-06-14 10:48:43,983 Start retrieving soft robot in year 1956
+2019-06-14 10:48:45,515  soft robot in year 1956 contains no results
+2019-06-14 10:48:45,516 Start retrieving soft robot in year 1957
+2019-06-14 10:48:46,859  soft robot in year 1957 contains no results
+2019-06-14 10:48:46,859 Start retrieving soft robot in year 1958
+2019-06-14 10:48:48,235  soft robot in year 1958 contains no results
+2019-06-14 10:48:48,236 Start retrieving soft robot in year 1959
+2019-06-14 10:48:49,475  soft robot in year 1959 contains no results
+2019-06-14 10:48:49,476 Start retrieving soft robot in year 1960
+2019-06-14 10:48:50,825  soft robot in year 1960 contains no results
+2019-06-14 10:48:50,826 Start retrieving soft robot in year 1961
+2019-06-14 10:48:52,176  soft robot in year 1961 contains no results
+2019-06-14 10:48:52,177 Start retrieving soft robot in year 1962
+2019-06-14 10:48:53,650  soft robot in year 1962 contains no results
+2019-06-14 10:48:53,651 Start retrieving soft robot in year 1963
+2019-06-14 10:48:54,962  soft robot in year 1963 contains no results
+2019-06-14 10:48:54,963 Start retrieving soft robot in year 1964
+2019-06-14 10:48:56,225  soft robot in year 1964 contains no results
+2019-06-14 10:48:56,225 Start retrieving soft robot in year 1965
+2019-06-14 10:48:57,570  soft robot in year 1965 contains no results
+2019-06-14 10:48:57,570 Start retrieving soft robot in year 1966
+2019-06-14 10:48:59,008  soft robot in year 1966 contains no results
+2019-06-14 10:48:59,008 Start retrieving soft robot in year 1967
+2019-06-14 10:49:00,273  soft robot in year 1967 contains no results
+2019-06-14 10:49:00,273 Start retrieving soft robot in year 1968
+2019-06-14 10:49:01,715  soft robot in year 1968 contains no results
+2019-06-14 10:49:01,715 Start retrieving soft robot in year 1969
+2019-06-14 10:49:03,152  soft robot in year 1969 contains no results
+2019-06-14 10:49:03,153 Start retrieving soft robot in year 1970
+2019-06-14 10:49:04,594  soft robot in year 1970 contains no results
+2019-06-14 10:49:04,594 Start retrieving soft robot in year 1971
+2019-06-14 10:49:06,036  soft robot in year 1971 contains no results
+2019-06-14 10:49:06,036 Start retrieving soft robot in year 1972
+2019-06-14 10:49:09,373 Start retrieving soft robot in year 1973
+2019-06-14 10:49:10,715  soft robot in year 1973 contains no results
+2019-06-14 10:49:10,715 Start retrieving soft robot in year 1974
+2019-06-14 10:49:12,152  soft robot in year 1974 contains no results
+2019-06-14 10:49:12,152 Start retrieving soft robot in year 1975
+2019-06-14 10:49:15,123 Start retrieving soft robot in year 1976
+2019-06-14 10:49:16,566  soft robot in year 1976 contains no results
+2019-06-14 10:49:16,567 Start retrieving soft robot in year 1977
+2019-06-14 10:49:19,717 Start retrieving soft robot in year 1978
+2019-06-14 10:49:22,775 Start retrieving soft robot in year 1979
+2019-06-14 10:49:25,856 Start retrieving soft robot in year 1980
+2019-06-14 10:49:28,806 Start retrieving soft robot in year 1981
+2019-06-14 10:49:31,773 Start retrieving soft robot in year 1982
+2019-06-14 10:49:34,751 Start retrieving soft robot in year 1983
+2019-06-14 10:49:37,627 Start retrieving soft robot in year 1984
+2019-06-14 10:49:40,950 Start retrieving soft robot in year 1985
+2019-06-14 10:49:44,196 Start retrieving soft robot in year 1986
+2019-06-14 10:49:48,625 Start retrieving soft robot in year 1987
+2019-06-14 10:49:52,209 Start retrieving soft robot in year 1988
+2019-06-14 10:49:55,366 Start retrieving soft robot in year 1989
+2019-06-14 10:49:59,403 Start retrieving soft robot in year 1990
+2019-06-14 10:50:03,550 Start retrieving soft robot in year 1991
+2019-06-14 10:50:08,180 Start retrieving soft robot in year 1992
+2019-06-14 10:50:14,075 Start retrieving soft robot in year 1993
+2019-06-14 10:50:20,787 Start retrieving soft robot in year 1994
+2019-06-14 10:50:26,953 Start retrieving soft robot in year 1995
+2019-06-14 10:50:35,702 Start retrieving soft robot in year 1996
+2019-06-14 10:50:48,010 Start retrieving soft robot in year 1997
+2019-06-14 10:51:03,854 Start retrieving soft robot in year 1998
+2019-06-14 10:51:20,508 Start retrieving soft robot in year 1999
+2019-06-14 10:51:41,664 Start retrieving soft robot in year 2000
+2019-06-14 10:52:10,733 Start retrieving soft robot in year 2001
+2019-06-14 10:52:43,688 Start retrieving soft robot in year 2002
+2019-06-14 10:53:23,376 Start retrieving soft robot in year 2003
+2019-06-14 10:54:10,628 Start retrieving soft robot in year 2004
+2019-06-14 10:55:19,758 Start retrieving soft robot in year 2005
+2019-06-14 10:56:40,769 Start retrieving soft robot in year 2006
+2019-06-14 10:58:15,974 Start retrieving soft robot in year 2007
+2019-06-14 11:00:21,729 Start retrieving soft robot in year 2008
+2019-06-14 11:02:52,044 Start retrieving soft robot in year 2009
+2019-06-14 11:05:57,962 Start retrieving soft robot in year 2010
+2019-06-14 11:09:42,640 Start retrieving soft robot in year 2011
+2019-06-14 11:13:44,842 Start retrieving soft robot in year 2012
+2019-06-14 11:18:52,308 Start retrieving soft robot in year 2013
+2019-06-14 11:24:37,543 Start retrieving soft robot in year 2014
+2019-06-14 11:31:13,890 Start retrieving soft robot in year 2015
+2019-06-14 11:38:57,642 Start retrieving soft robot in year 2016
+2019-06-14 11:38:59,821 more than 5000 entries expected for  soft robot in year 2016
+2019-06-14 11:57:58,670 Start retrieving soft robot in year 2017
+2019-06-14 11:58:00,945 more than 5000 entries expected for  soft robot in year 2017
+2019-06-14 12:29:03,814 Start retrieving soft robot in year 2018
+2019-06-14 12:29:08,587 more than 5000 entries expected for  soft robot in year 2018
+2019-06-14 13:15:28,764 Start retrieving soft robot in year 2019
+2019-06-14 13:22:18,885 Start retrieving soft robot in year 2020
+2019-06-14 13:22:24,599 End
+2019-06-14 14:09:23,763 Start
+2019-06-14 14:09:34,149 End
+2019-06-14 14:13:56,835 Start
+2019-06-14 14:14:06,999 End

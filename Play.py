@@ -9,14 +9,12 @@ from collections import Counter
 corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
     "Corpus/Processed_corpus/")
 
-for doc in corp.docs():
-    try:
-        doc["authors"]
-    except KeyError:
-        print(doc)
-        break
+# gen = corp.affiliation_list(categories='soft robot/2019')
+# for i in range(10): print(next(gen))
+#
+# gen = corp.pub_date(categories='soft robot/2019', form='year')
+# for i in range(10): print(next(gen))
 
 
-ter = {"thing": 1}
-ter['tt'] = 2
-ter
+gen = corp.docs(categories='soft robot/2019')
+next(gen)

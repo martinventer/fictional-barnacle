@@ -2,7 +2,7 @@
 from Ingestor import Elsivier_Ingestor
 from CorpusProcessingTools import Elsivier_Corpus_Pre_Processor
 from CorpusReader import Elsevier_Corpus_Reader
-from CorpusProcessingTools import Plotting_Tools
+from CorpusProcessingTools import Plotting_Tools, Author_Networks
 
 
 def download_corpus():
@@ -13,7 +13,7 @@ def download_corpus():
 
     """
     search_terms = ['soft robot']
-    dates = (1986, 1987)
+    dates = (1950, 2021)
 
     builder = Elsivier_Ingestor.ScopusIngestionEngine(
         search_terms=search_terms,
@@ -35,6 +35,7 @@ def preprocess_corpus():
 
 
 def plot_features():
+
     Plotting_Tools.plot_documents_per_pub_date("Corpus/Processed_corpus/")
     # Plotting_Tools.plot_documents_per_pub_type("Corpus/Processed_corpus/")
     # Plotting_Tools.plot_distribution_of_docs_in_publications(
@@ -42,21 +43,21 @@ def plot_features():
 
 
 if __name__ == '__main__':
+    # step 1: download the raw corpus from elsivier
     # download_corpus()
+
+    # step 2: reformat the corpus for faster manipulation
     # preprocess_corpus()
-    # plot_features()
 
-    # create a corpus reader object
-    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
-        "Corpus/Processed_corpus/")
+    # step 3: load the corpus reader
+    # corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
+    #     "Corpus/Processed_corpus/")
 
-    gen = corp.affiliation_list(categories='soft robot/2019')
-    for i in range(10): print(next(gen))
-
-
-    gen = corp.pub_date(categories='soft robot/2019', form='year')
-    for i in range(10): print(next(gen))
+    # step 4: plot author connectivity
+    AN = Author_Networks.AuthorNetworks("Corpus/Processed_corpus/")
+    AN.plot_co_author_network(categories='soft robot/2000')
 
 
-    # gen = corp.docs(categories='soft robot/2019')
-    # next(gen)
+
+
+

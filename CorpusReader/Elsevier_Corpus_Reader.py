@@ -417,7 +417,7 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             except KeyError:
                 yield None
 
-    def author_list(self, fileids=None, categories=None) -> list:
+    def author_data(self, fileids=None, categories=None) -> list:
         """
         generates the dictionary of author_list for the next in the corpus.
         Parameters
@@ -520,13 +520,50 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         --------------
         'D. E. Walker'
         """
-        for authors in self.author_list(fileids, categories):
+        for authors in self.author_data(fileids, categories):
             try:
                 if type(authors) is list:
                     for author in authors:
                         yield author[form]
             except (KeyError, TypeError):
                 yield None
+
+    def author_list(self, fileids=None, categories=None, form='authname') -> \
+            list:
+        """
+        generates the a list of authors for a document next in the corpus.
+        Parameters
+        ----------
+            form : str default 'authname'
+                form of the author name requested options:
+                    'author-url' - author scopus URL
+                    'authid' - scopus author ID
+                    'authname' - full author name and initial
+                    'surname' - author surname only
+                    'given-name' - author given name only
+                    'initials' - initials
+            fileids: basestring or None
+                complete path to specified file
+            categories: basestring or None
+                path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields list of authors on a document
+
+        or
+            []
+
+        Example output
+        --------------
+        ['D. E. Walker', 'Tamatsukuri A.']
+        """
+        for authors in self.author_data(fileids, categories):
+            try:
+                if type(authors) is list:
+                    yield [author[form] for author in authors]
+            except (KeyError, TypeError):
+                yield []
 
     def author_keyword_list(self, fileids=None, categories=None) -> list:
         """

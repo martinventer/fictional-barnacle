@@ -48,7 +48,7 @@ def document_feature_counter(path,
     """
     corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(path)
     feature_map = {'pub_date': corp.pub_date,
-                   'pub_type': corp.pub_type,
+                   # 'pub_type': corp.pub_type,
                    'publication': corp.publication,
                    'author_count': corp.author_count}
     sort_how_map = {'class': 0,
@@ -103,75 +103,75 @@ def plot_documents_per_pub_date(corpus_path,
     """
     data = document_feature_counter(path=corpus_path,
                                     feature='pub_date',
-                                    sort=True,
+                                    sort=False,
                                     how=how,
                                     form=form)
     bar_plot(data)
 
 
-def plot_documents_per_pub_type(corpus_path,):
-    """
-    wrapper for document_feature_counter() and bar_plot() applied to the
-    documents per publication type
-    Parameters
-    ----------
-        corpus_path : object
-            path to the preprocessed corpus
-
-    Returns
-    -------
-        None
-    """
-    data = document_feature_counter(path=corpus_path,
-                                    feature='pub_type',
-                                    sort=True,
-                                    how='count')
-    bar_plot(data)
-
-
-def plot_distribution_of_docs_in_publications(corpus_path):
-    """
-    wrapper for document_feature_counter() and bar_plot() applied to the
-    distribution of papers by journal
-    Parameters
-    ----------
-        corpus_path : object
-            path to the preprocessed corpus
-
-    Returns
-    -------
-        None
-    """
-    data = document_feature_counter(path=corpus_path,
-                                    feature='publication',
-                                    sort=True,
-                                    how='count')
-    bar_plot(Counter(data.values()))
-
-
-def plot_distribution_authors_per_document(corpus_path):
-    """
-    wrapper for document_feature_counter() and bar_plot() applied to the
-    distribution of authors per document
-    Parameters
-    ----------
-        corpus_path : object
-            path to the preprocessed corpus
-
-    Returns
-    -------
-        None
-    """
-    data = document_feature_counter(path=corpus_path,
-                                    feature='author_count',
-                                    sort=True,
-                                    how='count')
-    # return data
-    bar_plot(data)
-
+# def plot_documents_per_pub_type(corpus_path,):
+#     """
+#     wrapper for document_feature_counter() and bar_plot() applied to the
+#     documents per publication type
+#     Parameters
+#     ----------
+#         corpus_path : object
+#             path to the preprocessed corpus
+#
+#     Returns
+#     -------
+#         None
+#     """
+#     data = document_feature_counter(path=corpus_path,
+#                                     feature='pub_type',
+#                                     sort=True,
+#                                     how='count')
+#     bar_plot(data)
+#
+#
+# def plot_distribution_of_docs_in_publications(corpus_path):
+#     """
+#     wrapper for document_feature_counter() and bar_plot() applied to the
+#     distribution of papers by journal
+#     Parameters
+#     ----------
+#         corpus_path : object
+#             path to the preprocessed corpus
+#
+#     Returns
+#     -------
+#         None
+#     """
+#     data = document_feature_counter(path=corpus_path,
+#                                     feature='publication',
+#                                     sort=True,
+#                                     how='count')
+#     bar_plot(Counter(data.values()))
+#
+#
+# def plot_distribution_authors_per_document(corpus_path):
+#     """
+#     wrapper for document_feature_counter() and bar_plot() applied to the
+#     distribution of authors per document
+#     Parameters
+#     ----------
+#         corpus_path : object
+#             path to the preprocessed corpus
+#
+#     Returns
+#     -------
+#         None
+#     """
+#     data = document_feature_counter(path=corpus_path,
+#                                     feature='author_count',
+#                                     sort=True,
+#                                     how='count')
+#     # return data
+#     bar_plot(data)
+#
 
 if __name__ == "__main__":
-    # plot_documents_per_pub_date("Corpus/Processed_corpus/")
-    plot_documents_per_pub_type("Corpus/Processed_corpus/")
+    plot_documents_per_pub_date("Corpus/Processed_corpus/")
+    # plot_documents_per_pub_type(A"Corpus/Processed_corpus/")
     # plot_distribution_of_docs_in_publications("Corpus/Processed_corpus/")
     # test = plot_distribution_authors_per_document("Corpus/Processed_corpus/")

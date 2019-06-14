@@ -15,6 +15,8 @@ import hashlib
 from nltk.corpus.reader.api import CorpusReader
 from nltk.corpus.reader.api import CategorizedCorpusReader
 
+from tqdm import  tqdm
+
 import logging
 
 
@@ -130,7 +132,7 @@ class PickledCorpusPreProcesor(CategorizedCorpusReader, CorpusReader):
         #     term_path = os.path.join(self.target, term)
         #     make_folder(term_path)
 
-        for filename in self.fileids():
+        for filename in tqdm(self.fileids()):
             term, year = filename.rstrip(".pickle").split("/")
             # file_path = "{}_{}".format(term, year)
             file_path = "{}/{}/".format(term, year)
