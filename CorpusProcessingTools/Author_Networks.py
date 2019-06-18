@@ -222,6 +222,7 @@ class AuthorNetworks():
         output_file("interactive_graphs.html")
         show(plot)
 
+
 if __name__ == '__main__':
     AN = AuthorNetworks("Corpus/Processed_corpus/")
     AN.plot_co_author_network(categories='soft robot/2000')
