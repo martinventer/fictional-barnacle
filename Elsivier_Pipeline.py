@@ -29,8 +29,8 @@ def preprocess_corpus():
     root = "Corpus/Raw_corpus/"
     target = "Corpus/Processed_corpus/"
 
-    corpus = Elsivier_Corpus_Pre_Processor.PickledCorpusPreProcesor(root=root,
-                                                                    target=target)
+    corpus = Elsivier_Corpus_Pre_Processor.PickledCorpusRefactor(root=root,
+                                                                 target=target)
     corpus.refactor_corpus()
 
 
@@ -50,12 +50,12 @@ if __name__ == '__main__':
     # preprocess_corpus()
 
     # step 3: load the corpus reader
-    # corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
-    #     "Corpus/Processed_corpus/")
+    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
+        "Corpus/Processed_corpus/")
 
     # step 4: plot author connectivity
-    AN = Author_Networks.AuthorNetworks("Corpus/Processed_corpus/")
-    AN.plot_co_author_network(categories='soft robot/2000')
+    # AN = Author_Networks.AuthorNetworks("Corpus/Processed_corpus/")
+    # AN.plot_co_author_network(categories='soft robot/2000')
 
 
 
