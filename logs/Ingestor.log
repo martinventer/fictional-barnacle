@@ -312,3 +312,26 @@
 2019-06-14 14:09:34,149 End
 2019-06-14 14:13:56,835 Start
 2019-06-14 14:14:06,999 End
+2019-06-18 10:08:10,208 Session output file 'networkx_graph.html' already exists, will be overwritten.
+2019-06-18 10:09:31,012 Session output file 'networkx_graph.html' already exists, will be overwritten.
+2019-06-18 10:12:11,096 Session output file 'networkx_graph.html' already exists, will be overwritten.
+2019-06-18 10:12:49,810 Session output file 'networkx_graph.html' already exists, will be overwritten.
+2019-06-18 10:15:06,374 Session output file 'networkx_graph.html' already exists, will be overwritten.
+2019-06-18 10:15:37,509 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:15:55,161 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:17:28,711 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:17:51,469 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:18:10,862 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:19:27,645 Session output file 'networkx_graph.html' already exists, will be overwritten.
+2019-06-18 10:19:57,232 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:21:34,016 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:21:34,026 E-1001 (BAD_COLUMN_NAME): Glyph refers to nonexistent column name. This could either be due to a misspelling or typo, or due to an expected column being missing. : key "line_color" value "edge_color" [renderer: GlyphRenderer(id='3258', ...)]
+2019-06-18 10:22:07,752 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:22:07,762 E-1001 (BAD_COLUMN_NAME): Glyph refers to nonexistent column name. This could either be due to a misspelling or typo, or due to an expected column being missing. : key "line_color" value "edge_color" [renderer: GlyphRenderer(id='3484', ...)]
+2019-06-18 10:23:43,446 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:23:43,455 E-1001 (BAD_COLUMN_NAME): Glyph refers to nonexistent column name. This could either be due to a misspelling or typo, or due to an expected column being missing. : key "line_color" value "edge_color" [renderer: GlyphRenderer(id='3704', ...)]
+2019-06-18 10:24:33,108 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:24:58,258 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:24:58,271 E-1001 (BAD_COLUMN_NAME): Glyph refers to nonexistent column name. This could either be due to a misspelling or typo, or due to an expected column being missing. : key "line_color" value "edge_color" [renderer: GlyphRenderer(id='4147', ...)]
+2019-06-18 10:25:50,363 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-18 10:25:50,381 E-1001 (BAD_COLUMN_NAME): Glyph refers to nonexistent column name. This could either be due to a misspelling or typo, or due to an expected column being missing. : key "line_color" value "edge_color" [renderer: GlyphRenderer(id='4373', ...)]
