@@ -80,6 +80,7 @@ class AuthorNetworks():
         """
         fig, ax = plt.subplots(1, figsize=(15, 12))
         G = nx.Graph()
+              
         G.add_nodes_from(list(set(self.corpus.author_name(**kwargs))))
         G.add_edges_from(self.build_co_author_network(**kwargs))
 

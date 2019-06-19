@@ -531,3 +531,91 @@
 2019-06-19 09:52:09,588 file Corpus/Processed_corpus/soft robot/2019/ already exists
 2019-06-19 09:52:10,332 file Corpus/Processed_corpus/soft robot/2020/ already exists
 2019-06-19 09:52:10,355 End
+2019-06-19 11:27:41,916 generated new fontManager
+2019-06-19 11:54:51,805 Corpus Builder Initialised
+2019-06-19 11:54:51,806 Start
+2019-06-19 11:54:51,814 searching for soft robot
+2019-06-19 11:54:51,814 Start retrieving soft robot in year 1950
+2019-06-19 11:54:53,953 connection fails with status 401
+2019-06-19 11:54:53,954 	 search term soft robot starting at 0
+2019-06-19 11:55:24,909 Corpus Builder Initialised
+2019-06-19 11:55:24,910 Start
+2019-06-19 11:55:24,910 file Corpus/Raw_corpus already exists
+2019-06-19 11:55:24,915 file Corpus/Raw_corpus\soft robot already exists
+2019-06-19 11:55:24,915 searching for soft robot
+2019-06-19 11:55:24,915 Start retrieving soft robot in year 1950
+2019-06-19 11:55:26,368 connection fails with status 401
+2019-06-19 11:55:26,368 	 search term soft robot starting at 0
+2019-06-19 11:58:58,238 Corpus Builder Initialised
+2019-06-19 11:58:58,239 Start
+2019-06-19 11:58:58,239 file Corpus/Raw_corpus already exists
+2019-06-19 11:58:58,242 file Corpus/Raw_corpus\soft robot already exists
+2019-06-19 11:58:58,242 searching for soft robot
+2019-06-19 11:58:58,242 Start retrieving soft robot in year 1950
+2019-06-19 11:58:59,874 connection fails with status 401
+2019-06-19 11:58:59,874 	 search term soft robot starting at 0
+2019-06-19 11:59:10,450 Corpus Builder Initialised
+2019-06-19 11:59:10,451 Start
+2019-06-19 11:59:10,451 file Corpus/Raw_corpus already exists
+2019-06-19 11:59:10,457 file Corpus/Raw_corpus\soft robot already exists
+2019-06-19 11:59:10,457 searching for soft robot
+2019-06-19 11:59:10,457 Start retrieving soft robot in year 1950
+2019-06-19 11:59:12,060 connection fails with status 401
+2019-06-19 11:59:12,060 	 search term soft robot starting at 0
+2019-06-19 12:00:53,479 Corpus Builder Initialised
+2019-06-19 12:00:53,479 Start
+2019-06-19 12:00:53,480 file Corpus/Raw_corpus already exists
+2019-06-19 12:00:53,487 file Corpus/Raw_corpus\soft robot already exists
+2019-06-19 12:00:53,488 searching for soft robot
+2019-06-19 12:00:53,488 Start retrieving soft robot in year 1950
+2019-06-19 12:00:54,983 connection fails with status 401
+2019-06-19 12:00:54,983 	 search term soft robot starting at 0
+2019-06-19 14:33:34,970 Corpus Builder Initialised
+2019-06-19 14:33:34,970 Start
+2019-06-19 14:33:34,971 file Corpus/Raw_corpus already exists
+2019-06-19 14:33:34,972 file Corpus/Raw_corpus\soft robot already exists
+2019-06-19 14:33:34,972 searching for soft robot
+2019-06-19 14:33:34,972 Start retrieving soft robot in year 1950
+2019-06-19 14:33:36,580 connection fails with status 401
+2019-06-19 14:33:36,580 	 search term soft robot starting at 0
+2019-06-19 14:34:23,768 Corpus Builder Initialised
+2019-06-19 14:34:23,768 Start
+2019-06-19 14:34:23,768 file Corpus/Raw_corpus already exists
+2019-06-19 14:34:23,770 file Corpus/Raw_corpus\soft robot already exists
+2019-06-19 14:34:23,770 searching for soft robot
+2019-06-19 14:34:23,770 Start retrieving soft robot in year 1950
+2019-06-19 14:34:24,967 connection fails with status 401
+2019-06-19 14:34:24,968 	 search term soft robot starting at 0
+2019-06-19 14:34:37,727 Corpus Builder Initialised
+2019-06-19 14:34:37,727 Start
+2019-06-19 14:34:37,728 file Corpus/Raw_corpus already exists
+2019-06-19 14:34:37,729 file Corpus/Raw_corpus\soft robot already exists
+2019-06-19 14:34:37,729 searching for soft robot
+2019-06-19 14:34:37,729 Start retrieving soft robot in year 2016
+2019-06-19 14:34:39,911 more than 5000 entries expected for  soft robot in year 2016
+2019-06-19 14:37:02,010 Corpus Builder Initialised
+2019-06-19 14:37:02,010 Start
+2019-06-19 14:37:02,010 file Corpus/Raw_corpus already exists
+2019-06-19 14:37:02,012 searching for morphing
+2019-06-19 14:37:02,013 Start retrieving morphing in year 2017
+2019-06-19 14:37:34,651 Corpus Builder Initialised
+2019-06-19 14:37:34,651 Start
+2019-06-19 14:37:34,652 file Corpus/Raw_corpus already exists
+2019-06-19 14:37:34,667 searching for morphing wing
+2019-06-19 14:37:34,668 Start retrieving morphing wing in year 2017
+2019-06-19 14:38:22,818 End
+2019-06-19 14:41:29,924 Start
+2019-06-19 14:41:30,577 End
+2019-06-19 14:55:44,870 Corpus Builder Initialised
+2019-06-19 14:55:44,871 Start
+2019-06-19 14:55:44,871 file Corpus/Raw_corpus already exists
+2019-06-19 14:55:44,873 file Corpus/Raw_corpus\morphing wing already exists
+2019-06-19 14:55:44,873 searching for morphing wing
+2019-06-19 14:55:44,873 Start retrieving morphing wing in year 2016
+2019-06-19 14:56:25,948 Start retrieving morphing wing in year 2017
+2019-06-19 14:57:13,312 Start retrieving morphing wing in year 2018
+2019-06-19 14:58:12,140 End
+2019-06-19 14:58:39,052 Start
+2019-06-19 14:58:39,053 file Corpus/Processed_corpus already exists
+2019-06-19 14:58:39,572 file Corpus/Processed_corpus\morphing wing/2017/ already exists
+2019-06-19 14:58:40,844 End

@@ -12,14 +12,14 @@ def download_corpus():
     -------
 
     """
-    search_terms = ['soft robot']
-    dates = (1950, 2021)
+    search_terms = ['morphing wing']
+    dates = (2016, 2019)
 
     builder = Elsivier_Ingestor.ScopusIngestionEngine(
         search_terms=search_terms,
         file_path="Corpus/Raw_corpus/",
         dates=dates,
-        home=False,
+        home=True,
         batch_size=25)
 
     builder.build_corpus()
@@ -44,7 +44,7 @@ def process_corpus():
 
 def plot_features():
     AN = Author_Networks.AuthorNetworks("Corpus/Processed_corpus/")
-    AN.plot_co_author_network(categories='soft robot/2000')
+    AN.plot_co_author_network(categories='morphing wing/2017')
 
 
 if __name__ == '__main__':
