@@ -15,7 +15,10 @@ import hashlib
 from nltk.corpus.reader.api import CorpusReader
 from nltk.corpus.reader.api import CategorizedCorpusReader
 
-from tqdm import  tqdm
+from tqdm import tqdm
+
+from multiprocessing import Pool
+import time
 
 import logging
 
@@ -158,14 +161,23 @@ class PickledCorpusRefactor(CategorizedCorpusReader, CorpusReader):
 
 class PickledCorpusPreProcessor(object):
     """
-    wrapper for the corpus reader that an read the corpus and creates some
-    processed additional things
+    A wrapper for a corpus object that reads the object the raw imported data
+    and reformat sections to have a more suitable for text processing.
 
-    read the abstract or title and convert to a list of words in a list of
-    paragraphs and such
+    To Do
+    * Format the titles as list of lists
+        * [paragraph[sent[words]]]
+    Methods
+    * Raw()
+    * Paras()
+    * Sents()
+    * Words()
+    * Part_of_speach()
+    * Describe()
+
     """
 
-    def __init__(self, corpus, target=None, **kwargs):
+    def __init__(self, corpus, target=None):
         """
         The corpus is the `HTMLCorpusReader` to preprocess and pickle.
         The target is the directory on disk to output the pickled corpus to.
@@ -173,70 +185,73 @@ class PickledCorpusPreProcessor(object):
         self.corpus = corpus
         self.target = target
 
-    def tokenize(self, fileid):
+    def fileids(self, fileids=None, categories=None):
         """
-        Segments, tokenizes, and tags a document in the corpus. Returns a
-        generator of paragraphs, which are lists of sentences, which in turn
-        are lists of part of speech tagged words.
+        Helper function access the fileids of the corpus
         """
-        for paragraph in self.corpus.paras(fileids=fileid):
-            yield [
+        fileids = self.corpus.resolve(fileids, categories)
+        if fileids:
+            return fileids
+        return self.corpus.fileids()
+
+    def tokenize(self, document):
+        """
+        Segments, tokenizes, and tags a document title in the corpus. Returns a
+        title, which is a list of sentences, which in turn is a lists of part
+        of speech tagged words.
+        """
+        try:
+            return [
                 pos_tag(wordpunct_tokenize(sent))
-                for sent in sent_tokenize(paragraph)
+                for sent in sent_tokenize(document['dc:title'])
             ]
+        except KeyError:
+            pass
 
     def process(self, fileid):
         """
         For a single file does the following preprocessing work:
-            1. Checks the location on disk to make sure no errors occur.
-            2. Gets all paragraphs for the given text.
-            3. Segements the paragraphs with the sent_tokenizer
-            4. Tokenizes the sentences with the wordpunct_tokenizer
-            5. Tags the sentences using the default pos_tagger
-            6. Writes the document as a pickle to the target location.
+            1. Get the location of the document
+            2. Generate a structured text list,
+            3. Append the new structured text to the existing document
+            4. Writes the document as a pickle to the target location.
+            5. Clean up the document
+            6. Return the target file name
         This method is called multiple times from the transform runner.
         """
-        # Compute the outpath to write the file to.
-        target = self.abspath(fileid)
-        parent = os.path.dirname(target)
+        # 1. Get the location of the document
+        target = self.corpus.abspath(fileid)
 
-        # Make sure the directory exists
-        if not os.path.exists(parent):
-            os.makedirs(parent)
+        # 2 & 3. Generate and append structured form of text to document
+        document = self.corpus.read_single(fileid)
+        document["struct:title"] = self.tokenize(document)
 
-        # Make sure that the parent is a directory and not a file
-        if not os.path.isdir(parent):
-            raise ValueError(
-                "Please supply a directory to write preprocessed data to."
-            )
-
-        # Create a data structure for the pickle
-        document = list(self.tokenize(fileid))
-
-        # Open and serialize the pickle to disk
+        # 4. Writes the document as a pickle to the target location.
         with open(target, 'wb') as f:
             pickle.dump(document, f, pickle.HIGHEST_PROTOCOL)
 
-        # Clean up the document
+        # 5. Clean up the document
         del document
 
-        # Return the target fileid
-        return target
+        # 6. Return the target file name
+        # return target
 
     def transform(self, fileids=None, categories=None):
         """
-        Transform the wrapped corpus, writing out the segmented, tokenized,
-        and part of speech tagged corpus as a pickle to the target directory.
-        This method will also directly copy files that are in the corpus.root
-        directory that are not matched by the corpus.fileids().
-        """
-        # Make the target directory if it doesn't already exist
-        if not os.path.exists(self.target):
-            os.makedirs(self.target)
+        Take an existing corpus and transform it such that it contains more
+        suitably formatted data.
 
-        # Resolve the fileids to start processing and return the list of
-        # target file ids to pass to downstream transformers.
-        return [
-            self.process(fileid)
-            for fileid in self.fileids(fileids, categories)
-        ]
+        process each file in the corpus
+        Parameters
+        ----------
+        fileids
+        categories
+
+        Returns
+        -------
+
+        """
+        for filename in tqdm(self.fileids(fileids, categories),
+                         desc="transforming pickled corpus"):
+        # for filename in self.corpus.fileids(categories=categories):
+            self.process(filename)

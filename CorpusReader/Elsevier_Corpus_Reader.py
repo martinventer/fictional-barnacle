@@ -768,6 +768,5 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             a dictionary object containing a the meta-data for a single article
         """
         root = self.root if (root is None) else root
-        print(root)
         with open(os.path.join(root, fileid), 'rb') as f:
             return pickle.load(f)

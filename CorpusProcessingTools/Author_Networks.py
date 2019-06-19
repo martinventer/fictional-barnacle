@@ -24,6 +24,8 @@ from bokeh.models import Plot, Range1d, MultiLine, Circle, HoverTool, \
 from bokeh.models.graphs import from_networkx
 from bokeh.palettes import Spectral4, Viridis256 , Category20
 
+from tqdm import tqdm
+
 
 class AuthorNetworks():
     """
@@ -55,7 +57,9 @@ class AuthorNetworks():
         """
 
         collaborations = []
-        for article in self.corpus.author_list(**kwargs):
+        for article in tqdm(self.corpus.author_list(**kwargs),
+                            ascii=True,
+                            desc="building co-author network"):
             collaborations += list(combinations(article, 2))
 
         return collaborations
@@ -191,7 +195,7 @@ class AuthorNetworks():
         nx.set_edge_attributes(G, edge_attrs, "edge_color")
 
         # Show with Bokeh
-        range_scale = 2500
+        range_scale = 25000
         plot = Plot(plot_width=800, plot_height=800,
                     x_range=Range1d(-(range_scale * 0.1), (range_scale * 1.1)),
                     y_range=Range1d(-(range_scale * 0.1), (range_scale * 1.1)))
@@ -225,6 +229,8 @@ class AuthorNetworks():
 
 if __name__ == '__main__':
     AN = AuthorNetworks("Corpus/Processed_corpus/")
-    AN.plot_co_author_network(categories='soft robot/2000')
+    # AN.plot_co_author_network(categories='soft robot/2000')
+    # AN.plot_co_author_network()
     # AN.co_author_network_bokeh_better(categories='soft robot/2001')
+    AN.co_author_network_bokeh_better()
 

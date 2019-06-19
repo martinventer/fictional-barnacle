@@ -25,13 +25,21 @@ def download_corpus():
     builder.build_corpus()
 
 
-def preprocess_corpus():
+def reformat_corpus():
     root = "Corpus/Raw_corpus/"
     target = "Corpus/Processed_corpus/"
 
     corpus = Elsivier_Corpus_Pre_Processor.PickledCorpusRefactor(root=root,
                                                                  target=target)
     corpus.refactor_corpus()
+
+def process_corpus():
+    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
+            "Corpus/Processed_corpus/")
+
+    formatter = Elsivier_Corpus_Pre_Processor.PickledCorpusPreProcessor(corp)
+
+    formatter.transform()
 
 
 def plot_features():
@@ -47,17 +55,16 @@ if __name__ == '__main__':
     # download_corpus()
 
     # step 2: reformat the corpus for faster manipulation
-    # preprocess_corpus()
+    # reformat_corpus()
 
-    # step 3: load the corpus reader
+    # step 3: reformat the corpus for faster manipulation
+    # process_corpus()
+
+    # step 4: load the corpus reader
     corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
         "Corpus/Processed_corpus/")
 
-    # step 4: plot author connectivity
+    # step 5: plot author connectivity
     # AN = Author_Networks.AuthorNetworks("Corpus/Processed_corpus/")
     # AN.plot_co_author_network(categories='soft robot/2000')
-
-
-
-
 
