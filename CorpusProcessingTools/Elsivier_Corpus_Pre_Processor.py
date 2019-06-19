@@ -139,7 +139,8 @@ class PickledCorpusRefactor(CategorizedCorpusReader, CorpusReader):
         #     term_path = os.path.join(self.target, term)
         #     make_folder(term_path)
 
-        for filename in tqdm(self.fileids()):
+        for filename in tqdm(self.fileids(),
+                             desc='refactor corpus'):
             term, year = filename.rstrip(".pickle").split("/")
             # file_path = "{}_{}".format(term, year)
             file_path = "{}/{}/".format(term, year)
@@ -251,7 +252,20 @@ class PickledCorpusPreProcessor(object):
         -------
 
         """
+
+        start = time.time()
+        # serial file processing
         for filename in tqdm(self.fileids(fileids, categories),
                          desc="transforming pickled corpus"):
-        # for filename in self.corpus.fileids(categories=categories):
             self.process(filename)
+
+        # parallel file processing
+        # with Pool(6) as p:
+        #     tqdm(p.imap(self.process, self.fileids(fileids, categories)),
+        #          desc="preprocess corpus parallel")
+
+        end = time.time()
+
+        print("Time to simulate {}seconds".format(end - start))
+
+
