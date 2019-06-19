@@ -132,6 +132,7 @@ class PickledCorpusRefactor(CategorizedCorpusReader, CorpusReader):
             builds a pickled database of the data returned.
         """
         logging.info('Start')
+        start = time.time()
 
         make_folder(self.target)
 
@@ -158,24 +159,14 @@ class PickledCorpusRefactor(CategorizedCorpusReader, CorpusReader):
                         pickle.dump(paper, f, pickle.HIGHEST_PROTOCOL)
 
         logging.info('End')
+        end = time.time()
+        print("Time to reformat corpus {}seconds".format(end - start))
 
 
 class PickledCorpusPreProcessor(object):
     """
     A wrapper for a corpus object that reads the object the raw imported data
     and reformat sections to have a more suitable for text processing.
-
-    To Do
-    * Format the titles as list of lists
-        * [paragraph[sent[words]]]
-    Methods
-    * Raw()
-    * Paras()
-    * Sents()
-    * Words()
-    * Part_of_speach()
-    * Describe()
-
     """
 
     def __init__(self, corpus, target=None):
@@ -211,7 +202,7 @@ class PickledCorpusPreProcessor(object):
 
     def process(self, fileid):
         """
-        For a single file does the following preprocessing work:
+                For a single file does the following preprocessing work:
             1. Get the location of the document
             2. Generate a structured text list,
             3. Append the new structured text to the existing document
@@ -219,6 +210,15 @@ class PickledCorpusPreProcessor(object):
             5. Clean up the document
             6. Return the target file name
         This method is called multiple times from the transform runner.
+        Parameters
+        ----------
+        fileid : str
+            the file id to be processed
+
+        Returns
+        -------
+            None
+
         """
         # 1. Get the location of the document
         target = self.corpus.abspath(fileid)
@@ -245,14 +245,16 @@ class PickledCorpusPreProcessor(object):
         process each file in the corpus
         Parameters
         ----------
-        fileids
-        categories
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
 
         Returns
         -------
+            None
 
         """
-
         start = time.time()
         # serial file processing
         for filename in tqdm(self.fileids(fileids, categories),
@@ -265,7 +267,6 @@ class PickledCorpusPreProcessor(object):
         #          desc="preprocess corpus parallel")
 
         end = time.time()
-
-        print("Time to simulate {}seconds".format(end - start))
+        print("Time to pre process {}seconds".format(end - start))
 
 

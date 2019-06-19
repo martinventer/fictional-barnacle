@@ -223,6 +223,34 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             except KeyError:
                 yield ''
 
+    def title_tokenised_words(self, fileids=None, categories=None) -> str:
+        """
+        generates the next tokenized title word in the corpus
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a string containing the next title word
+        or
+            ''
+
+        Example output
+        --------------
+        ('quality', 'NN')
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                for sent in doc["struct:title"]:
+                    for word in sent:
+                        yield word
+            except KeyError:
+                yield ''
+
     def abstracts(self, fileids=None, categories=None) -> str:
         """
         generates the abstracts of the next document in the corpus

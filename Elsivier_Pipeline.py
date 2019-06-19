@@ -61,8 +61,8 @@ if __name__ == '__main__':
     process_corpus()
 
     # step 4: load the corpus reader
-    # corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
-    #     "Corpus/Processed_corpus/")
+    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
+        "Corpus/Processed_corpus/")
 
     # step 5: plot author connectivity
     # AN = Author_Networks.AuthorNetworks("Corpus/Processed_corpus/")
