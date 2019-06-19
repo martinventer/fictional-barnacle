@@ -52,7 +52,7 @@ https://dev.elsevier.com/guides/ScienceDirectSearchViews.htm
 
 ### Included in Corpus Reader
 * docs() - full content of document
-* titles() - 'dc:title'
+* title_raw() - 'dc:title'
 * title_words() - words in tokenized words in title
 * doc_ids() - 'dc:identifier'
 * publication() - 'prism:publicationName'

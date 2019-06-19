@@ -170,7 +170,7 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             with open(path, 'rb') as f:
                 yield pickle.load(f)
 
-    def titles(self, fileids=None, categories=None) -> str:
+    def title_raw(self, fileids=None, categories=None) -> str:
         """
         generates the title of the next document in the corpus
         Parameters
@@ -196,9 +196,9 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             except KeyError:
                 yield ''
 
-    def title_words(self, fileids=None, categories=None) -> str:
+    def title_sents(self, fileids=None, categories=None) -> list:
         """
-        generates the next title word in the corpus
+        Gets the next title sentence
         Parameters
         ----------
         fileids: basestring or None
@@ -208,46 +208,72 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
 
         Returns
         -------
-            yields a string containing the next title word
+            yields a taggeed list fo tupples
         or
-            ''
+            []
 
         Example output
         --------------
-        'Knowledge'
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                for word in wordpunct_tokenize(doc['dc:title']):
-                    yield word
-            except KeyError:
-                yield ''
-
-    def title_tokenised_words(self, fileids=None, categories=None) -> str:
-        """
-        generates the next tokenized title word in the corpus
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a string containing the next title word
-        or
-            ''
-
-        Example output
-        --------------
-        ('quality', 'NN')
+        [('Robots', 'NNS'),(',', ','),('productivity', 'NN'),('and', 'CC'),
+        ('quality', 'NN')]
         """
         for doc in self.docs(fileids, categories):
             try:
                 for sent in doc["struct:title"]:
-                    for word in sent:
-                        yield word
+                    yield sent
+            except KeyError:
+                yield []
+
+    def title_tagged(self, fileids=None, categories=None) -> (str, str):
+        """
+        yields the next tagged word in the title
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the next tagged word in the title
+        or
+            ('','')
+
+        Example output
+        --------------
+        ('Robots', 'NNS')
+        """
+        for sent in self.title_sents(fileids, categories):
+            try:
+                for tagged_token in sent:
+                    yield tagged_token
+            except KeyError:
+                yield ('', '')
+
+    def title_words(self, fileids=None, categories=None) -> str:
+        """
+        yields the next word in the title
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the next word in the title
+        or
+            ''
+
+        Example output
+        --------------
+        ('Robots', 'NNS')
+        """
+        for tagged in self.title_tagged(fileids, categories):
+            try:
+                yield tagged[0]
             except KeyError:
                 yield ''
 
@@ -778,7 +804,6 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
                 yield doc['affiliation']
             except KeyError:
                 yield []
-
 
     def read_single(self, fileid=None, root=None):
         """
