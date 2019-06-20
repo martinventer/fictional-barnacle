@@ -12,14 +12,14 @@ def download_corpus():
     -------
 
     """
-    search_terms = ['morphing wing']
-    dates = (2016, 2019)
+    search_terms = ['morphing']
+    dates = (1900, 2020)
 
     builder = Elsivier_Ingestor.ScopusIngestionEngine(
         search_terms=search_terms,
         file_path="Corpus/Raw_corpus/",
         dates=dates,
-        home=True,
+        home=False,
         batch_size=25)
 
     builder.build_corpus()
