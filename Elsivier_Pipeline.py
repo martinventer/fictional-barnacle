@@ -34,7 +34,7 @@ def reformat_corpus():
     corpus.refactor_corpus()
 
 def process_corpus():
-    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
+    corp = Elsevier_Corpus_Reader.ScopusRawCorpusReader(
             "Corpus/Processed_corpus/")
 
     formatter = Elsivier_Corpus_Pre_Processor.PickledCorpusPreProcessor(corp)
@@ -44,7 +44,10 @@ def process_corpus():
 
 def plot_features():
     AN = Author_Networks.AuthorNetworks("Corpus/Processed_corpus/")
-    AN.plot_co_author_network(categories='soft robot/2000')
+    # AN.plot_co_author_network(categories='soft robot/2000')
+    AN.co_author_network_bokeh_better(categories=['soft robot/2000',
+                                                  'soft robot/2001',
+                                                  'soft robot/2002'])
 
 
 if __name__ == '__main__':
@@ -58,7 +61,7 @@ if __name__ == '__main__':
     # process_corpus()
 
     # step 4: load the corpus reader
-    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(
+    corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         "Corpus/Processed_corpus/")
 
     # step 5: plot author connectivity

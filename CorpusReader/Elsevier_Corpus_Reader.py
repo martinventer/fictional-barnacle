@@ -33,7 +33,7 @@ PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
 CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
 
 
-class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
+class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
 
     def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
         """
@@ -196,87 +196,6 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             except KeyError:
                 yield ''
 
-    def title_sents(self, fileids=None, categories=None) -> list:
-        """
-        Gets the next title sentence
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a taggeed list fo tupples
-        or
-            []
-
-        Example output
-        --------------
-        [('Robots', 'NNS'),(',', ','),('productivity', 'NN'),('and', 'CC'),
-        ('quality', 'NN')]
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                for sent in doc["struct:title"]:
-                    yield sent
-            except KeyError:
-                yield []
-
-    def title_tagged(self, fileids=None, categories=None) -> (str, str):
-        """
-        yields the next tagged word in the title
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields the next tagged word in the title
-        or
-            ('','')
-
-        Example output
-        --------------
-        ('Robots', 'NNS')
-        """
-        for sent in self.title_sents(fileids, categories):
-            try:
-                for tagged_token in sent:
-                    yield tagged_token
-            except KeyError:
-                yield ('', '')
-
-    def title_words(self, fileids=None, categories=None) -> str:
-        """
-        yields the next word in the title
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields the next word in the title
-        or
-            ''
-
-        Example output
-        --------------
-        ('Robots', 'NNS')
-        """
-        for tagged in self.title_tagged(fileids, categories):
-            try:
-                yield tagged[0]
-            except KeyError:
-                yield ''
-
     def abstracts(self, fileids=None, categories=None) -> str:
         """
         generates the abstracts of the next document in the corpus
@@ -300,69 +219,6 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         for doc in self.docs(fileids, categories):
             try:
                 yield doc['dc:description']
-            except KeyError:
-                yield ''
-
-    def abstract_paras(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract paragraphs
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for abstract in self.abstracts(fileids, categories):
-            try:
-                for paragraph in abstract.split("\n"):
-                    yield paragraph
-            except KeyError:
-                yield ''
-
-    def abstract_sents(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract sents
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for paragraph in self.abstract_paras(fileids, categories):
-            try:
-                for sent in paragraph.split(". "):
-                    yield sent
-            except KeyError:
-                yield ''
-
-    def abstract_words(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract words
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for sent in self.abstract_sents(fileids, categories):
-            try:
-                for word in wordpunct_tokenize(sent):
-                    yield word
             except KeyError:
                 yield ''
 
@@ -823,3 +679,166 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         root = self.root if (root is None) else root
         with open(os.path.join(root, fileid), 'rb') as f:
             return pickle.load(f)
+
+
+class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
+
+    def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
+        """
+        Initialise the pickled corpus reader using two corpus readers from
+        the nltk library
+        Parameters
+        ----------
+        root : str like
+            the root directory for the corpus
+        fileids : str like
+            a regex pattern for the corpus document files
+        kwargs :
+            Additional arguements passed to the nltk corpus readers
+        """
+        ScopusRawCorpusReader.__init__(self, root, fileids, **kwargs)
+
+    def title_sents(self, fileids=None, categories=None) -> list:
+        """
+        Gets the next title sentence
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a taggeed list fo tupples
+        or
+            []
+
+        Example output
+        --------------
+        [('Robots', 'NNS'),(',', ','),('productivity', 'NN'),('and', 'CC'),
+        ('quality', 'NN')]
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                for sent in doc["struct:title"]:
+                    yield sent
+            except KeyError:
+                yield []
+
+    def title_tagged(self, fileids=None, categories=None) -> (str, str):
+        """
+        yields the next tagged word in the title
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the next tagged word in the title
+        or
+            ('','')
+
+        Example output
+        --------------
+        ('Robots', 'NNS')
+        """
+        for sent in self.title_sents(fileids, categories):
+            try:
+                for tagged_token in sent:
+                    yield tagged_token
+            except KeyError:
+                yield ('', '')
+
+    def title_words(self, fileids=None, categories=None) -> str:
+        """
+        yields the next word in the title
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the next word in the title
+        or
+            ''
+
+        Example output
+        --------------
+        ('Robots', 'NNS')
+        """
+        for tagged in self.title_tagged(fileids, categories):
+            try:
+                yield tagged[0]
+            except KeyError:
+                yield ''
+
+    def abstract_paras(self, fileids=None, categories=None) -> str:
+        """
+        a generator for abstract paragraphs
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            basestring
+        """
+        for abstract in self.abstracts(fileids, categories):
+            try:
+                for paragraph in abstract.split("\n"):
+                    yield paragraph
+            except KeyError:
+                yield ''
+
+    def abstract_sents(self, fileids=None, categories=None) -> str:
+        """
+        a generator for abstract sents
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            basestring
+        """
+        for paragraph in self.abstract_paras(fileids, categories):
+            try:
+                for sent in paragraph.split(". "):
+                    yield sent
+            except KeyError:
+                yield ''
+
+    def abstract_words(self, fileids=None, categories=None) -> str:
+        """
+        a generator for abstract words
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            basestring
+        """
+        for sent in self.abstract_sents(fileids, categories):
+            try:
+                for word in wordpunct_tokenize(sent):
+                    yield word
+            except KeyError:
+                yield ""
+
