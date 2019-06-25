@@ -771,7 +771,7 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
 
         Example output
         --------------
-        ('Robots', 'NNS')
+        'Robots'
         """
         for tagged in self.title_tagged(fileids, categories):
             try:
@@ -779,66 +779,66 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
             except KeyError:
                 yield ''
 
-    def abstract_paras(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract paragraphs
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for abstract in self.abstracts(fileids, categories):
-            try:
-                for paragraph in abstract.split("\n"):
-                    yield paragraph
-            except KeyError:
-                yield ''
-
-    def abstract_sents(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract sents
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for paragraph in self.abstract_paras(fileids, categories):
-            try:
-                for sent in paragraph.split(". "):
-                    yield sent
-            except KeyError:
-                yield ''
-
-    def abstract_words(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract words
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for sent in self.abstract_sents(fileids, categories):
-            try:
-                for word in wordpunct_tokenize(sent):
-                    yield word
-            except KeyError:
-                yield ""
+    # def abstract_paras(self, fileids=None, categories=None) -> str:
+    #     """
+    #     a generator for abstract paragraphs
+    #     Parameters
+    #     ----------
+    #     fileids: basestring or None
+    #         complete path to specified file
+    #     categories: basestring or None
+    #         path to directory containing a subset of the fileids
+    #
+    #     Returns
+    #     -------
+    #         basestring
+    #     """
+    #     for abstract in self.abstracts(fileids, categories):
+    #         try:
+    #             for paragraph in abstract.split("\n"):
+    #                 yield paragraph
+    #         except KeyError:
+    #             yield ''
+    #
+    # def abstract_sents(self, fileids=None, categories=None) -> str:
+    #     """
+    #     a generator for abstract sents
+    #     Parameters
+    #     ----------
+    #     fileids: basestring or None
+    #         complete path to specified file
+    #     categories: basestring or None
+    #         path to directory containing a subset of the fileids
+    #
+    #     Returns
+    #     -------
+    #         basestring
+    #     """
+    #     for paragraph in self.abstract_paras(fileids, categories):
+    #         try:
+    #             for sent in paragraph.split(". "):
+    #                 yield sent
+    #         except KeyError:
+    #             yield ''
+    #
+    # def abstract_words(self, fileids=None, categories=None) -> str:
+    #     """
+    #     a generator for abstract words
+    #     Parameters
+    #     ----------
+    #     fileids: basestring or None
+    #         complete path to specified file
+    #     categories: basestring or None
+    #         path to directory containing a subset of the fileids
+    #
+    #     Returns
+    #     -------
+    #         basestring
+    #     """
+    #     for sent in self.abstract_sents(fileids, categories):
+    #         try:
+    #             for word in wordpunct_tokenize(sent):
+    #                 yield word
+    #         except KeyError:
+    #             yield ""
 
