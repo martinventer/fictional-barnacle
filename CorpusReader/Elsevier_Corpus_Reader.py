@@ -19,9 +19,12 @@ from datetime import datetime
 
 import logging
 
-logging.basicConfig(filename='logs/reader.log',
-                    format='%(asctime)s %(message)s',
-                    level=logging.INFO)
+try:
+    logging.basicConfig(filename='logs/reader.log',
+                        format='%(asctime)s %(message)s',
+                        level=logging.INFO)
+except:
+    pass
 
 
 # PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
