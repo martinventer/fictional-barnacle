@@ -60,7 +60,6 @@ class CorpusTFIDVector(TfidfVectorizer):
 
 
 class TextNormalizer(BaseEstimator, TransformerMixin):
-
     def __init__(self, language='english'):
         self.stopwords = set(nltk.corpus.stopwords.words(language))
         self.lemmatizer = WordNetLemmatizer()
@@ -111,8 +110,11 @@ if __name__ == '__main__':
 
     # vectorizor = CorpusFrequencyVector()
     # vectorizor = CorpusOneHotVector()
-    vectorizor = CorpusTFIDVector()
-    vec = vectorizor.fit_transform(corpus)
+    # vectorizor = CorpusTFIDVector()
+    # vec = vectorizor.fit_transform(corpus)
+
+    normalizer = TextNormalizer()
+    norm = normalizer.is_punct(tokenize(corpus[0]))
 
 
 
