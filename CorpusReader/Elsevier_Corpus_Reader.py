@@ -14,8 +14,10 @@ import os
 from nltk.corpus.reader.api import CorpusReader
 from nltk.corpus.reader.api import CategorizedCorpusReader
 from nltk import wordpunct_tokenize
+import nltk
 
 from datetime import datetime
+import time
 
 import logging
 
@@ -781,6 +783,39 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
                 yield tagged[0]
             except KeyError:
                 yield ''
+
+    def describe(self, fileids=None, categories=None) -> dict:
+
+        started = time.time()
+
+        # Structures to perform counting.
+        counts = nltk.FreqDist()
+        tokens = nltk.FreqDist()
+
+        # Perform single pass over paragraphs, tokenize and count
+        for title in self.title_raw(fileids, categories):
+            counts['titles'] += 1
+
+            for word in wordpunct_tokenize(title):
+                counts['words'] += 1
+                tokens[word] += 1
+
+        # Compute the number of files and categories in the corpus
+        n_fileids = len(self.resolve(fileids, categories) or self.fileids())
+        n_topics  = len(self.categories(self.resolve(fileids, categories)))
+
+        # Return data structure with information
+        return {
+            'files':  n_fileids,
+            'topics': n_topics,
+            'titles':  counts['titles'],
+            'words':  counts['words'],
+            'vocab':  len(tokens),
+            'lexdiv': float(counts['words']) / float(len(tokens)),
+            'tpdoc':  float(counts['titles']) / float(n_fileids),
+            'wptit':  float(counts['words']) / float(counts['titles']),
+            'secs':   time.time() - started,
+        }
 
     # def abstract_paras(self, fileids=None, categories=None) -> str:
     #     """
