@@ -10,10 +10,14 @@ Tools for vectorizing text data
 
 import nltk
 import string
-import numpy as np
+import unicodedata
 
+from nltk.corpus import wordnet as wn
+from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer, \
     HashingVectorizer, TfidfVectorizer
+
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
 def tokenize(text) -> list:
@@ -37,34 +41,63 @@ def tokenize(text) -> list:
         yield stem.stem(token)
 
 
-def frequency_vector(text, large_file=False, binary=False, tfid=False) -> \
-        bytearray:
-    """
-    a simple word frequency vectorisor for text
-    Parameters
-    ----------
-    tfid
-    binary : bool
-        flag for one_hot encoding
-    text :
-        a list of text to be vectorised
-    large_file : bool
-        a flag to switch between the conventional CountVecotoriser and the
-        Hash Vectorizer
-
-    Returns
-    -------
-        sparse matrix
-
-    """
-    vectorizor = CountVectorizer(binary=binary)
-    if large_file:
-        vectorizor = HashingVectorizer()
-    if tfid:
-        vectorizor = TfidfVectorizer()
-    return vectorizor.fit_transform(text)
+class CorpusFrequencyVector(CountVectorizer, HashingVectorizer):
+    def __init__(self, large_file=False):
+        if large_file:
+            HashingVectorizer.__init__(self)
+        else:
+            CountVectorizer.__init__(self)
 
 
+class CorpusOneHotVector(CountVectorizer):
+    def __init__(self):
+        CountVectorizer.__init__(self, binary=True)
+
+
+class CorpusTFIDVector(TfidfVectorizer):
+    def __init__(self):
+        TfidfVectorizer.__init__(self)
+
+
+class TextNormalizer(BaseEstimator, TransformerMixin):
+
+    def __init__(self, language='english'):
+        self.stopwords = set(nltk.corpus.stopwords.words(language))
+        self.lemmatizer = WordNetLemmatizer()
+
+    def is_punct(self, token):
+        return all(
+            unicodedata.category(char).startswith('P') for char in token
+        )
+
+    def is_stopword(self, token):
+        return token.lower() in self.stopwords
+
+    def normalize(self, document):
+        return [
+            self.lemmatize(token, tag).lower()
+            for paragraph in document
+            for sentence in paragraph
+            for (token, tag) in sentence
+            if not self.is_punct(token) and not self.is_stopword(token)
+        ]
+
+    def lemmatize(self, token, pos_tag):
+        tag = {
+            'N': wn.NOUN,
+            'V': wn.VERB,
+            'R': wn.ADV,
+            'J': wn.ADJ
+        }.get(pos_tag[0], wn.NOUN)
+
+        return self.lemmatizer.lemmatize(token, tag)
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, documents):
+        for document in documents:
+            yield self.normalize(document[0])
 
 
 if __name__ == '__main__':
@@ -74,8 +107,12 @@ if __name__ == '__main__':
         "Wondering, she opened the door to the studio."
     ]
 
-    test = [word for word in tokenize(corpus[0])]
-    test2 = frequency_vector(corpus, tfid=True)
+    # test = [word for word in tokenize(corpus[0])]
+
+    # vectorizor = CorpusFrequencyVector()
+    # vectorizor = CorpusOneHotVector()
+    vectorizor = CorpusTFIDVector()
+    vec = vectorizor.fit_transform(corpus)
 
 
 
