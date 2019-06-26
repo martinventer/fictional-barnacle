@@ -1,11 +1,11 @@
-# /home/martin/Documents/RESEARCH/fictional-barnacle/CorpusReader/
+#! envs/fictional-barnacle/bin/python3.6
 """
 Elsevier_Corpus_Reader.py
 
 @author: martinventer
 @date: 2019-06-10
 
-Read the pickled files from the Elsivier Ingestor
+Reads the raw data from Elsivier Ingestor and refactors it into a per article
 """
 
 import pickle

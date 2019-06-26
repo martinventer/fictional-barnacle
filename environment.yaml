@@ -15,7 +15,7 @@ dependencies:
   - bokeh=1.2.0=py36_0
   - ca-certificates=2019.5.15=0
   - cairo=1.14.12=h8948797_3
-  - certifi=2019.3.9=py36_0
+  - certifi=2019.6.16=py36_0
   - cffi=1.12.3=py36h2e261b9_0
   - chardet=3.0.4=py36_1
   - cryptography=2.7=py36h72c5cf5_0
@@ -120,6 +120,7 @@ dependencies:
   - qtconsole=4.4.4=py_0
   - readline=7.0=h7b6447c_5
   - requests=2.22.0=py36_0
+  - scikit-learn=0.18.1=np111py36_0
   - scipy=0.18.1=np111py36_0
   - seaborn=0.9.0=py36_0
   - send2trash=1.5.0=py36_0
