@@ -132,6 +132,8 @@ class TitleNormalizer(TextNormalizer):
 
 
 if __name__ == '__main__':
+
+
     corpus = [
         "The elephant sneezed at the sight of potatoes.",
         "Bats can see via echolocation. See the bat sneeze!",
