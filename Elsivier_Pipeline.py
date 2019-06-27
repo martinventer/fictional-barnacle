@@ -2,7 +2,7 @@
 from Ingestor import Elsivier_Ingestor
 from CorpusProcessingTools import Elsivier_Corpus_Pre_Processor
 from CorpusReader import Elsevier_Corpus_Reader
-from CorpusProcessingTools import Plotting_Tools, Author_Networks
+from PlottingTools import Author_Networks
 
 
 def download_corpus():
