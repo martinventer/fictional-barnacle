@@ -56,7 +56,7 @@ def get_key(file='api_key.dict', key='ElsevierDeveloper'):
     -------
     str
         api key as string
-    """
+    """    
     return eval(open(file, 'r').read())[key]
 
 

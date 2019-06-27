@@ -41,7 +41,7 @@ class AuthorNetworks():
 
         """
         self.path = path
-        self.corpus = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(path)
+        self.corpus = Elsevier_Corpus_Reader.ScopusRawCorpusReader(path)
 
     def build_co_author_network(self, **kwargs) -> list:
         """
@@ -80,6 +80,7 @@ class AuthorNetworks():
         """
         fig, ax = plt.subplots(1, figsize=(15, 12))
         G = nx.Graph()
+              
         G.add_nodes_from(list(set(self.corpus.author_name(**kwargs))))
         G.add_edges_from(self.build_co_author_network(**kwargs))
 
@@ -196,7 +197,7 @@ class AuthorNetworks():
 
         # Show with Bokeh
         range_scale = 25000
-        plot = Plot(plot_width=800, plot_height=800,
+        plot = Plot(plot_width=1200, plot_height=1200,
                     x_range=Range1d(-(range_scale * 0.1), (range_scale * 1.1)),
                     y_range=Range1d(-(range_scale * 0.1), (range_scale * 1.1)))
         # plot = Plot(plot_width=800, plot_height=800,
