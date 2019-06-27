@@ -42,6 +42,9 @@ def tokenize(text) -> list:
 
 
 class CorpusFrequencyVector(CountVectorizer, HashingVectorizer):
+    """
+    Wrapper for CountVectoriser or HashingVectorizer
+    """
     def __init__(self, large_file=False):
         if large_file:
             HashingVectorizer.__init__(self)
@@ -50,16 +53,27 @@ class CorpusFrequencyVector(CountVectorizer, HashingVectorizer):
 
 
 class CorpusOneHotVector(CountVectorizer):
+    """
+    wrapper for CountVectorizer that returns only one hot encoding
+    """
     def __init__(self):
         CountVectorizer.__init__(self, binary=True)
 
 
 class CorpusTFIDVector(TfidfVectorizer):
+    """
+    wrapper for TfidVectorizer
+    """
     def __init__(self):
         TfidfVectorizer.__init__(self)
 
 
 class TextNormalizer(BaseEstimator, TransformerMixin):
+    """
+    transformer that normalizes and lemmitizes text. THis transformer needs
+    text in the form that one documnet is a list of parragraphs, which is a
+    list of sentences, which is a list of (token, tag) tupples.
+    """
     def __init__(self, language='english'):
         self.stopwords = set(nltk.corpus.stopwords.words(language))
         self.lemmatizer = WordNetLemmatizer()
@@ -96,7 +110,25 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
 
     def transform(self, documents):
         for document in documents:
-            yield self.normalize(document[0])
+            # yield self.normalize(document[0])
+            yield self.normalize(document)
+
+
+class TitleNormalizer(TextNormalizer):
+    """
+    transforms the title text
+    """
+    def __init__(self, **kwargs):
+        TextNormalizer.__init__(self, **kwargs)
+
+    def normalize(self, document):
+        return [
+            self.lemmatize(token, tag).lower()
+            for sentence in document
+            for (token, tag) in sentence
+            if not self.is_punct(token) and not self.is_stopword(token)
+        ]
+
 
 
 if __name__ == '__main__':
