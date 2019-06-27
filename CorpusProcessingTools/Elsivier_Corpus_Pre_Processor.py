@@ -1,4 +1,4 @@
-# /home/martin/Documents/RESEARCH/fictional-barnacle/CorpusProcessingTools/
+#! envs/fictional-barnacle/bin/python3.6
 """
 Elsevier_Corpus_Reader.py
 
@@ -268,5 +268,3 @@ class PickledCorpusPreProcessor(object):
 
         end = time.time()
         print("Time to pre process {}seconds".format(end - start))
-
-

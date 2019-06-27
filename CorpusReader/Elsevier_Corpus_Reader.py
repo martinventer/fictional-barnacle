@@ -1,27 +1,34 @@
-# /home/martin/Documents/RESEARCH/fictional-barnacle/CorpusReader/
+#! envs/fictional-barnacle/bin/python3.6
 """
 Elsevier_Corpus_Reader.py
 
 @author: martinventer
 @date: 2019-06-10
 
-Read the pickled files from the Elsivier Ingestor
+Reads the raw data from Elsivier Ingestor and refactors it into a per article
 """
 
 import pickle
 import os
 
+from sklearn.cross_validation import KFold
+
 from nltk.corpus.reader.api import CorpusReader
 from nltk.corpus.reader.api import CategorizedCorpusReader
 from nltk import wordpunct_tokenize
+import nltk
 
 from datetime import datetime
+import time
 
 import logging
 
-logging.basicConfig(filename='logs/reader.log',
-                    format='%(asctime)s %(message)s',
-                    level=logging.INFO)
+try:
+    logging.basicConfig(filename='logs/reader.log',
+                        format='%(asctime)s %(message)s',
+                        level=logging.INFO)
+except:
+    pass
 
 
 # PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
@@ -33,7 +40,7 @@ PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
 CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
 
 
-class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
+class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
 
     def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
         """
@@ -196,87 +203,6 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
             except KeyError:
                 yield ''
 
-    def title_sents(self, fileids=None, categories=None) -> list:
-        """
-        Gets the next title sentence
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a taggeed list fo tupples
-        or
-            []
-
-        Example output
-        --------------
-        [('Robots', 'NNS'),(',', ','),('productivity', 'NN'),('and', 'CC'),
-        ('quality', 'NN')]
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                for sent in doc["struct:title"]:
-                    yield sent
-            except KeyError:
-                yield []
-
-    def title_tagged(self, fileids=None, categories=None) -> (str, str):
-        """
-        yields the next tagged word in the title
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields the next tagged word in the title
-        or
-            ('','')
-
-        Example output
-        --------------
-        ('Robots', 'NNS')
-        """
-        for sent in self.title_sents(fileids, categories):
-            try:
-                for tagged_token in sent:
-                    yield tagged_token
-            except KeyError:
-                yield ('', '')
-
-    def title_words(self, fileids=None, categories=None) -> str:
-        """
-        yields the next word in the title
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields the next word in the title
-        or
-            ''
-
-        Example output
-        --------------
-        ('Robots', 'NNS')
-        """
-        for tagged in self.title_tagged(fileids, categories):
-            try:
-                yield tagged[0]
-            except KeyError:
-                yield ''
-
     def abstracts(self, fileids=None, categories=None) -> str:
         """
         generates the abstracts of the next document in the corpus
@@ -300,69 +226,6 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         for doc in self.docs(fileids, categories):
             try:
                 yield doc['dc:description']
-            except KeyError:
-                yield ''
-
-    def abstract_paras(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract paragraphs
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for abstract in self.abstracts(fileids, categories):
-            try:
-                for paragraph in abstract.split("\n"):
-                    yield paragraph
-            except KeyError:
-                yield ''
-
-    def abstract_sents(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract sents
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for paragraph in self.abstract_paras(fileids, categories):
-            try:
-                for sent in paragraph.split(". "):
-                    yield sent
-            except KeyError:
-                yield ''
-
-    def abstract_words(self, fileids=None, categories=None) -> str:
-        """
-        a generator for abstract words
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            basestring
-        """
-        for sent in self.abstract_sents(fileids, categories):
-            try:
-                for word in wordpunct_tokenize(sent):
-                    yield word
             except KeyError:
                 yield ''
 
@@ -823,3 +686,197 @@ class ScopusPickledCorpusReader(CategorizedCorpusReader, CorpusReader):
         root = self.root if (root is None) else root
         with open(os.path.join(root, fileid), 'rb') as f:
             return pickle.load(f)
+
+
+class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
+
+    def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
+        """
+        Initialise the pickled corpus reader using two corpus readers from
+        the nltk library
+        Parameters
+        ----------
+        root : str like
+            the root directory for the corpus
+        fileids : str like
+            a regex pattern for the corpus document files
+        kwargs :
+            Additional arguements passed to the nltk corpus readers
+        """
+        ScopusRawCorpusReader.__init__(self, root, fileids, **kwargs)
+
+    def title_sents(self, fileids=None, categories=None) -> list:
+        """
+        Gets the next title sentence
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a taggeed list fo tupples
+        or
+            []
+
+        Example output
+        --------------
+        [('Robots', 'NNS'),(',', ','),('productivity', 'NN'),('and', 'CC'),
+        ('quality', 'NN')]
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                for sent in doc["struct:title"]:
+                    yield sent
+            except (KeyError, TypeError):
+                yield []
+
+    def title_tagged(self, fileids=None, categories=None) -> (str, str):
+        """
+        yields the next tagged word in the title
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the next tagged word in the title
+        or
+            ('','')
+
+        Example output
+        --------------
+        ('Robots', 'NNS')
+        """
+        for sent in self.title_sents(fileids, categories):
+            try:
+                for tagged_token in sent:
+                    yield tagged_token
+            except KeyError:
+                yield ('', '')
+
+    def title_words(self, fileids=None, categories=None) -> str:
+        """
+        yields the next word in the title
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields the next word in the title
+        or
+            ''
+
+        Example output
+        --------------
+        'Robots'
+        """
+        for tagged in self.title_tagged(fileids, categories):
+            try:
+                yield tagged[0]
+            except KeyError:
+                yield ''
+
+    def describe(self, fileids=None, categories=None) -> dict:
+
+        started = time.time()
+
+        # Structures to perform counting.
+        counts = nltk.FreqDist()
+        tokens = nltk.FreqDist()
+
+        # Perform single pass over paragraphs, tokenize and count
+        for title in self.title_raw(fileids, categories):
+            counts['titles'] += 1
+
+            for word in wordpunct_tokenize(title):
+                counts['words'] += 1
+                tokens[word] += 1
+
+        # Compute the number of files and categories in the corpus
+        n_fileids = len(self.resolve(fileids, categories) or self.fileids())
+        n_topics  = len(self.categories(self.resolve(fileids, categories)))
+
+        # Return data structure with information
+        return {
+            'files':  n_fileids,
+            'topics': n_topics,
+            'titles':  counts['titles'],
+            'words':  counts['words'],
+            'vocab':  len(tokens),
+            'lexdiv': float(counts['words']) / float(len(tokens)),
+            'tpdoc':  float(counts['titles']) / float(n_fileids),
+            'wptit':  float(counts['words']) / float(counts['titles']),
+            'secs':   time.time() - started,
+        }
+
+
+class CorpusLoader(object):
+    """
+    A wrapper fo a corpus that can split the data into k folds.This is a neat way
+    of dealing with large corpus, because the loader will return only a piece
+    of the corpus.
+    """
+    def __init__(self, corpus, folds=None, shuffle=True):
+        self.n_docs = len(corpus.fileids())
+        self.corpus = corpus
+        self.folds = folds
+
+        if folds is not None:
+            # Generate the KFold cross validation for the loader.
+            self.folds = KFold(self.n_docs, folds, shuffle)
+
+    @property
+    def n_folds(self):
+        """
+        Returns the number of folds if it exists; 0 otherwise.
+        """
+        if self.folds is None: return 0
+        return self.folds.n_folds
+
+    def fileids(self, fold=None, train=False, test=False):
+
+        if fold is None:
+            # If no fold is specified, return all the fileids.
+            return self.corpus.fileids()
+
+        # Otherwise, identify the fold specifically and get the train/test idx
+        train_idx, test_idx = [split for split in self.folds][fold]
+
+        # Now determine if we're in train or test mode.
+        if not (test or train) or (test and train):
+            raise ValueError(
+                "Please specify either train or test flag"
+            )
+
+        # Select only the indices to filter upon.
+        indices = train_idx if train else test_idx
+        return [
+            fileid for doc_idx, fileid in enumerate(self.corpus.fileids())
+            if doc_idx in indices
+        ]
+
+    def documents(self, fold=None, train=False, test=False):
+        for fileid in self.fileids(fold, train, test):
+            yield list(self.corpus.docs(fileids=fileid))
+
+    def titles(self, fold=None, train=False, test=False):
+        for fileid in self.fileids(fold, train, test):
+            yield list(self.corpus.title_sents(fileids=fileid))
+
+    def labels(self, fold=None, train=False, test=False):
+        return [
+            self.corpus.categories(fileids=fileid)[0]
+            for fileid in self.fileids(fold, train, test)
+        ]
+
+

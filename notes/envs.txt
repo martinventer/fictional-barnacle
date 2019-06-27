@@ -5,3 +5,10 @@ export env
 import env
 
     conda create -n new environment --file req.txt
+
+or
+
+conda env export > environment.yaml
+
+conda env create -f environment.yaml
+

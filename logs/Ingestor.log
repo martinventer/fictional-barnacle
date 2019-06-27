@@ -531,6 +531,7 @@
 2019-06-19 09:52:09,588 file Corpus/Processed_corpus/soft robot/2019/ already exists
 2019-06-19 09:52:10,332 file Corpus/Processed_corpus/soft robot/2020/ already exists
 2019-06-19 09:52:10,355 End
+<<<<<<< HEAD
 2019-06-19 11:27:41,916 generated new fontManager
 2019-06-19 11:54:51,805 Corpus Builder Initialised
 2019-06-19 11:54:51,806 Start
@@ -1102,3 +1103,58 @@
 2019-06-20 10:17:17,693 file Corpus/Processed_corpus\morphing wing/2018/ already exists
 2019-06-20 10:17:18,529 file Corpus/Processed_corpus\morphing wing/2019/ already exists
 2019-06-20 10:17:51,509 End
+=======
+2019-06-19 10:25:34,878 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-19 10:27:00,008 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-19 10:27:34,624 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-19 10:29:07,509 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-06-25 01:42:54,838 Start
+2019-06-25 01:42:54,839 file Corpus/Processed_corpus already exists
+2019-06-25 01:42:54,840 file Corpus/Processed_corpus/soft robot/1972/ already exists
+2019-06-25 01:42:54,840 file Corpus/Processed_corpus/soft robot/1975/ already exists
+2019-06-25 01:42:54,841 file Corpus/Processed_corpus/soft robot/1977/ already exists
+2019-06-25 01:42:54,842 file Corpus/Processed_corpus/soft robot/1978/ already exists
+2019-06-25 01:42:54,842 file Corpus/Processed_corpus/soft robot/1979/ already exists
+2019-06-25 01:42:54,843 file Corpus/Processed_corpus/soft robot/1980/ already exists
+2019-06-25 01:42:54,843 file Corpus/Processed_corpus/soft robot/1981/ already exists
+2019-06-25 01:42:54,844 file Corpus/Processed_corpus/soft robot/1982/ already exists
+2019-06-25 01:42:54,845 file Corpus/Processed_corpus/soft robot/1983/ already exists
+2019-06-25 01:42:54,846 file Corpus/Processed_corpus/soft robot/1984/ already exists
+2019-06-25 01:42:54,847 file Corpus/Processed_corpus/soft robot/1985/ already exists
+2019-06-25 01:42:54,849 file Corpus/Processed_corpus/soft robot/1986/ already exists
+2019-06-25 01:42:54,852 file Corpus/Processed_corpus/soft robot/1987/ already exists
+2019-06-25 01:42:54,854 file Corpus/Processed_corpus/soft robot/1988/ already exists
+2019-06-25 01:42:54,856 file Corpus/Processed_corpus/soft robot/1989/ already exists
+2019-06-25 01:42:54,859 file Corpus/Processed_corpus/soft robot/1990/ already exists
+2019-06-25 01:42:54,861 file Corpus/Processed_corpus/soft robot/1991/ already exists
+2019-06-25 01:42:54,864 file Corpus/Processed_corpus/soft robot/1992/ already exists
+2019-06-25 01:42:54,867 file Corpus/Processed_corpus/soft robot/1993/ already exists
+2019-06-25 01:42:54,873 file Corpus/Processed_corpus/soft robot/1994/ already exists
+2019-06-25 01:42:54,877 file Corpus/Processed_corpus/soft robot/1995/ already exists
+2019-06-25 01:42:54,885 file Corpus/Processed_corpus/soft robot/1996/ already exists
+2019-06-25 01:42:54,900 file Corpus/Processed_corpus/soft robot/1997/ already exists
+2019-06-25 01:42:54,917 file Corpus/Processed_corpus/soft robot/1998/ already exists
+2019-06-25 01:42:54,936 file Corpus/Processed_corpus/soft robot/1999/ already exists
+2019-06-25 01:42:54,963 file Corpus/Processed_corpus/soft robot/2000/ already exists
+2019-06-25 01:42:54,995 file Corpus/Processed_corpus/soft robot/2001/ already exists
+2019-06-25 01:42:55,034 file Corpus/Processed_corpus/soft robot/2002/ already exists
+2019-06-25 01:42:55,082 file Corpus/Processed_corpus/soft robot/2003/ already exists
+2019-06-25 01:42:55,140 file Corpus/Processed_corpus/soft robot/2004/ already exists
+2019-06-25 01:42:55,221 file Corpus/Processed_corpus/soft robot/2005/ already exists
+2019-06-25 01:42:55,319 file Corpus/Processed_corpus/soft robot/2006/ already exists
+2019-06-25 01:42:55,480 file Corpus/Processed_corpus/soft robot/2007/ already exists
+2019-06-25 01:42:55,638 file Corpus/Processed_corpus/soft robot/2008/ already exists
+2019-06-25 01:42:55,830 file Corpus/Processed_corpus/soft robot/2009/ already exists
+2019-06-25 01:42:56,112 file Corpus/Processed_corpus/soft robot/2010/ already exists
+2019-06-25 01:42:56,396 file Corpus/Processed_corpus/soft robot/2011/ already exists
+2019-06-25 01:42:56,711 file Corpus/Processed_corpus/soft robot/2012/ already exists
+2019-06-25 01:42:57,141 file Corpus/Processed_corpus/soft robot/2013/ already exists
+2019-06-25 01:42:57,635 file Corpus/Processed_corpus/soft robot/2014/ already exists
+2019-06-25 01:42:58,135 file Corpus/Processed_corpus/soft robot/2015/ already exists
+2019-06-25 01:42:58,769 file Corpus/Processed_corpus/soft robot/2016/ already exists
+2019-06-25 01:43:00,258 file Corpus/Processed_corpus/soft robot/2017/ already exists
+2019-06-25 01:43:02,193 file Corpus/Processed_corpus/soft robot/2018/ already exists
+2019-06-25 01:43:04,543 file Corpus/Processed_corpus/soft robot/2019/ already exists
+2019-06-25 01:43:05,256 file Corpus/Processed_corpus/soft robot/2020/ already exists
+2019-06-25 01:43:05,278 End
+>>>>>>> master

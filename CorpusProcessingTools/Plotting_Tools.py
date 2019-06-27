@@ -1,4 +1,4 @@
-# /home/martin/Documents/RESEARCH/fictional-barnacle/CorpusProcessingTools/
+#! envs/fictional-barnacle/bin/python3.6
 """
 Plotting_Tools.py
 
@@ -46,7 +46,7 @@ def document_feature_counter(path,
     -------
         dict like object, either a Counter object or an OrderedDict
     """
-    corp = Elsevier_Corpus_Reader.ScopusPickledCorpusReader(path)
+    corp = Elsevier_Corpus_Reader.ScopusRawCorpusReader(path)
     feature_map = {'pub_date': corp.pub_date,
                    # 'pub_type': corp.pub_type,
                    'publication': corp.publication,
