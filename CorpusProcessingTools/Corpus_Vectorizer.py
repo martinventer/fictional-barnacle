@@ -106,7 +106,7 @@ if __name__ == '__main__':
         "Wondering, she opened the door to the studio."
     ]
 
-    # test = [word for word in tokenize(corpus[0])]
+    test = [word for word in tokenize(corpus[0])]
 
     # vectorizor = CorpusFrequencyVector()
     # vectorizor = CorpusOneHotVector()
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     # vec = vectorizor.fit_transform(corpus)
 
     normalizer = TextNormalizer()
-    norm = normalizer.is_punct(tokenize(corpus[0]))
+    norm = normalizer.fit_transform(test)
 
 
 
