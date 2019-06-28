@@ -201,3 +201,18 @@ class TestScopusProcessedCorpusReader(TestCase):
     def test_title_words(self):
         self.assertEqual(next(self.corp.title_words()),
                          'Robots')
+
+    def test_describe(self):
+        target = {'files': 56350,
+                  'topics': 46,
+                  'titles': 56350,
+                  'words': 694742,
+                  'vocab': 33065,
+                  'lexdiv': 21.011401784364132,
+                  'tpdoc': 1.0,
+                  'wptit': 12.32905057675244,}
+
+        result = self.corp.describe()
+        for metric in target:
+            self.assertEqual(result[metric], target[metric])
+
