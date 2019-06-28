@@ -132,7 +132,7 @@ class TitleNormalizer(TextNormalizer):
 
 
 if __name__ == '__main__':
-
+    from CorpusReader import Elsevier_Corpus_Reader
 
     corpus = [
         "The elephant sneezed at the sight of potatoes.",
@@ -147,8 +147,15 @@ if __name__ == '__main__':
     # vectorizor = CorpusTFIDVector()
     # vec = vectorizor.fit_transform(corpus)
 
+    corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+        "Corpus/Processed_corpus/")
+    loader = Elsevier_Corpus_Reader.CorpusLoader(corp, 12, shuffle=False)
+    docs = loader.titles(0, test=True)
+    labels = loader.labels(0, test=True)
     normalizer = TextNormalizer()
-    norm = normalizer.fit_transform(test)
+    normal = TitleNormalizer()
+    normal.fit(docs, labels)
+    print(list(normal.transform(docs))[0])
 
 
 
