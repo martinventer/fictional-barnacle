@@ -63,28 +63,26 @@ if __name__ == '__main__':
     # docs = corpus.title_sents(categories='soft robot/2011')
     # docs = corpus.title_sents()
 
-    # docs = list(corpus.title_sents(categories='soft robot/2011'))
-    # pickles = list(corpus.fileids(categories='soft robot/2011'))
-    #
+    docs = list(corpus.title_tagged(fileids=loader.fileids(1, test=True)))
+    pickles = list(loader.fileids(1, test=True))
+
     # print(len(docs), len(pickles))
 
 
-    #
-    # model = Pipeline([
-    #     ("norm", Corpus_Vectorizer.TitleNormalizer2()),
-    #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-    #     ('clusters', MiniBatchKMeansClusters(k=7))
-    # ])
-    #
-    # clusters = model.fit_transform(docs)
-    # # pickles = list(corpus.fileids())
-    # pickles = list(corpus.fileids(categories='soft robot/2011'))
-    #
-    # # for idx, cluster in enumerate(clusters):
-    # #     print("Document '{}' assigned to cluster {}.".format(pickles[idx],
-    # #                                                          cluster))
-    #
-    #
-    # # norm = Corpus_Vectorizer.TitleNormalizer2()
-    # # norm.fit(docs)
-    # # docs2 = norm.transform(docs)
+
+    model = Pipeline([
+        ("norm", Corpus_Vectorizer.TitleNormalizer2()),
+        ("vect", Corpus_Vectorizer.OneHotVectorizer()),
+        ('clusters', MiniBatchKMeansClusters(k=7))
+    ])
+
+    clusters = model.fit_transform(docs)
+
+    # for idx, cluster in enumerate(clusters):
+    #     print("Document '{}' assigned to cluster {}.".format(pickles[idx],
+    #                                                          cluster))
+
+
+    # norm = Corpus_Vectorizer.TitleNormalizer2()
+    # norm.fit(docs)
+    # docs2 = norm.transform(docs)

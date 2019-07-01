@@ -189,9 +189,9 @@ if __name__ == '__main__':
     # normal = TitleNormalizer()
     # normal.fit(docs, labels)
     # print(list(normal.transform(docs))[0])
-    normal = TitleNormalizer2()
+    normal = TextNormalizer()
     normal.fit(docs, labels)
-    print(list(normal.transform(docs))[:10])
+    print(list(normal.transform(docs))[0])
 
 
 

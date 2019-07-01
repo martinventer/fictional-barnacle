@@ -707,6 +707,27 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
         """
         ScopusRawCorpusReader.__init__(self, root, fileids, **kwargs)
 
+    def title_tagged(self, fileids=None, categories=None) -> list:
+        """
+        Yields the next title as a list of sentances that are a list of
+        taggged words
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc["struct:title"]
+            except (KeyError, TypeError):
+                pass
+
     def title_sents(self, fileids=None, categories=None) -> list:
         """
         Gets the next title sentence
@@ -734,9 +755,8 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
                     yield sent
             except (KeyError, TypeError):
                 pass
-                # yield []
 
-    def title_tagged(self, fileids=None, categories=None) -> (str, str):
+    def title_tagged_word(self, fileids=None, categories=None) -> (str, str):
         """
         yields the next tagged word in the title
         Parameters
@@ -783,7 +803,7 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
         --------------
         'Robots'
         """
-        for tagged in self.title_tagged(fileids, categories):
+        for tagged in self.title_tagged_word(fileids, categories):
             try:
                 yield tagged[0]
             except KeyError:
@@ -874,7 +894,7 @@ class CorpusLoader(object):
 
     def titles(self, fold=None, train=False, test=False):
         for fileid in self.fileids(fold, train, test):
-            yield list(self.corpus.title_sents(fileids=fileid))
+            yield list(self.corpus.title_tagged(fileids=fileid))
 
     def labels(self, fold=None, train=False, test=False):
         return [

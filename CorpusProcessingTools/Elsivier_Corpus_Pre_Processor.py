@@ -227,7 +227,15 @@ class PickledCorpusPreProcessor(object):
 
         # 2 & 3. Generate and append structured form of text to document
         document = self.corpus.read_single(fileid)
-        document["struct:title"] = self.tokenize(document)
+        title_token = self.tokenize(document)
+        try:
+            if type(title_token[0]) is tuple:
+                document["struct:title"] = [title_token]
+            else:
+                document["struct:title"] = title_token
+        except TypeError:
+            # pass
+            document["struct:title"] = [[('', '')]]
 
         # 4. Writes the document as a pickle to the target location.
         with open(target, 'wb') as f:

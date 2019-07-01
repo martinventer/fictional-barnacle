@@ -390,7 +390,7 @@ class TestScopusProcessedCorpusReader(TestCase):
 
     def test_title_tagged(self):
         target = ('Histologic', 'NNP')
-        result = next(self.corp.title_tagged())
+        result = next(self.corp.title_tagged_word())
         self.assertEqual(result, target)
 
     def test_title_words(self):
