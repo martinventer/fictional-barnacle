@@ -60,6 +60,19 @@ class CorpusOneHotVector(CountVectorizer):
         CountVectorizer.__init__(self, binary=True)
 
 
+class OneHotVectorizer(BaseEstimator, TransformerMixin):
+
+    def __init__(self):
+        self.vectorizer = CountVectorizer(binary=True)
+
+    def fit(self, documents, labels=None):
+        return self
+
+    def transform(self, documents):
+        freqs = self.vectorizer.fit_transform(documents)
+        return [freq.toarray()[0] for freq in freqs]
+
+
 class CorpusTFIDVector(TfidfVectorizer):
     """
     wrapper for TfidVectorizer
@@ -116,7 +129,7 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
 
 class TitleNormalizer(TextNormalizer):
     """
-    transforms the title text
+    transforms the title text, gets in lables data.
     """
     def __init__(self, **kwargs):
         TextNormalizer.__init__(self, **kwargs)
@@ -128,6 +141,26 @@ class TitleNormalizer(TextNormalizer):
             for (token, tag) in sentence
             if not self.is_punct(token) and not self.is_stopword(token)
         ]
+
+
+class TitleNormalizer2(TitleNormalizer):
+    """
+    adapted TitleNormalizer that returns a string insted of a list
+    """
+    def __init__(self, **kwargs):
+        TextNormalizer.__init__(self, **kwargs)
+
+    def normalize(self, document):
+        return [
+            self.lemmatize(token, tag).lower()
+            for (token, tag) in document
+            if not self.is_punct(token) and not self.is_stopword(token)
+        ]
+
+    def transform(self, documents):
+        return [" ".join(self.normalize(doc)) for doc in documents]
+
+
 
 
 
@@ -152,10 +185,13 @@ if __name__ == '__main__':
     loader = Elsevier_Corpus_Reader.CorpusLoader(corp, 12, shuffle=False)
     docs = loader.titles(0, test=True)
     labels = loader.labels(0, test=True)
-    normalizer = TextNormalizer()
-    normal = TitleNormalizer()
+    # normalizer = TextNormalizer()
+    # normal = TitleNormalizer()
+    # normal.fit(docs, labels)
+    # print(list(normal.transform(docs))[0])
+    normal = TitleNormalizer2()
     normal.fit(docs, labels)
-    print(list(normal.transform(docs))[0])
+    print(list(normal.transform(docs))[:10])
 
 
 
