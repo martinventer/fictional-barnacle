@@ -33,11 +33,13 @@ except:
 
 # PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
 # PKL_PATTERN = r'(?!\.)[0-9_\s]+/[a-f0-9]+\.pickle'
-PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
+# PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
+PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
 
 # CAT_PATTERN = r'([a-z_\s]+)/.*'
 # CAT_PATTERN = r'([0-9_\s]+)/.*'
-CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
+# CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
+CAT_PATTERN = r'([a-z_\s]+)/.*'
 
 
 class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
@@ -731,7 +733,8 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
                 for sent in doc["struct:title"]:
                     yield sent
             except (KeyError, TypeError):
-                yield []
+                pass
+                # yield []
 
     def title_tagged(self, fileids=None, categories=None) -> (str, str):
         """
@@ -878,5 +881,3 @@ class CorpusLoader(object):
             self.corpus.categories(fileids=fileid)[0]
             for fileid in self.fileids(fold, train, test)
         ]
-
-

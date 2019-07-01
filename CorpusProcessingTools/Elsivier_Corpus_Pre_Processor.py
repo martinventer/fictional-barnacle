@@ -124,7 +124,8 @@ class PickledCorpusRefactor(CategorizedCorpusReader, CorpusReader):
 
     def refactor_corpus(self):
         """
-        takes the corpus builder initialised with the search terms and dates then iterates over each term for each
+        takes the corpus builder initialised with the search terms and dates
+        then iterates over each term for each
         year, saving the data in files by each year in a folder for each term.
         Returns
         -------
@@ -144,7 +145,8 @@ class PickledCorpusRefactor(CategorizedCorpusReader, CorpusReader):
                              desc='refactor corpus'):
             term, year = filename.rstrip(".pickle").split("/")
             # file_path = "{}_{}".format(term, year)
-            file_path = "{}/{}/".format(term, year)
+            # file_path = "{}/{}/".format(term, year)
+            file_path = "{}/".format(term)
             # file_path= filename.rstrip(".pickle")#.split("/")
             file_path = os.path.join(self.target, file_path)
             make_folder(file_path)

@@ -33,6 +33,7 @@ def reformat_corpus():
                                                                  target=target)
     corpus.refactor_corpus()
 
+
 def process_corpus():
     corp = Elsevier_Corpus_Reader.ScopusRawCorpusReader(
             "Corpus/Processed_corpus/")
