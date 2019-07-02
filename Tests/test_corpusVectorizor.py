@@ -28,12 +28,12 @@ class TestTitleNormalizer(TestCase):
                                                           shuffle=False)
 
     def test_titleNormalizer(self):
-        target = ['robots', 'productivity', 'quality']
-        docs = self.loader.titles(0, test=True)
+        target = 'novel continuum style robot multilayer compliant module'
+        docs = list(self.corpus.title_tagged(fileids=self.loader.fileids(1,
+                                                                  test=True)))
         labels = self.loader.labels(0, test=True)
         normal = Corpus_Vectorizer.TitleNormalizer()
         normal.fit(docs, labels)
         result = list(normal.transform(docs))[0]
 
         self.assertEqual(result, target)
-        self.assertEqual(len(result), len(target))

@@ -85,7 +85,7 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
     """
     transformer that normalizes and lemmitizes text. THis transformer needs
     text in the form that one documnet is a list of parragraphs, which is a
-    list of sentences, which is a list of (token, tag) tupples.
+    list of sentences, which is a list of (token, tag) tuples.
     """
     def __init__(self, language='english'):
         self.stopwords = set(nltk.corpus.stopwords.words(language))
@@ -129,7 +129,9 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
 
 class TitleNormalizer(TextNormalizer):
     """
-    transforms the title text, gets in lables data.
+    Varient of TextNormalizer that returns a single string containing only a
+    normalize single string of the title.
+    requires the titles in the form [title[sentences[(token, tagged)]]]
     """
     def __init__(self, **kwargs):
         TextNormalizer.__init__(self, **kwargs)
@@ -147,55 +149,50 @@ class TitleNormalizer(TextNormalizer):
         return [" ".join(self.normalize(doc)) for doc in documents]
 
 
-class TitleNormalizer2(TitleNormalizer):
-    """
-    adapted TitleNormalizer that returns a string insted of a list
-    """
-    def __init__(self, **kwargs):
-        TextNormalizer.__init__(self, **kwargs)
-
-    def normalize(self, document):
-        return [
-            self.lemmatize(token, tag).lower()
-            for (token, tag) in document
-            if not self.is_punct(token) and not self.is_stopword(token)
-        ]
-
-    def transform(self, documents):
-        return [" ".join(self.normalize(doc)) for doc in documents]
-
-
+# class TitleNormalizer2(TitleNormalizer):
+#     """
+#     adapted TitleNormalizer that returns a string insted of a list
+#     """
+#     def __init__(self, **kwargs):
+#         TextNormalizer.__init__(self, **kwargs)
+#
+#     def normalize(self, document):
+#         return [
+#             self.lemmatize(token, tag).lower()
+#             for (token, tag) in document
+#             if not self.is_punct(token) and not self.is_stopword(token)
+#         ]
+#
+#     def transform(self, documents):
+#         return [" ".join(self.normalize(doc)) for doc in documents]
 
 
 
 if __name__ == '__main__':
     from CorpusReader import Elsevier_Corpus_Reader
 
-    corpus = [
-        "The elephant sneezed at the sight of potatoes.",
-        "Bats can see via echolocation. See the bat sneeze!",
-        "Wondering, she opened the door to the studio."
-    ]
+    # corpus = [
+    #     "The elephant sneezed at the sight of potatoes.",
+    #     "Bats can see via echolocation. See the bat sneeze!",
+    #     "Wondering, she opened the door to the studio."
+    # ]
+    #
+    # test = [word for word in tokenize(corpus[0])]
 
-    test = [word for word in tokenize(corpus[0])]
-
-    # vectorizor = CorpusFrequencyVector()
-    # vectorizor = CorpusOneHotVector()
-    # vectorizor = CorpusTFIDVector()
-    # vec = vectorizor.fit_transform(corpus)
-
-    corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+    corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         "Corpus/Processed_corpus/")
-    loader = Elsevier_Corpus_Reader.CorpusLoader(corp, 12, shuffle=False)
-    docs = loader.titles(0, test=True)
+    loader = Elsevier_Corpus_Reader.CorpusLoader(corpus, 12, shuffle=False)
+
+    docs = list(corpus.title_tagged(fileids=loader.fileids(1, test=True)))
     labels = loader.labels(0, test=True)
-    # normalizer = TextNormalizer()
-    # normal = TitleNormalizer()
+
+    # normal = TextNormalizer()
     # normal.fit(docs, labels)
     # print(list(normal.transform(docs))[0])
-    normal = TextNormalizer()
+
+    normal = TitleNormalizer()
     normal.fit(docs, labels)
-    print(list(normal.transform(docs))[0])
+    result = list(normal.transform(docs))
 
 
 
