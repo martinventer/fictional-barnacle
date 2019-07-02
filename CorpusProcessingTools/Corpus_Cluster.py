@@ -60,27 +60,21 @@ if __name__ == '__main__':
 
     loader = Elsevier_Corpus_Reader.CorpusLoader(corpus, 12, shuffle=False)
 
-    # docs = corpus.title_sents(categories='soft robot/2011')
-    # docs = corpus.title_sents()
-
     docs = list(corpus.title_tagged(fileids=loader.fileids(1, test=True)))
     pickles = list(loader.fileids(1, test=True))
 
-    # print(len(docs), len(pickles))
-
-
-
     model = Pipeline([
-        ("norm", Corpus_Vectorizer.TitleNormalizer2()),
+        ("norm", Corpus_Vectorizer.TitleNormalizer()),
         ("vect", Corpus_Vectorizer.OneHotVectorizer()),
+        # ('clusters', KMeansClusters(k=7))
         ('clusters', MiniBatchKMeansClusters(k=7))
     ])
 
     clusters = model.fit_transform(docs)
 
-    # for idx, cluster in enumerate(clusters):
-    #     print("Document '{}' assigned to cluster {}.".format(pickles[idx],
-    #                                                          cluster))
+    for idx, cluster in enumerate(clusters):
+        print("Document '{}' assigned to cluster {}.".format(pickles[idx],
+                                                             cluster))
 
 
     # norm = Corpus_Vectorizer.TitleNormalizer2()

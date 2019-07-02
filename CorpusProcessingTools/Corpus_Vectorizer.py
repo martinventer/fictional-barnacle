@@ -137,10 +137,14 @@ class TitleNormalizer(TextNormalizer):
     def normalize(self, document):
         return [
             self.lemmatize(token, tag).lower()
+            # for title in document
             for sentence in document
             for (token, tag) in sentence
             if not self.is_punct(token) and not self.is_stopword(token)
         ]
+
+    def transform(self, documents):
+        return [" ".join(self.normalize(doc)) for doc in documents]
 
 
 class TitleNormalizer2(TitleNormalizer):
