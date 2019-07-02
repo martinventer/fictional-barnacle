@@ -16,10 +16,13 @@ from sklearn.pipeline import Pipeline
 from nltk.cluster import KMeansClusterer
 from sklearn.cluster import MiniBatchKMeans
 
+from sklearn.cluster import AgglomerativeClustering
+
 
 class KMeansClusters(BaseEstimator, TransformerMixin):
     """
-    Cluster text data using k-means
+    Cluster text data using k-means. Makes use of nltk k-means clustering.
+    Allows for alternative distance measures
     """
     def __init__(self, k=7):
         self.k = k
@@ -31,12 +34,25 @@ class KMeansClusters(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
+        """
+        fits the K-means model to the given documents
+        Parameters
+        ----------
+        documents :
+            a string containing the normalized text.
+
+        Returns
+        -------
+            fitted model
+        """
         return self.model.cluster(documents, assign_clusters=True)
 
 
 class MiniBatchKMeansClusters(BaseEstimator, TransformerMixin):
     """
-    Cluster text data using k-means
+    Cluster text data using k-means, in minibatch mode. Only uses euclidean
+    distance
+
     """
     def __init__(self, k=7):
         self.k = k
@@ -46,9 +62,46 @@ class MiniBatchKMeansClusters(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
+        """
+        fits the K-means model to the given documents
+        Parameters
+        ----------
+        documents :
+            a string containing the normalized text.
+
+        Returns
+        -------
+            fitted model
+        """
         return self.model.fit_predict(documents)
 
 
+class HierarchicalClustering(object):
+
+    def __init__(self):
+        self.model = AgglomerativeClustering()
+
+    def fit(self, documents, labels=None):
+        return self
+
+    def transform(self, documents):
+        """
+        fits an agglomerative clustering to given vector
+        Parameters
+        ----------
+        documents :
+            a string containing the normalized text.
+
+        Returns
+        -------
+            fitted model
+
+        """
+        clusters = self.model.fit_predict(documents)
+        self.labels = clusters.labels_
+        self.children = clusters.children_
+
+        return clusters
 
 
 if __name__ == '__main__':
@@ -63,20 +116,33 @@ if __name__ == '__main__':
     docs = list(corpus.title_tagged(fileids=loader.fileids(1, test=True)))
     pickles = list(loader.fileids(1, test=True))
 
+    # # K-means clustering pipeline
+    # model = Pipeline([
+    #     ("norm", Corpus_Vectorizer.TitleNormalizer()),
+    #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
+    #     # ('clusters', KMeansClusters(k=7)) # uses nltk k-means, allows
+    #     different measures of distance
+    #     ('clusters', MiniBatchKMeansClusters(k=7)) # uses sklearn
+    #     clustering with minibatch, but no choice of distance measures
+    # ])
+    #
+    # clusters = model.fit_transform(docs)
+    #
+    # for idx, cluster in enumerate(clusters):
+    #     print("Document '{}' assigned to cluster {}.".format(pickles[idx],
+    #                                                          cluster))
+
+    # Agglomerative hierarchical clustering pipeline
     model = Pipeline([
         ("norm", Corpus_Vectorizer.TitleNormalizer()),
         ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-        # ('clusters', KMeansClusters(k=7))
-        ('clusters', MiniBatchKMeansClusters(k=7))
+        ('clusters', HierarchicalClustering())
     ])
 
-    clusters = model.fit_transform(docs)
+    model.fit_transform(docs)
+    labels = model.named_steps['clusters'].labels
 
-    for idx, cluster in enumerate(clusters):
-        print("Document '{}' assigned to cluster {}.".format(pickles[idx],
-                                                             cluster))
-
-
-    # norm = Corpus_Vectorizer.TitleNormalizer2()
-    # norm.fit(docs)
-    # docs2 = norm.transform(docs)
+    #
+    # for idx, fileid in enumerate(pickles):
+    #     print("Document '{}' assigned to cluster {}.".format(fileid,
+    #                                                          labels[idx]))
