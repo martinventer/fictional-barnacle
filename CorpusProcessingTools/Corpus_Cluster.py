@@ -18,6 +18,9 @@ from sklearn.cluster import MiniBatchKMeans
 
 from sklearn.cluster import AgglomerativeClustering
 
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.feature_extraction.text import CountVectorizer
+
 import numpy as np
 
 
@@ -107,6 +110,27 @@ class HierarchicalClustering(object):
         return self.labels
 
 
+def identity(words):
+    return words
+
+
+class SklearnTopicModels(object):
+
+    def __init__(self, n_components=50, estimator='LDA'):
+        self.n_components = n_components
+        self.model = Pipeline([
+            ("norm", Corpus_Vectorizer.TitleNormalizer()),
+            ("vect", CountVectorizer(tokenizer=identity,
+                                     preprocessor=None,
+                                     lowercase=False)),
+            ('model', LatentDirichletAllocation(n_components=self.n_components))
+        ])
+
+    def fit_transform(self, documents):
+        self.model.fit_transform(documents)
+        return self.model
+
+
 if __name__ == '__main__':
     from CorpusReader import Elsevier_Corpus_Reader
     from CorpusProcessingTools import Corpus_Vectorizer
@@ -140,16 +164,28 @@ if __name__ == '__main__':
     #     print("Document '{}' assigned to cluster {}.".format(fileid,
     #                                                          clusters[idx]))
 
-    # Agglomerative hierarchical clustering pipeline
-    model = Pipeline([
-        ("norm", Corpus_Vectorizer.TitleNormalizer()),
-        ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-        ('clusters', HierarchicalClustering())
-    ])
+    # # Agglomerative hierarchical clustering pipeline
+    # model = Pipeline([
+    #     ("norm", Corpus_Vectorizer.TitleNormalizer()),
+    #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
+    #     ('clusters', HierarchicalClustering())
+    # ])
+    #
+    # clusters = model.fit_transform(docs)
+    # labels = model.named_steps['clusters'].labels
+    #
+    # for idx, fileid in enumerate(pickles):
+    #     print("Document '{}' assigned to cluster {}.".format(fileid,
+    #                                                          labels[idx]))
 
-    clusters = model.fit_transform(docs)
-    labels = model.named_steps['clusters'].labels
+    # LDA
+    skmodel = SklearnTopicModels(estimator='LDA')
 
-    for idx, fileid in enumerate(pickles):
-        print("Document '{}' assigned to cluster {}.".format(fileid,
-                                                             labels[idx]))
+    skmodel.fit_transform(docs)
+    topics = skmodel.get_topics()
+    for topic, terms in topics.items():
+        print("Topic #{}:".format(topic + 1))
+        print(terms)
+
+
+
