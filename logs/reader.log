@@ -55,3 +55,5 @@
 2019-06-18 12:20:07,438 Session output file 'interactive_graphs.html' already exists, will be overwritten.
 2019-06-18 12:21:13,832 Session output file 'interactive_graphs.html' already exists, will be overwritten.
 2019-06-19 07:45:59,242 Session output file 'interactive_graphs.html' already exists, will be overwritten.
+2019-07-03 09:50:59,474 Could not open font file /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf: In FT2Font: Could not set the fontsize
+2019-07-03 09:51:00,162 generated new fontManager
