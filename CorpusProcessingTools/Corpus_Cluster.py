@@ -18,6 +18,8 @@ from sklearn.cluster import MiniBatchKMeans
 
 from sklearn.cluster import AgglomerativeClustering
 
+import numpy as np
+
 
 class KMeansClusters(BaseEstimator, TransformerMixin):
     """
@@ -45,7 +47,7 @@ class KMeansClusters(BaseEstimator, TransformerMixin):
         -------
             fitted model
         """
-        return self.model.cluster(documents, assign_clusters=True)
+        return np.array(self.model.cluster(documents, assign_clusters=True))
 
 
 class MiniBatchKMeansClusters(BaseEstimator, TransformerMixin):
@@ -97,11 +99,12 @@ class HierarchicalClustering(object):
             fitted model
 
         """
-        clusters = self.model.fit_predict(documents)
-        self.labels = clusters.labels_
-        self.children = clusters.children_
+        # clusters = self.model.fit_predict(documents)
+        # self.labels = self.model.labels_
+        self.labels = self.model.fit_predict(documents)
+        self.children = self.model.children_
 
-        return clusters
+        return self.labels
 
 
 if __name__ == '__main__':
@@ -111,26 +114,31 @@ if __name__ == '__main__':
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         "Corpus/Processed_corpus/")
 
-    loader = Elsevier_Corpus_Reader.CorpusLoader(corpus, 12, shuffle=False)
+    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 12, shuffle=False)
+    subset = next(loader.fileids(test=True))
 
-    docs = list(corpus.title_tagged(fileids=loader.fileids(1, test=True)))
-    pickles = list(loader.fileids(1, test=True))
+    docs = list(corpus.title_tagged(fileids=subset))
+    pickles = subset
 
     # # K-means clustering pipeline
     # model = Pipeline([
     #     ("norm", Corpus_Vectorizer.TitleNormalizer()),
     #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-    #     # ('clusters', KMeansClusters(k=7)) # uses nltk k-means, allows
-    #     different measures of distance
-    #     ('clusters', MiniBatchKMeansClusters(k=7)) # uses sklearn
-    #     clustering with minibatch, but no choice of distance measures
+    #     ('clusters', KMeansClusters(k=7)) # uses nltk k-means, allows
+    #     # different measures of distance
+    #     # ('clusters', MiniBatchKMeansClusters(k=7)) # uses sklearn clustering
+    #     # with minibatch, but no choice of distance measures
     # ])
     #
     # clusters = model.fit_transform(docs)
     #
-    # for idx, cluster in enumerate(clusters):
-    #     print("Document '{}' assigned to cluster {}.".format(pickles[idx],
-    #                                                          cluster))
+    # # for idx, cluster in enumerate(clusters):
+    # #     print("Document '{}' assigned to cluster {}.".format(pickles[idx],
+    # #                                                          cluster))
+    #
+    # for idx, fileid in enumerate(pickles):
+    #     print("Document '{}' assigned to cluster {}.".format(fileid,
+    #                                                          clusters[idx]))
 
     # Agglomerative hierarchical clustering pipeline
     model = Pipeline([
@@ -139,10 +147,9 @@ if __name__ == '__main__':
         ('clusters', HierarchicalClustering())
     ])
 
-    model.fit_transform(docs)
+    clusters = model.fit_transform(docs)
     labels = model.named_steps['clusters'].labels
 
-    #
-    # for idx, fileid in enumerate(pickles):
-    #     print("Document '{}' assigned to cluster {}.".format(fileid,
-    #                                                          labels[idx]))
+    for idx, fileid in enumerate(pickles):
+        print("Document '{}' assigned to cluster {}.".format(fileid,
+                                                             labels[idx]))
