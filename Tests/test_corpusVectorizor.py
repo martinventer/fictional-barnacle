@@ -23,15 +23,20 @@ class TestTitleNormalizer(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpusLoader(self.corpus,
-                                                          12,
-                                                          shuffle=False)
+        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
+                                                              n_folds=12,
+                                                              shuffle=False)
+        self.subset = next(self.loader.fileids(test=True))
 
     def test_titleNormalizer(self):
-        target = 'novel continuum style robot multilayer compliant module'
-        docs = list(self.corpus.title_tagged(fileids=self.loader.fileids(1,
-                                                                  test=True)))
-        labels = self.loader.labels(0, test=True)
+        target = 'histologic evaluation implant follow flapless flap surgery ' \
+                 'study canine'
+        docs = list(self.corpus.title_tagged(fileids=self.subset))
+        labels = [
+            self.corpus.categories(fileids=fileid)[0]
+            for fileid in self.subset
+        ]
+        # labels = self.loader.labels(0, test=True)
         normal = Corpus_Vectorizer.TitleNormalizer()
         normal.fit(docs, labels)
         result = list(normal.transform(docs))[0]

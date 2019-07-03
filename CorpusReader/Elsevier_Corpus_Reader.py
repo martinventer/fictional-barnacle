@@ -845,6 +845,9 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
 
 class CorpusLoader(object):
     """
+    does not work with sklearn 0.21
+
+
     A wrapper fo a corpus that can split the data into k folds.This is a neat way
     of dealing with large corpus, because the loader will return only a piece
     of the corpus.
