@@ -903,7 +903,8 @@ class CorpusLoader(object):
             for fileid in self.fileids(fold, train, test)
         ]
 
-class CorpuSubsetLoader(object):
+
+class CorpuKfoldLoader(object):
     """
     A wrapper for a corpus that splits the corpus using k-fold method.
     """
@@ -933,7 +934,6 @@ class CorpuSubsetLoader(object):
 
             # Select only the indices to filter upon.
             indices = train_idx if train else test_idx
-            print(len(indices))
             yield [
                 fileid for doc_idx, fileid in enumerate(self.corpus.fileids())
                 if doc_idx in indices
@@ -944,9 +944,10 @@ if __name__ == '__main__':
     corpus = ScopusProcessedCorpusReader(
         "Corpus/Processed_corpus/")
 
-    loader = CorpuSubsetLoader(corpus, n_folds=12, shuffle=False)
+    loader = CorpuKfoldLoader(corpus, n_folds=12, shuffle=False)
 
     subset = next(loader.fileids(test=True))
+    subset = next(loader.fileids(train=True))
 
     # docs = list(corpus.title_tagged(fileids=loader.fileids(test=True)))
     # pickles = list(loader.fileids(1, test=True))

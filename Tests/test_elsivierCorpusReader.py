@@ -412,3 +412,21 @@ class TestScopusProcessedCorpusReader(TestCase):
         for metric in target:
             self.assertEqual(result[metric], target[metric])
 
+
+class TestCorpuSubsetLoader(TestCase):
+    def setUp(self) -> None:
+        self.corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Corpus/Processed_corpus/")
+        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corp,
+                                                              n_folds=12,
+                                                              shuffle=False)
+
+    def test_fileids(self):
+        target = 4696
+        result = len(next(self.loader.fileids(test=True)))
+        self.assertEqual(result, target)
+        target = 51654
+        result = len(next(self.loader.fileids(train=True)))
+        self.assertEqual(result, target)
+
+
