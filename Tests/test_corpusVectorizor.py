@@ -65,3 +65,90 @@ class TestTextNormalizer(TestCase):
         result = list(normal.transform(docs))[0]
 
         self.assertEqual(result, target)
+
+
+class TestCorpusFrequencyVector(TestCase):
+    def setUp(self) -> None:
+        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Corpus/Processed_corpus/")
+        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
+                                                              n_folds=12,
+                                                              shuffle=False)
+        self.subset = next(self.loader.fileids(test=True))
+
+    def test_transform(self):
+        target = 9
+
+        docs = list(self.corpus.title_tagged(fileids=self.subset))
+        labels = [
+            self.corpus.categories(fileids=fileid)[0]
+            for fileid in self.subset
+        ]
+        normal = Corpus_Vectorizer.TextNormalizer()
+        normal.fit(docs, labels)
+        normed = normal.transform(docs)
+
+        vec = Corpus_Vectorizer.CorpusFrequencyVector()
+        vector = vec.fit_transform(normed)
+
+        result = list(vector)[0].toarray().sum()
+
+        self.assertEqual(result, target)
+
+
+class TestCorpusTFIDVector(TestCase):
+    def setUp(self) -> None:
+        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Corpus/Processed_corpus/")
+        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
+                                                              n_folds=12,
+                                                              shuffle=False)
+        self.subset = next(self.loader.fileids(test=True))
+
+    def test_transform(self):
+        target = 2.9273075918083933
+
+        docs = list(self.corpus.title_tagged(fileids=self.subset))
+        labels = [
+            self.corpus.categories(fileids=fileid)[0]
+            for fileid in self.subset
+        ]
+        normal = Corpus_Vectorizer.TextNormalizer()
+        normal.fit(docs, labels)
+        normed = normal.transform(docs)
+
+        vec = Corpus_Vectorizer.CorpusTFIDVector()
+        vector = vec.fit_transform(normed)
+
+        result = list(vector)[0].toarray().sum()
+
+        self.assertEqual(result, target)
+
+
+class TestCorpusTFIDVector(TestCase):
+    def setUp(self) -> None:
+        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Corpus/Processed_corpus/")
+        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
+                                                              n_folds=12,
+                                                              shuffle=False)
+        self.subset = next(self.loader.fileids(test=True))
+
+    def test_transform(self):
+        target = 9
+
+        docs = list(self.corpus.title_tagged(fileids=self.subset))
+        labels = [
+            self.corpus.categories(fileids=fileid)[0]
+            for fileid in self.subset
+        ]
+        normal = Corpus_Vectorizer.TextNormalizer()
+        normal.fit(docs, labels)
+        normed = normal.transform(docs)
+
+        vec = Corpus_Vectorizer.CorpusOneHotVector()
+        vector = vec.fit_transform(normed)
+
+        result = list(vector)[0].toarray().sum()
+
+        self.assertEqual(result, target)

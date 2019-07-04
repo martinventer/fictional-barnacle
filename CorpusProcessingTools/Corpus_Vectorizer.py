@@ -20,6 +20,10 @@ from sklearn.feature_extraction.text import CountVectorizer, \
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
+def identity(words):
+    return words
+
+
 def tokenize(text) -> list:
     """
     takes a string input and converts it to a tokenized list of words
@@ -49,7 +53,11 @@ class CorpusFrequencyVector(CountVectorizer, HashingVectorizer):
         if large_file:
             HashingVectorizer.__init__(self)
         else:
-            CountVectorizer.__init__(self)
+            # Over ride the built in string processing by assigning the
+            # tokenizer, preprocessor and lowercase parameters as below.
+            CountVectorizer.__init__(self, tokenizer=identity,
+                                     preprocessor=None,
+                                     lowercase=False)
 
 
 class CorpusOneHotVector(CountVectorizer):
@@ -57,20 +65,23 @@ class CorpusOneHotVector(CountVectorizer):
     wrapper for CountVectorizer that returns only one hot encoding
     """
     def __init__(self):
-        CountVectorizer.__init__(self, binary=True)
+        CountVectorizer.__init__(self, binary=True,
+                                 tokenizer=identity,
+                                 preprocessor=None,
+                                 lowercase=False)
 
 
-class OneHotVectorizer(BaseEstimator, TransformerMixin):
-
-    def __init__(self):
-        self.vectorizer = CountVectorizer(binary=True)
-
-    def fit(self, documents, labels=None):
-        return self
-
-    def transform(self, documents):
-        freqs = self.vectorizer.fit_transform(documents)
-        return [freq.toarray()[0] for freq in freqs]
+# class OneHotVectorizer(BaseEstimator, TransformerMixin):
+#
+#     def __init__(self):
+#         self.vectorizer = CountVectorizer(binary=True)
+#
+#     def fit(self, documents, labels=None):
+#         return self
+#
+#     def transform(self, documents):
+#         freqs = self.vectorizer.fit_transform(documents)
+#         return [freq.toarray()[0] for freq in freqs]
 
 
 class CorpusTFIDVector(TfidfVectorizer):
@@ -78,7 +89,9 @@ class CorpusTFIDVector(TfidfVectorizer):
     wrapper for TfidVectorizer
     """
     def __init__(self):
-        TfidfVectorizer.__init__(self)
+        TfidfVectorizer.__init__(self, tokenizer=identity,
+                                 preprocessor=None,
+                                 lowercase=False)
 
 
 class TextNormalizer(BaseEstimator, TransformerMixin):
@@ -199,14 +212,30 @@ if __name__ == '__main__':
         for fileid in subset
     ]
 
+    # Text Normalizer
     normal = TextNormalizer()
     normal.fit(docs, labels)
-    print(list(normal.transform(docs))[0])
+    normed = normal.transform(docs)
+    # print(list(normed)[0])
 
-    normal = TitleNormalizer()
-    normal.fit(docs, labels)
-    print(list(normal.transform(docs))[0])
-    # result = list(normal.transform(docs))
+    # # TitleNormalizer
+    # normal = TitleNormalizer()
+    # normal.fit(docs, labels)
+    # print(list(normal.transform(docs))[0])
 
+    # # word frequency vectorizer
+    # vec = CorpusFrequencyVector()
+    # vector = vec.fit_transform(normed)
+    # print(list(vector)[0].toarray())
+
+    # # TFID vectorizer
+    # vec = CorpusTFIDVector()
+    # vector = vec.fit_transform(normed)
+    # print(list(vector)[0].toarray())
+
+    # one hot vectorizer
+    vec = CorpusOneHotVector()
+    vector = vec.fit_transform(normed)
+    print(list(vector)[0].toarray())
 
 

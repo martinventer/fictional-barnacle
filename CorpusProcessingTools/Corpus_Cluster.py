@@ -111,8 +111,8 @@ class HierarchicalClustering(object):
         return self.labels
 
 
-def identity(words):
-    return words
+# def identity(words):
+#     return words
 
 
 class SklearnTopicModels(object):
@@ -136,8 +136,9 @@ class SklearnTopicModels(object):
 
         self.model = Pipeline([
             ('norm', Corpus_Vectorizer.TextNormalizer()),
-            ('tfidf', CountVectorizer(tokenizer=identity,
-                                      preprocessor=None, lowercase=False)),
+            # ('vect', Corpus_Vectorizer.CorpusFrequencyVector()),
+            # ('vect', Corpus_Vectorizer.CorpusOneHotVector()),
+            ('vect', Corpus_Vectorizer.CorpusTFIDVector()),
             ('model', self.estimator)
         ])
 
@@ -150,7 +151,7 @@ class SklearnTopicModels(object):
         """
         n is the number of top terms to show for each topic
         """
-        vectorizer = self.model.named_steps['tfidf']
+        vectorizer = self.model.named_steps['vect']
         model = self.model.steps[-1][1]
         names = vectorizer.get_feature_names()
         topics = dict()
