@@ -102,8 +102,8 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
     def normalize(self, document):
         return [
             self.lemmatize(token, tag).lower()
-            for paragraph in document
-            for sentence in paragraph
+            # for paragraph in document
+            for sentence in document
             for (token, tag) in sentence
             if not self.is_punct(token) and not self.is_stopword(token)
         ]
@@ -121,10 +121,16 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
 
+    # def transform(self, documents):
+    #     for document in documents:
+    #         # yield self.normalize(document[0])
+    #         yield self.normalize(document)
+
     def transform(self, documents):
-        for document in documents:
-            # yield self.normalize(document[0])
-            yield self.normalize(document)
+        return [
+            self.normalize(document)
+            for document in documents
+        ]
 
 
 class TitleNormalizer(TextNormalizer):
@@ -181,18 +187,26 @@ if __name__ == '__main__':
 
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         "Corpus/Processed_corpus/")
-    loader = Elsevier_Corpus_Reader.CorpusLoader(corpus, 12, shuffle=False)
+    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus,
+                                                     n_folds=12,
+                                                     shuffle=False)
 
-    docs = list(corpus.title_tagged(fileids=loader.fileids(1, test=True)))
-    labels = loader.labels(0, test=True)
+    subset = next(loader.fileids(test=True))
 
-    # normal = TextNormalizer()
-    # normal.fit(docs, labels)
-    # print(list(normal.transform(docs))[0])
+    docs = list(corpus.title_tagged(fileids=subset))
+    labels = [
+        corpus.categories(fileids=fileid)[0]
+        for fileid in subset
+    ]
+
+    normal = TextNormalizer()
+    normal.fit(docs, labels)
+    print(list(normal.transform(docs))[0])
 
     normal = TitleNormalizer()
     normal.fit(docs, labels)
-    result = list(normal.transform(docs))
+    print(list(normal.transform(docs))[0])
+    # result = list(normal.transform(docs))
 
 
 

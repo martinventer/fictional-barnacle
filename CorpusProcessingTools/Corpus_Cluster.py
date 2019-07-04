@@ -18,11 +18,12 @@ from sklearn.cluster import MiniBatchKMeans
 
 from sklearn.cluster import AgglomerativeClustering
 
-from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.decomposition import LatentDirichletAllocation, TruncatedSVD, NMF
 from sklearn.feature_extraction.text import CountVectorizer
 
 import numpy as np
 
+from CorpusProcessingTools import Corpus_Vectorizer
 
 class KMeansClusters(BaseEstimator, TransformerMixin):
     """
@@ -117,18 +118,49 @@ def identity(words):
 class SklearnTopicModels(object):
 
     def __init__(self, n_components=50, estimator='LDA'):
+        """
+        n_topics is the desired number of topics
+        To use Latent Semantic Analysis, set estimator to 'LSA',
+        To use Non-Negative Matrix Factorization, set estimator to 'NMF',
+        otherwise, defaults to Latent Dirichlet Allocation ('LDA').
+        """
         self.n_components = n_components
+
+        if estimator == 'LSA':
+            self.estimator = TruncatedSVD(n_components=self.n_components)
+        elif estimator == 'NMF':
+            self.estimator = NMF(n_components=self.n_components)
+        else:
+            self.estimator = LatentDirichletAllocation(
+                n_components=self.n_components)
+
         self.model = Pipeline([
-            ("norm", Corpus_Vectorizer.TitleNormalizer()),
-            ("vect", CountVectorizer(tokenizer=identity,
-                                     preprocessor=None,
-                                     lowercase=False)),
-            ('model', LatentDirichletAllocation(n_components=self.n_components))
+            ('norm', Corpus_Vectorizer.TextNormalizer()),
+            ('tfidf', CountVectorizer(tokenizer=identity,
+                                      preprocessor=None, lowercase=False)),
+            ('model', self.estimator)
         ])
 
     def fit_transform(self, documents):
         self.model.fit_transform(documents)
+
         return self.model
+
+    def get_topics(self, n=25):
+        """
+        n is the number of top terms to show for each topic
+        """
+        vectorizer = self.model.named_steps['tfidf']
+        model = self.model.steps[-1][1]
+        names = vectorizer.get_feature_names()
+        topics = dict()
+
+        for idx, topic in enumerate(model.components_):
+            features = topic.argsort()[:-(n - 1): -1]
+            tokens = [names[i] for i in features]
+            topics[idx] = tokens
+
+        return topics
 
 
 if __name__ == '__main__':
@@ -179,10 +211,10 @@ if __name__ == '__main__':
     #                                                          labels[idx]))
 
     # LDA
-    skmodel = SklearnTopicModels(estimator='LDA')
+    skmodel = SklearnTopicModels(n_components=3, estimator='LDA')
 
     skmodel.fit_transform(docs)
-    topics = skmodel.get_topics()
+    topics = skmodel.get_topics(n=5)
     for topic, terms in topics.items():
         print("Topic #{}:".format(topic + 1))
         print(terms)
