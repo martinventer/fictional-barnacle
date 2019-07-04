@@ -211,14 +211,30 @@ if __name__ == '__main__':
     #     print("Document '{}' assigned to cluster {}.".format(fileid,
     #                                                          labels[idx]))
 
-    # LDA
-    skmodel = SklearnTopicModels(n_components=3, estimator='LDA')
+    # # Latent Dirchlicht Allocation
+    # skmodel = SklearnTopicModels(n_components=3, estimator='LDA')
+    #
+    # skmodel.fit_transform(docs)
+    # topics = skmodel.get_topics(n=5)
+    # for topic, terms in topics.items():
+    #     print("Topic #{}:".format(topic + 1))
+    #     print(terms)
+
+    # # Latent Semantic Allocation
+    # skmodel = SklearnTopicModels(n_components=5, estimator='LSA')
+    #
+    # skmodel.fit_transform(docs)
+    # topics = skmodel.get_topics(n=6)
+    # for topic, terms in topics.items():
+    #     print("Topic #{}:".format(topic + 1))
+    #     print(terms)
+
+    # Non-Negative Matrix Factorization
+    skmodel = SklearnTopicModels(n_components=5, estimator='NMF')
 
     skmodel.fit_transform(docs)
-    topics = skmodel.get_topics(n=5)
+    topics = skmodel.get_topics(n=6)
     for topic, terms in topics.items():
         print("Topic #{}:".format(topic + 1))
         print(terms)
-
-
 
