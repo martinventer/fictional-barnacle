@@ -71,6 +71,33 @@ class KeyphraseExtractor(BaseEstimator, TransformerMixin):
             yield list(self.extract_keyphrases(document))
 
 
+class EntityExtractor(BaseEstimator, TransformerMixin):
+    def __init__(self, labels=GOODLABELS, **kwargs):
+        self.labels = labels
+
+    def get_entities(self, document):
+        entities = []
+        # for paragraph in document:  # updated for title data
+        for sentence in document:
+            # for sentence in paragraph:  # removed to function for title data
+                trees = ne_chunk(sentence)
+                for tree in trees:
+                    if hasattr(tree, 'label'):
+                        if tree.label() in self.labels:
+                            entities.append(
+                                ' '.join([child[0].lower() for child in tree])
+                                )
+        return entities
+
+    def fit(self, documents, labels=None):
+        return self
+
+    def transform(self, documents):
+        # print('transform')
+        for document in documents:
+            yield self.get_entities(document)
+
+
 if __name__ == '__main__':
     from CorpusReader import Elsevier_Corpus_Reader
     from CorpusProcessingTools import Corpus_Vectorizer
@@ -82,8 +109,11 @@ if __name__ == '__main__':
     subset = next(loader.fileids(test=True))
 
     docs = list(corpus.title_tagged(fileids=subset))
-    pickles = subset
 
-    phrase_extractor = KeyphraseExtractor()
-    keyphrases = list(phrase_extractor.fit_transform(docs))
-    print(keyphrases[0])
+    # phrase_extractor = KeyphraseExtractor()
+    # keyphrases = list(phrase_extractor.fit_transform(docs))
+    # print(keyphrases[0])
+
+    entity_extractor = EntityExtractor()
+    entities = list(entity_extractor.fit_transform(docs))
+    print(entities[0])
