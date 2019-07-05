@@ -18,6 +18,15 @@ from unicodedata import category as unicat
 from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.base import BaseEstimator, TransformerMixin
 
+from nltk.collocations import QuadgramCollocationFinder
+from nltk.metrics.association import QuadgramAssocMeasures
+
+from nltk.collocations import TrigramCollocationFinder
+from nltk.metrics.association import TrigramAssocMeasures
+
+from nltk.collocations import BigramCollocationFinder
+from nltk.metrics.association import BigramAssocMeasures
+
 
 GRAMMAR = r'KT: {(<JJ>* <NN.*>+ <IN>)? <JJ>* <NN.*>+}'
 GOODTAGS = frozenset(['JJ','JJR','JJS','NN','NNP','NNS','NNPS'])
@@ -72,6 +81,9 @@ class KeyphraseExtractor(BaseEstimator, TransformerMixin):
 
 
 class EntityExtractor(BaseEstimator, TransformerMixin):
+    """
+    Extract entities from a sentance, such as Keyphrases
+    """
     def __init__(self, labels=GOODLABELS, **kwargs):
         self.labels = labels
 
@@ -98,6 +110,57 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
             yield self.get_entities(document)
 
 
+class SignificantCollocations(BaseEstimator, TransformerMixin):
+    """
+    Find and rank significant collocations in text.
+    """
+    def __init__(self,
+                 ngram_class=QuadgramCollocationFinder,
+                 metric=QuadgramAssocMeasures.pmi):
+        self.ngram_class = ngram_class
+        self.metric = metric
+
+    def fit(self, docs, target=None):
+        ngrams = self.ngram_class.from_documents(docs)
+        self.scored_ = dict(ngrams.score_ngrams(self.metric))
+
+    # def transform(self, docs):
+    #     for doc in docs:
+    #         ngrams = self.ngram_class.from_words(doc)
+    #         yield {
+    #             ngram: self.scored_.get(ngrams, 0.0)
+    #             for ngram in ngrams.nbest(QuadgramAssocMeasures.raw_freq, 50)
+    #         }
+    def transform(self, docs):
+        ngrams = self.ngram_class.from_words(docs)
+        yield {
+            ngram: self.scored_.get(ngrams, 0.0)
+            for ngram in ngrams.nbest(QuadgramAssocMeasures.raw_freq, 50)
+        }
+
+
+def rank_quadgrams(docs, metric, path=None):
+    """
+    Find and rank quadgrams from the supplied corpus using the given
+    association metric. Write the quadgrams out to the given path if
+    supplied otherwise return the list in memory.
+    """
+
+    # Create a collocation ranking utility from corpus words.
+    ngrams = QuadgramCollocationFinder.from_words(docs)
+
+    # Rank collocations by an association metric
+    scored = ngrams.score_ngrams(metric)
+
+    if path:
+        with open(path, 'w') as f:
+            f.write("Collocation\tScore ({})\n".format(metric.__name__))
+            for ngram, score in scored:
+                f.write("{}\t{}\n".format(repr(ngram), score))
+    else:
+        return scored
+
+
 if __name__ == '__main__':
     from CorpusReader import Elsevier_Corpus_Reader
     from CorpusProcessingTools import Corpus_Vectorizer
@@ -110,10 +173,29 @@ if __name__ == '__main__':
 
     docs = list(corpus.title_tagged(fileids=subset))
 
+    # # Key Phrase extractor
     # phrase_extractor = KeyphraseExtractor()
     # keyphrases = list(phrase_extractor.fit_transform(docs))
     # print(keyphrases[0])
 
-    entity_extractor = EntityExtractor()
-    entities = list(entity_extractor.fit_transform(docs))
-    print(entities[0])
+    # # Entity extractor
+    # entity_extractor = EntityExtractor()
+    # entities = list(entity_extractor.fit_transform(docs))
+    # print(entities[0])
+
+    # # significant collocations
+    # docs = list(corpus.title_words(fileids=subset))
+    # sig = SignificantCollocations()
+    # sig.fit(docs)
+    # ents = sig.transform(docs)
+
+    # ranked collocations
+    docs = corpus.title_words(fileids=subset)
+
+    dat = rank_quadgrams(
+        docs, QuadgramAssocMeasures.likelihood_ratio
+    )
+
+    for gram, score in dat:
+        if "soft" in gram and score > 2500:
+            print(gram, score)
