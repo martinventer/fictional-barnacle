@@ -412,6 +412,16 @@ class TestScopusProcessedCorpusReader(TestCase):
         for metric in target:
             self.assertEqual(result[metric], target[metric])
 
+    def test_ngrams(self):
+        gen = self.corp.ngrams(n=3)
+        result = next(gen)
+        target = ('<s>', '<s>', 'Histologic')
+        self.assertEqual(target, result)
+        gen = self.corp.ngrams(n=6)
+        result = next(gen)
+        target = ('<s>', '<s>', '<s>', '<s>', '<s>', 'Histologic')
+        self.assertEqual(target, result)
+
 
 class TestCorpuSubsetLoader(TestCase):
     def setUp(self) -> None:

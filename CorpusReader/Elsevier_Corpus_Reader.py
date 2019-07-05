@@ -11,6 +11,8 @@ Reads the raw data from Elsivier Ingestor and refactors it into a per article
 import pickle
 import os
 
+from functools import partial
+
 from sklearn.model_selection import KFold
 
 from nltk.corpus.reader.api import CorpusReader
@@ -842,6 +844,36 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
             'secs':   time.time() - started,
         }
 
+    def ngrams(self, n=2, fileids=None, categories=None) -> tuple:
+        """
+        a ngram generator for the scopus corpus
+        Parameters
+        ----------
+        n : int
+            the number of words in the n-gram
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            tuple
+
+        """
+        LPAD_SYMBOL = "<s>"
+        RPAD_SYMBOL = "</s>"
+        nltk_ngrams = partial(
+            nltk.ngrams,
+            pad_right=True, right_pad_symbol=RPAD_SYMBOL,
+            pad_left=True, left_pad_symbol=LPAD_SYMBOL
+        )
+        for sent in self.title_sents(fileids=fileids, categories=categories):
+            tokens, _ = zip(*sent)
+            for ngram in nltk_ngrams(tokens, n):
+                yield ngram
+
+
 
 class CorpusLoader(object):
     """
@@ -950,7 +982,15 @@ if __name__ == '__main__':
     loader = CorpuKfoldLoader(corpus, n_folds=12, shuffle=False)
 
     subset = next(loader.fileids(test=True))
-    subset = next(loader.fileids(train=True))
+    # subset = next(loader.fileids(train=True))
 
     # docs = list(corpus.title_tagged(fileids=loader.fileids(test=True)))
     # pickles = list(loader.fileids(1, test=True))
+
+    # check ngrammer
+    ngram = corpus.ngrams(n=3, fileids=subset)
+    print(next(ngram))
+
+
+
+
