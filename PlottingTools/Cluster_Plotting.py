@@ -49,6 +49,7 @@ if __name__ == '__main__':
     from CorpusProcessingTools import Corpus_Vectorizer
     from CorpusProcessingTools import Corpus_Cluster
 
+
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         "Corpus/Processed_corpus/")
 

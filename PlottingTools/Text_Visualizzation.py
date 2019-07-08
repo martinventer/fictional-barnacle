@@ -200,10 +200,31 @@ def plot_term_occurance_over_time(corpus, n=30, fileids=None):
     plt.show()
 
 
+def plot_tsne_clusters(corpus, fileids=None, labels=None):
+    from yellowbrick.text import TSNEVisualizer
+    from sklearn.feature_extraction.text import TfidfVectorizer
+
+    words = corpus.title_tagged(fileids=fileids)
+    normalizer = Corpus_Vectorizer.TextNormalizer()
+    normed = (sent for title in normalizer.transform(words) for sent in title)
+    # normed = (dd for dd in normalizer.transform(docs))
+    tfidf = TfidfVectorizer()
+    procd = tfidf.fit_transform(normed)
+
+    tsne = TSNEVisualizer()
+    if labels is None:
+        tsne.fit(procd)
+    else:
+        tsne.fit(procd, ["c{}".format(c) for c in labels])
+    tsne.poof()
+
+
 
 if __name__ == '__main__':
     from CorpusReader import Elsevier_Corpus_Reader
-    from CorpusProcessingTools import Corpus_Vectorizer
+    from CorpusProcessingTools import Corpus_Vectorizer, Corpus_Cluster
+    from sklearn.pipeline import Pipeline
+
 
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         "Corpus/Processed_corpus/")
@@ -215,10 +236,18 @@ if __name__ == '__main__':
     # plot_term_frequency_no_stop(subset)
     # plot_term_coocurrance(corpus, n=30, fileids=subset)
     # plot_term_coocurrance_matrix(corpus, n=30, fileids=subset)
-    plot_term_occurance_over_time(corpus, n=30, fileids=subset)
+    # plot_term_occurance_over_time(corpus, n=30, fileids=subset)
+    # plot_tsne_clusters(corpus, fileids=subset)
 
-
-
-
-
+    # # with clusters
+    # model = Pipeline([
+    #     ("norm", Corpus_Vectorizer.TitleNormalizer()),
+    #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
+    #     ('clusters', Corpus_Cluster.MiniBatchKMeansClusters(k=3))
+    # ])
+    #
+    # docs = corpus.title_tagged(fileids=subset)
+    # clusters = model.fit_transform(docs)
+    #
+    # plot_tsne_clusters(corpus, fileids=subset, labels=clusters)
 
