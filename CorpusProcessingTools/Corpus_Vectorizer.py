@@ -214,9 +214,9 @@ if __name__ == '__main__':
 
     # Text Normalizer
     normal = TextNormalizer()
-    normal.fit(docs, labels)
+    # normal.fit(docs, labels)
     normed = normal.transform(docs)
-    # print(list(normed)[0])
+    print(list(normed)[0])
 
     # # TitleNormalizer
     # normal = TitleNormalizer()
@@ -233,9 +233,9 @@ if __name__ == '__main__':
     # vector = vec.fit_transform(normed)
     # print(list(vector)[0].toarray())
 
-    # one hot vectorizer
-    vec = CorpusOneHotVector()
-    vector = vec.fit_transform(normed)
-    print(list(vector)[0].toarray())
+    # # one hot vectorizer
+    # vec = CorpusOneHotVector()
+    # vector = vec.fit_transform(normed)
+    # print(list(vector)[0].toarray())
 
 
