@@ -162,7 +162,9 @@ def rank_quadgrams(docs, metric, path=None):
 
 
 class RankGrams(BaseEstimator, TransformerMixin):
-
+    """
+    Constructs and ranks ngrams for a given corpus
+    """
     def __init__(self, n=2, path=None):
         self.n = n
         self.path = path
