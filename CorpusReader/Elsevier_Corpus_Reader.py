@@ -11,7 +11,9 @@ Reads the raw data from Elsivier Ingestor and refactors it into a per article
 import pickle
 import os
 
-from sklearn.cross_validation import KFold
+from functools import partial
+
+from sklearn.model_selection import KFold
 
 from nltk.corpus.reader.api import CorpusReader
 from nltk.corpus.reader.api import CategorizedCorpusReader
@@ -33,11 +35,13 @@ except:
 
 # PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
 # PKL_PATTERN = r'(?!\.)[0-9_\s]+/[a-f0-9]+\.pickle'
-PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
+# PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
+PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
 
 # CAT_PATTERN = r'([a-z_\s]+)/.*'
 # CAT_PATTERN = r'([0-9_\s]+)/.*'
-CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
+# CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
+CAT_PATTERN = r'([a-z_\s]+)/.*'
 
 
 class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
@@ -705,6 +709,27 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
         """
         ScopusRawCorpusReader.__init__(self, root, fileids, **kwargs)
 
+    def title_tagged(self, fileids=None, categories=None) -> list:
+        """
+        Yields the next title as a list of sentances that are a list of
+        taggged words
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+
+        """
+        for doc in self.docs(fileids, categories):
+            try:
+                yield doc["struct:title"]
+            except (KeyError, TypeError):
+                pass
+
     def title_sents(self, fileids=None, categories=None) -> list:
         """
         Gets the next title sentence
@@ -731,9 +756,9 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
                 for sent in doc["struct:title"]:
                     yield sent
             except (KeyError, TypeError):
-                yield []
+                pass
 
-    def title_tagged(self, fileids=None, categories=None) -> (str, str):
+    def title_tagged_word(self, fileids=None, categories=None) -> (str, str):
         """
         yields the next tagged word in the title
         Parameters
@@ -780,7 +805,7 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
         --------------
         'Robots'
         """
-        for tagged in self.title_tagged(fileids, categories):
+        for tagged in self.title_tagged_word(fileids, categories):
             try:
                 yield tagged[0]
             except KeyError:
@@ -819,9 +844,42 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
             'secs':   time.time() - started,
         }
 
+    def ngrams(self, n=2, fileids=None, categories=None) -> tuple:
+        """
+        a ngram generator for the scopus corpus
+        Parameters
+        ----------
+        n : int
+            the number of words in the n-gram
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            tuple
+
+        """
+        LPAD_SYMBOL = "<s>"
+        RPAD_SYMBOL = "</s>"
+        nltk_ngrams = partial(
+            nltk.ngrams,
+            pad_right=True, right_pad_symbol=RPAD_SYMBOL,
+            pad_left=True, left_pad_symbol=LPAD_SYMBOL
+        )
+        for sent in self.title_sents(fileids=fileids, categories=categories):
+            tokens, _ = zip(*sent)
+            for ngram in nltk_ngrams(tokens, n):
+                yield ngram
+
+
 
 class CorpusLoader(object):
     """
+    does not work with sklearn 0.21
+
+
     A wrapper fo a corpus that can split the data into k folds.This is a neat way
     of dealing with large corpus, because the loader will return only a piece
     of the corpus.
@@ -833,7 +891,8 @@ class CorpusLoader(object):
 
         if folds is not None:
             # Generate the KFold cross validation for the loader.
-            self.folds = KFold(self.n_docs, folds, shuffle)
+            kf = KFold(n_splits=folds, shuffle=shuffle)
+            self.folds = kf.splits()
 
     @property
     def n_folds(self):
@@ -871,12 +930,67 @@ class CorpusLoader(object):
 
     def titles(self, fold=None, train=False, test=False):
         for fileid in self.fileids(fold, train, test):
-            yield list(self.corpus.title_sents(fileids=fileid))
+            yield list(self.corpus.title_tagged(fileids=fileid))
 
     def labels(self, fold=None, train=False, test=False):
         return [
             self.corpus.categories(fileids=fileid)[0]
             for fileid in self.fileids(fold, train, test)
         ]
+
+
+class CorpuKfoldLoader(object):
+    """
+    A wrapper for a corpus that splits the corpus using k-fold method.
+    """
+    def __init__(self, corpus, n_folds=None, shuffle=True):
+        self.n_folds = len(corpus.fileids())
+        self.corpus = corpus
+
+        if n_folds is not None:
+            # Generate the KFold cross validation for the loader.
+            kf = KFold(n_splits=n_folds, shuffle=shuffle)
+            self.folds = kf.split(corpus.fileids())
+
+    def fileids(self, train=False, test=False):
+
+        if self.n_folds is None:
+            # If no fold is specified, return all the fileids.
+            return self.corpus.fileids()
+
+        # determine if we're in train or test mode.
+        if not (test or train) or (test and train):
+            raise ValueError(
+                "Please specify either train or test flag"
+            )
+
+        # get the next test and train set
+        for train_idx, test_idx in self.folds:
+
+            # Select only the indices to filter upon.
+            indices = train_idx if train else test_idx
+            yield [
+                fileid for doc_idx, fileid in enumerate(self.corpus.fileids())
+                if doc_idx in indices
+            ]
+
+
+if __name__ == '__main__':
+    corpus = ScopusProcessedCorpusReader(
+        "Corpus/Processed_corpus/")
+
+    loader = CorpuKfoldLoader(corpus, n_folds=12, shuffle=False)
+
+    subset = next(loader.fileids(test=True))
+    # subset = next(loader.fileids(train=True))
+
+    # docs = list(corpus.title_tagged(fileids=loader.fileids(test=True)))
+    # pickles = list(loader.fileids(1, test=True))
+
+    # check ngrammer
+    ngram = corpus.ngrams(n=3, fileids=subset)
+    print(next(ngram))
+
+
 
 

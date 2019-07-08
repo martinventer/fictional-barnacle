@@ -33,6 +33,7 @@ def reformat_corpus():
                                                                  target=target)
     corpus.refactor_corpus()
 
+
 def process_corpus():
     corp = Elsevier_Corpus_Reader.ScopusRawCorpusReader(
             "Corpus/Processed_corpus/")
@@ -58,7 +59,7 @@ if __name__ == '__main__':
     # reformat_corpus()
 
     # step 3: reformat the corpus for faster manipulation
-    # process_corpus()
+    process_corpus()
 
     # step 4: load the corpus reader
     corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
@@ -66,4 +67,3 @@ if __name__ == '__main__':
 
     # step 5: plot author connectivity
     # plot_features()
-
