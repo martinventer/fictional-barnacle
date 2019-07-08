@@ -163,28 +163,51 @@ def rank_quadgrams(docs, metric, path=None):
 
 class RankGrams(BaseEstimator, TransformerMixin):
 
-    def __init__(self):
+    def __init__(self, n=2, path=None):
+        self.n = n
+        self.path = path
+        if self.n == 2:
+            self.metric = BigramAssocMeasures.likelihood_ratio
+        elif self.n == 3:
+            self.metric = TrigramAssocMeasures.likelihood_ratio
+        elif self.n == 4:
+            self.metric = QuadgramAssocMeasures.likelihood_ratio
+        else:
+            print("error, order of n-gram not supported")
 
-def rank_grams(docs, metric, path=None):
-    """
-    Find and rank quadgrams from the supplied corpus using the given
-    association metric. Write the quadgrams out to the given path if
-    supplied otherwise return the list in memory.
-    """
+    def rank_grams(self, docs):
+        """
+        Find and rank gram from the supplied corpus using the given
+        association metric. Write the quadgrams out to the given path if
+        supplied otherwise return the list in memory.
+        """
+        # Create a collocation ranking utility from corpus words.
+        if self.n == 2:
+            self.ngrams = BigramCollocationFinder.from_words(docs)
+        elif self.n == 3:
+            self.ngrams = TrigramCollocationFinder.from_words(docs)
+        elif self.n == 4:
+            self.ngrams = QuadgramCollocationFinder.from_words(docs)
 
-    # Create a collocation ranking utility from corpus words.
-    ngrams = QuadgramCollocationFinder.from_words(docs)
+        # Rank collocations by an association metric
+        self.scored = self.ngrams.score_ngrams(self.metric)
 
-    # Rank collocations by an association metric
-    scored = ngrams.score_ngrams(metric)
+    def fit(self, docs=None, **kwargs):
+        return self
 
-    if path:
-        with open(path, 'w') as f:
-            f.write("Collocation\tScore ({})\n".format(metric.__name__))
-            for ngram, score in scored:
-                f.write("{}\t{}\n".format(repr(ngram), score))
-    else:
-        return scored
+    def transform(self, docs, **kwargs):
+        self.rank_grams(docs, **kwargs)
+
+        if self.path:
+            with open(self.path, 'w') as f:
+                f.write("Collocation\tScore ({})\n".format(
+                    self.metric.__name__))
+                for ngram, score in self.scored:
+                    f.write("{}\t{}\n".format(repr(ngram), score))
+        else:
+            return self.scored
+
+
 
 if __name__ == '__main__':
     from CorpusReader import Elsevier_Corpus_Reader
@@ -217,8 +240,14 @@ if __name__ == '__main__':
     # ranked collocations
     docs = corpus.title_words(fileids=subset)
 
-    dat = rank_quadgrams(
-        docs, QuadgramAssocMeasures.likelihood_ratio
+    # dat = rank_quadgrams(
+    #     docs, QuadgramAssocMeasures.likelihood_ratio
+    # )
+
+    rg = RankGrams(n=4)
+
+    dat = rg.transform(
+        docs
     )
 
     for gram, score in dat:
