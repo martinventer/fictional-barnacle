@@ -6,8 +6,6 @@ from CorpusProcessingTools import Corpus_Vectorizer
 
 from sklearn.pipeline import Pipeline
 
-import warnings
-
 
 class TestKMeansClusters(TestCase):
     def setUp(self) -> None:

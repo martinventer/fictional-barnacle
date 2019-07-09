@@ -155,7 +155,7 @@ class TitleNormalizer(TextNormalizer):
     def __init__(self, **kwargs):
         TextNormalizer.__init__(self, **kwargs)
 
-    def normalize(self, document):
+    def normalize(self, document) -> list:
         return [
             self.lemmatize(token, tag).lower()
             # for title in document
