@@ -17,6 +17,8 @@ from urllib.request import urlopen
 import xmltodict
 import logging
 
+from Utils import Utils
+
 
 logging.basicConfig(filename='logs/Ingestor.log',
                     format='%(asctime)s %(message)s',
@@ -40,48 +42,6 @@ def get_classifications() -> list:
     return list(set([x['@abbrev']
                      for x
                      in data]))
-
-
-def get_key() -> str:
-    """
-    Reads the API key from and external file called 'api_key.dict' in the
-    local directory. The format for the file is a single line containing the
-    following.
-
-        {'ElsevierDeveloper':'XXX-key-XXX'}
-
-    A key can be obtained by registering on http://dev.elsevier.com/ and
-    requesting an api key.
-    Parameters
-    ----------
-
-    Returns
-    -------
-        str
-            api key as string
-    """
-    file = 'api_key.dict'
-    key = 'ElsevierDeveloper'
-    return eval(open(file, 'r').read())[key]
-
-
-def make_folder(path) -> None:
-    """
-    creates a directory without failing unexpectedly
-    Parameters
-    ----------
-    path : str
-        a string containing the desired path
-
-    Returns
-    -------
-        None
-    """
-    try:
-        os.makedirs(path)
-    except FileExistsError:
-        logging.info("file %s already exists" % path)
-        pass
 
 
 class ScopusIngestionEngine(object):
@@ -111,7 +71,7 @@ class ScopusIngestionEngine(object):
         self.file_path = os.path.dirname(file_path)
         self.batch_size = batch_size
         self.home = home
-        self.api_key = get_key()
+        self.api_key = Utils.get_key()
         self.status_code = None
         self.database = 'SCOPUS'
         self.endpoint = "https://api.elsevier.com/content/search/scopus"
@@ -308,7 +268,7 @@ class ScopusIngestionEngine(object):
             logging.error("Date tuple provided is incorrect")
             return 'FAIL'
 
-        make_folder(self.file_path)
+        Utils.make_folder(self.file_path)
         self.gen_info_file(terms=search_terms,
                            dates=dates)
 
@@ -316,7 +276,7 @@ class ScopusIngestionEngine(object):
 
         for term in search_terms:
             term_path = os.path.join(self.file_path, term)
-            make_folder(term_path)
+            Utils.make_folder(term_path)
             logging.info("searching for %s" % term)
 
             for year in dates_range:
@@ -369,8 +329,6 @@ class SciDirIngestionEngine(ScopusIngestionEngine):
         Initialize the elsevier searcher
         Parameters
         ----------
-        dates : object (list like)
-            a list of dates covering the range of the search
         home : bool
             in order to get full access to the databases you will need to be
             on a network that has access
@@ -386,4 +344,3 @@ class SciDirIngestionEngine(ScopusIngestionEngine):
         self.database = 'Science Direct'
         self.endpoint = "https://api.elsevier.com/content/search/sciencedirect"
         logging.info("Corpus Builder Initialised")
-

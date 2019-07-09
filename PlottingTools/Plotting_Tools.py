@@ -8,7 +8,7 @@ Plotting_Tools.py
 Reads the pre-processed Corpus data and generates bibliometric plots
 """
 
-from CorpusReader import Elsevier_Corpus_Reader
+from CorpusReaders import Elsevier_Corpus_Reader
 from collections import Counter
 from collections import OrderedDict
 import seaborn as sns

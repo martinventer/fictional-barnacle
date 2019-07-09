@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from CorpusReader import Elsevier_Corpus_Reader
+from CorpusReaders import Elsevier_Corpus_Reader
 from CorpusFilterTools import Corpus_filters
 
 

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from CorpusProcessingTools import Corpus_Cluster
-from CorpusReader import Elsevier_Corpus_Reader
+from CorpusReaders import Elsevier_Corpus_Reader
 from CorpusProcessingTools import Corpus_Vectorizer
 
 from sklearn.pipeline import Pipeline

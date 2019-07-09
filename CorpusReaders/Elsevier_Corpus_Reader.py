@@ -44,6 +44,87 @@ PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
 CAT_PATTERN = r'([a-z_\s]+)/.*'
 
 
+class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
+    """
+    A reader for an entire raw corpus, as Downloaded by an ingestion engine.
+    """
+    PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
+    CAT_PATTERN = r'([0-9_\s]+)/.*'
+
+    def __init__(self, root, **kwargs):
+        """
+        Initialise the pickled corpus Pre_processor using two corpus readers
+        from the nltk library
+        Parameters
+        ----------
+        root : str like
+            the root directory for the corpus
+        fileids : str like
+            a regex pattern for the corpus document files
+        kwargs :
+            Additional arguements passed to the nltk corpus readers
+        """
+        # Add the default category pattern if not passed into the class.
+        if not any(key.startswith('cat_') for key in kwargs.keys()):
+            kwargs['cat_pattern'] = CAT_PATTERN
+
+        CategorizedCorpusReader.__init__(self, kwargs)
+        CorpusReader.__init__(self, root, fileids=PKL_PATTERN)
+
+    def resolve(self, fileids, categories):
+        """
+        Returns a list of fileids or categories depending on what is passed
+        to each internal corpus reader function. This primarily bubbles up to
+        the high level ``docs`` method, but is implemented here similar to
+        the nltk ``CategorizedPlaintextCorpusReader``.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+
+        """
+        if fileids is not None and categories is not None:
+            raise ValueError("Specify fileids or categories, not both")
+
+        if categories is not None:
+            return self.fileids(categories)
+        return fileids
+
+    def docs(self, fileids=None, categories=None):
+        """
+        Returns the document loaded from a pickled object for every file in
+        the corpus. Similar to the BaleenCorpusReader, this uses a generator
+        to archeive memory safe iteration.
+        Parameters
+        ----------
+        fileids: basestring or None
+            complete path to specified file
+        categories: basestring or None
+            path to directory containing a subset of the fileids
+
+        Returns
+        -------
+            yields a dictionary containing all the metadata for a given document
+        """
+        # Resolve the fileids and the categories
+        fileids = self.resolve(fileids, categories)
+
+        # Create a generator, loading one document into memory at a time.
+        for path, enc, fileid in self.abspaths(fileids, True, True):
+            with open(path, 'rb') as f:
+                yield pickle.load(f)
+
+    def read_single(self, fileid=None, root=None):
+        root = self.root if (root is None) else root
+        with open(os.path.join(root, fileid), 'rb') as f:
+            return pickle.load(f)
+
+
 class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
 
     def __init__(self, root, fileids=PKL_PATTERN, **kwargs):

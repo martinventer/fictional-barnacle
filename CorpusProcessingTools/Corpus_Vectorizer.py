@@ -188,7 +188,7 @@ class TitleNormalizer(TextNormalizer):
 
 
 if __name__ == '__main__':
-    from CorpusReader import Elsevier_Corpus_Reader
+    from CorpusReaders import Elsevier_Corpus_Reader
 
     # corpus = [
     #     "The elephant sneezed at the sight of potatoes.",

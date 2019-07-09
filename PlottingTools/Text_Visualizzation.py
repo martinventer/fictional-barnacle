@@ -221,7 +221,7 @@ def plot_tsne_clusters(corpus, fileids=None, labels=None):
 
 
 if __name__ == '__main__':
-    from CorpusReader import Elsevier_Corpus_Reader
+    from CorpusReaders import Elsevier_Corpus_Reader
     from CorpusProcessingTools import Corpus_Vectorizer, Corpus_Cluster
     from sklearn.pipeline import Pipeline
 

@@ -1,7 +1,6 @@
 
-from Ingestor import Elsivier_Ingestor
-from CorpusProcessingTools import Elsivier_Corpus_Pre_Processor
-from CorpusReader import Elsevier_Corpus_Reader
+from Ingestor import Elsivier_Ingestor, Corpus_Pre_Processor
+from CorpusReaders import Elsevier_Corpus_Reader
 from PlottingTools import Author_Networks
 
 
@@ -17,24 +16,24 @@ def download_corpus():
         home=False,
         batch_size=25)
 
-    builder.build_corpus(search_terms=['shoes', 'socks'],
+    builder.build_corpus(search_terms=['soft robot'],
                          dates=(1998, 1999))
 
 
 def reformat_corpus():
     root = "Corpus/Raw_corpus/"
-    target = "Corpus/Processed_corpus/"
+    target = "Corpus/Split_corpus/"
 
-    corpus = Elsivier_Corpus_Pre_Processor.PickledCorpusRefactor(root=root,
-                                                                 target=target)
-    corpus.refactor_corpus()
+    corpus = Elsevier_Corpus_Reader.RawCorpusReader(root=root)
+
+    Corpus_Pre_Processor.split_corpus(corpus=corpus, target=target)
 
 
 def process_corpus():
     corp = Elsevier_Corpus_Reader.ScopusRawCorpusReader(
             "Corpus/Processed_corpus/")
 
-    formatter = Elsivier_Corpus_Pre_Processor.PickledCorpusPreProcessor(corp)
+    formatter = Corpus_Pre_Processor.PickledCorpusPreProcessor(corp)
 
     formatter.transform()
 
@@ -49,7 +48,7 @@ def plot_features():
 
 if __name__ == '__main__':
     # step 1: download the raw corpus from elsivier
-    download_corpus()
+    # download_corpus()
 
     # step 2: reformat the corpus for faster manipulation
     # reformat_corpus()

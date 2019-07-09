@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from CorpusProcessingTools import Corpus_Vectorizer
-from CorpusReader import Elsevier_Corpus_Reader
+from CorpusReaders import Elsevier_Corpus_Reader
 
 
 class TestTokenize(TestCase):
