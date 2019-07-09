@@ -19,10 +19,12 @@ import logging
 
 from Utils import Utils
 
-
-logging.basicConfig(filename='logs/Ingestor.log',
-                    format='%(asctime)s %(message)s',
-                    level=logging.INFO)
+try:
+    logging.basicConfig(filename='logs/Ingestor.log',
+                        format='%(asctime)s %(message)s',
+                        level=logging.INFO)
+except:
+    pass
 
 
 def get_classifications() -> list:

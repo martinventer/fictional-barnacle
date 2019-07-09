@@ -33,23 +33,12 @@ except:
     pass
 
 
-# PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
-# PKL_PATTERN = r'(?!\.)[0-9_\s]+/[a-f0-9]+\.pickle'
-# PKL_PATTERN = r'(?!\.)[a-z_\s]+/[0-9_\s]+/[a-f0-9]+\.pickle'
-PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
-
-# CAT_PATTERN = r'([a-z_\s]+)/.*'
-# CAT_PATTERN = r'([0-9_\s]+)/.*'
-# CAT_PATTERN = r'([a-z_\s]+/[0-9_\s]+)/.*'
-CAT_PATTERN = r'([a-z_\s]+)/.*'
-
-
 class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
     """
     A reader for an entire raw corpus, as Downloaded by an ingestion engine.
     """
     PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
-    CAT_PATTERN = r'([0-9_\s]+)/.*'
+    CAT_PATTERN = r'([a-z_\s]+)/.*'
 
     def __init__(self, root, **kwargs):
         """
@@ -66,10 +55,10 @@ class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
         """
         # Add the default category pattern if not passed into the class.
         if not any(key.startswith('cat_') for key in kwargs.keys()):
-            kwargs['cat_pattern'] = CAT_PATTERN
+            kwargs['cat_pattern'] = RawCorpusReader.CAT_PATTERN
 
         CategorizedCorpusReader.__init__(self, kwargs)
-        CorpusReader.__init__(self, root, fileids=PKL_PATTERN)
+        CorpusReader.__init__(self, root, fileids=RawCorpusReader.PKL_PATTERN)
 
     def resolve(self, fileids, categories):
         """
@@ -126,8 +115,10 @@ class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
 
 
 class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
+    PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
+    CAT_PATTERN = r'([a-z_\s]+)/.*'
 
-    def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
+    def __init__(self, root, **kwargs):
         """
         Initialise the pickled corpus reader using two corpus readers from
         the nltk library
@@ -135,17 +126,16 @@ class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
         ----------
         root : str like
             the root directory for the corpus
-        fileids : str like
-            a regex pattern for the corpus document files
         kwargs :
             Additional arguements passed to the nltk corpus readers
         """
         # Add the default category pattern if not passed into the class.
         if not any(key.startswith('cat_') for key in kwargs.keys()):
-            kwargs['cat_pattern'] = CAT_PATTERN
+            kwargs['cat_pattern'] = ScopusRawCorpusReader.CAT_PATTERN
 
         CategorizedCorpusReader.__init__(self, kwargs)
-        CorpusReader.__init__(self, root, fileids)
+        CorpusReader.__init__(self, root,
+                              fileids=ScopusRawCorpusReader.PKL_PATTERN)
 
     def resolve(self, fileids, categories):
         """
@@ -774,6 +764,8 @@ class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
 
 
 class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
+    PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
+    CAT_PATTERN = r'([a-z_\s]+)/.*'
 
     def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
         """
@@ -1057,21 +1049,25 @@ class CorpuKfoldLoader(object):
 
 
 if __name__ == '__main__':
-    corpus = ScopusProcessedCorpusReader(
-        "Corpus/Processed_corpus/")
-
-    loader = CorpuKfoldLoader(corpus, n_folds=12, shuffle=False)
-
-    subset = next(loader.fileids(test=True))
-    # subset = next(loader.fileids(train=True))
-
-    # docs = list(corpus.title_tagged(fileids=loader.fileids(test=True)))
-    # pickles = list(loader.fileids(1, test=True))
-
-    # check ngrammer
-    ngram = corpus.ngrams(n=3, fileids=subset)
-    print(next(ngram))
-
-
+    # corpus = ScopusProcessedCorpusReader(
+    #     "Corpus/Processed_corpus/")
+    #
+    # loader = CorpuKfoldLoader(corpus, n_folds=12, shuffle=False)
+    #
+    # subset = next(loader.fileids(test=True))
+    # # subset = next(loader.fileids(train=True))
+    #
+    # # docs = list(corpus.title_tagged(fileids=loader.fileids(test=True)))
+    # # pickles = list(loader.fileids(1, test=True))
+    #
+    # # check ngrammer
+    # ngram = corpus.ngrams(n=3, fileids=subset)
+    # print(next(ngram))
 
 
+
+
+    root = "Corpus/Split_corpus/"
+    # root = "Corpus/Raw_corpus/"
+
+    corpus = RawCorpusReader(root=root)
