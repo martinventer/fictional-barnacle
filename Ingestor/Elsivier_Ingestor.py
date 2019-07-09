@@ -28,7 +28,7 @@ def get_classifications() -> list:
     get a list of subject classifications associated with ScienceDirect content.
     Returns
     -------
-        a list of subject classifications
+        A list of subject classifications for a given search term.
     """
     file = urlopen(
         'https://api.elsevier.com/content/subject/scopus?httpAccept=text/xml')
@@ -42,25 +42,30 @@ def get_classifications() -> list:
                      in data]))
 
 
-def get_key(file='api_key.dict', key='ElsevierDeveloper'):
+def get_key() -> str:
     """
-    opens a file containing api keys and returns the specific key requested
+    Reads the API key from and external file called 'api_key.dict' in the
+    local directory. The format for the file is a single line containing the
+    following.
+
+        {'ElsevierDeveloper':'XXX-key-XXX'}
+
+    A key can be obtained by registering on http://dev.elsevier.com/ and
+    requesting an api key.
     Parameters
     ----------
-    file : str
-        the name of the file containing the api keys
-    key : str
-        which api key is being requested
 
     Returns
     -------
-    str
-        api key as string
+        str
+            api key as string
     """
+    file = 'api_key.dict'
+    key = 'ElsevierDeveloper'
     return eval(open(file, 'r').read())[key]
 
 
-def make_folder(path):
+def make_folder(path) -> None:
     """
     creates a directory without failing unexpectedly
     Parameters
@@ -70,33 +75,31 @@ def make_folder(path):
 
     Returns
     -------
-
+        None
     """
     try:
         os.makedirs(path)
     except FileExistsError:
-        logging.error("file %s already exists" % path)
+        logging.info("file %s already exists" % path)
         pass
 
 
 class ScopusIngestionEngine(object):
     """
-    An interface for the Elsevier search API capable of searching both the
-    scopus and science direct databases, if you have the correct API key
+    An interface for the Elsevier search API capable of searching the scopus
+    databases. This can take in a list of search topics and a range of dated
+    to be searched. A single pickle file is generated for all search results
+    returned within a given year.
     """
 
     def __init__(self,
-                 search_terms=(),
-                 dates=(1900, datetime.today().year),
                  home=False,
                  batch_size=25,
-                 file_path="Corpus/"):
+                 file_path="Corpus/raw_corpus"):
         """
-        Initialize the elsevier searcher
+        Initialize the Scopus ingestion engine
         Parameters
         ----------
-        dates : object (list like)
-            a list of dates covering the range of the search
         home : bool
             in order to get full access to the databases you will need to be
             on a network that has access
@@ -108,9 +111,6 @@ class ScopusIngestionEngine(object):
         self.file_path = os.path.dirname(file_path)
         self.batch_size = batch_size
         self.home = home
-        self.search_terms = search_terms
-        self.dates = dates
-        self.dates_range = range(*dates)
         self.api_key = get_key()
         self.status_code = None
         self.database = 'SCOPUS'
@@ -121,9 +121,9 @@ class ScopusIngestionEngine(object):
                        search_term,
                        start=0,
                        date=datetime.today().year,
-                       subject=None):
+                       subject=None) -> dict:
         """
-        a basic search of the science direct database
+        Single Scopus search, for one term in one year.
         Parameters
         ----------
         subject : int
@@ -137,7 +137,6 @@ class ScopusIngestionEngine(object):
 
         Returns
         -------
-        json
             a dictionary like object containing the search results
         """
         headers = {"X-ELS-APIKey": self.api_key}
@@ -164,12 +163,13 @@ class ScopusIngestionEngine(object):
                 'connection fails with status %d' % search_results.status_code)
             logging.error(
                 '\t search term %s starting at %d' % (search_term, start))
-            return None
+            return {}
 
     def get_num_batches(self, num_entities) -> int:
         """
         Looks at the total number of entities found and calculates the number
-        of batches
+        of download batches required, based on the batch size. The API is
+        restricted to batches of 25 entities.
         Parameters
         ----------
         num_entities: int
@@ -185,10 +185,10 @@ class ScopusIngestionEngine(object):
             num_batches = int(num_entities / self.batch_size)
         return num_batches
 
-    def retrieve_all_in_year(self, term, year):
+    def retrieve_all_in_year(self, term, year) -> list:
         """
-        retrieves all entities associated with a give search term in a given
-        year
+        Retrieves all entities associated with a single search term in a given
+        year.
         Parameters
         ----------
         term : str
@@ -199,17 +199,23 @@ class ScopusIngestionEngine(object):
         Returns
         -------
         list
-            returns a list of related to the search term in the given year
+            returns a list containg the data retrieved from the API
         """
         results_year = list()
         batch_start = 0
 
+        # test the connection to the servers and determine the number of
+        # entities to expect for the given search parameters.
         search_results = self.search_by_term(term, start=batch_start, date=year)
         expected_num_of_ent = int(search_results["opensearch:totalResults"])
         if self.status_code is not 200 or expected_num_of_ent is 0:
             logging.info(" %s in year %d contains no results" % (term, year))
             pass
 
+        # If there are entities in the search. Download the entities in
+        # batches. The API limits the number of entities that can be
+        # downloaded through the API to 5000. If the number of entities is less
+        # than 5000, a general search will provide all the entities.
         if 0 < expected_num_of_ent < 5000:
             num_batches = self.get_num_batches(expected_num_of_ent)
             for batch in trange(num_batches, ascii=True, desc=str(year)):
@@ -224,10 +230,20 @@ class ScopusIngestionEngine(object):
                     logging.error(
                         "failed to retrieve %s in year %d" % (term, year))
                     break
+                except KeyError:
+                    logging.warning(
+                        "no data to retrieve %s in year %d" % (term, year))
+                    break
+        # if the number of entities exceeds 5000 the search must be further
+        # refined to searches by subject field, such as medical or
+        # engineering. This extended search iterates over each subject field
+        # within the general search parameters to work around the 5000 word
+        # limit.
         elif expected_num_of_ent >= 5000:
-            logging.error(
-                "more than 5000 entries expected for  %s in year %d" % (
-                term, year))
+            logging.warning(
+                "more than 5000 entries expected for  %s in year %d"
+                % (term, year))
+            # get a list of classifications for the search parameters.
             list_of_subjects = get_classifications()
             for subject in list_of_subjects:
                 batch_start = 0
@@ -251,33 +267,59 @@ class ScopusIngestionEngine(object):
                     try:
                         for entry in search_results['entry']:
                             results_year.append(entry)
-                    except:
-                        logging.error(
-                            "failed to retrieve %s in year %d" % (term, year))
+                    except KeyError:
+                        logging.warning(
+                            "no data to retrieve %s in year %d"
+                            % (term, year))
                         break
 
         return results_year
 
-    def build_corpus(self):
+    def build_corpus(self,
+                     search_terms=None,
+                     dates=(1900, datetime.today().year)) -> str:
         """
-        takes the corpus builder initialised with the search terms and dates then iterates over each term for each
-        year, saving the data in files by each year in a folder for each term.
+        Build and save a raw corpus for the given search terms, over the
+        desired range of dates. Results are stored in pickle files in the
+        provided directory path.
+        Parameters
+        ----------
+        dates : tuple
+            (start year, end year)
+        search_terms : list
+            list of search term strings
+
         Returns
         -------
-        NONE
-            builds a pickled database of the data returned.
+            'FAIL' if input is incorrect
+            'PASS' if search completes
+
         """
-        logging.info('Start')
+        logging.info('Start building corpus')
+
+        if search_terms is None:
+            search_terms = []
+
+        if len(search_terms) is 0:
+            logging.error("No search_terms provided")
+            return 'FAIL'
+
+        if len(dates) is not 2:
+            logging.error("Date tuple provided is incorrect")
+            return 'FAIL'
 
         make_folder(self.file_path)
-        self.gen_info_file()
+        self.gen_info_file(terms=search_terms,
+                           dates=dates)
 
-        for term in self.search_terms:
+        dates_range = range(*dates)
+
+        for term in search_terms:
             term_path = os.path.join(self.file_path, term)
             make_folder(term_path)
             logging.info("searching for %s" % term)
 
-            for year in self.dates_range:
+            for year in dates_range:
                 logging.error(
                     "Start retrieving %s in year %d" % (term, year))
                 data_path = os.path.join(term_path, str(year) + '.pickle')
@@ -287,15 +329,29 @@ class ScopusIngestionEngine(object):
                         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
         logging.info('End')
+        return 'PASS'
 
-    def gen_info_file(self):
+    def gen_info_file(self, terms, dates) -> None:
+        """
+        generates a text file containing the details of the most recient search
+        Parameters
+        ----------
+        terms : list
+            list of search terms provided
+        dates : tuple
+            start and end years for search (start, end)
+
+        Returns
+        -------
+
+        """
         readme_location = self.file_path + '/info.txt'
         with open(readme_location, "w") as f:
             f.write("Search Time stamp {}".format(datetime.today()))
             f.write("Source database : %s \n" % self.database)
             f.write("Search from home {}".format(self.home))
-            f.write("search between %d and %d \n" % self.dates)
-            for term in self.search_terms:
+            f.write("search between %d and %d \n" % dates)
+            for term in terms:
                 f.write("-- %s \n" % term)
 
 
@@ -306,8 +362,6 @@ class SciDirIngestionEngine(ScopusIngestionEngine):
     """
 
     def __init__(self,
-                 search_terms=(),
-                 dates=(1900, datetime.today().year),
                  home=False,
                  batch_size=25,
                  file_path="Corpus/"):
@@ -326,8 +380,6 @@ class SciDirIngestionEngine(ScopusIngestionEngine):
             the path to where the corpus should be stored
         """
         ScopusIngestionEngine.__init__(self,
-                                       search_terms=search_terms,
-                                       dates=dates,
                                        home=home,
                                        batch_size=batch_size,
                                        file_path=file_path)

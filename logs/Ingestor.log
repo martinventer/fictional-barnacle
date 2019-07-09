@@ -727,3 +727,14 @@
 2019-07-01 17:46:15,099 file Corpus/Processed_corpus/soft robot/ already exists
 2019-07-01 17:46:15,755 file Corpus/Processed_corpus/soft robot/ already exists
 2019-07-01 17:46:15,776 End
+2019-07-09 15:34:18,405 Corpus Builder Initialised
+2019-07-09 15:34:18,405 Start building corpus
+2019-07-09 15:34:18,405 file Corpus/Raw_corpus already exists
+2019-07-09 15:35:48,518 Corpus Builder Initialised
+2019-07-09 15:35:48,518 Start building corpus
+2019-07-09 15:35:48,519 file Corpus/Raw_corpus already exists
+2019-07-09 15:35:48,519 searching for shoes
+2019-07-09 15:35:48,519 Start retrieving shoes in year 1998
+2019-07-09 15:36:53,073 searching for socks
+2019-07-09 15:36:53,073 Start retrieving socks in year 1998
+2019-07-09 15:37:14,103 End

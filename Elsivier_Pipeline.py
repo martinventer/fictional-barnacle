@@ -12,17 +12,13 @@ def download_corpus():
     -------
 
     """
-    search_terms = ['soft robot']
-    dates = (1950, 2021)
-
     builder = Elsivier_Ingestor.ScopusIngestionEngine(
-        search_terms=search_terms,
         file_path="Corpus/Raw_corpus/",
-        dates=dates,
         home=False,
         batch_size=25)
 
-    builder.build_corpus()
+    builder.build_corpus(search_terms=['shoes', 'socks'],
+                         dates=(1998, 1999))
 
 
 def reformat_corpus():
@@ -53,17 +49,17 @@ def plot_features():
 
 if __name__ == '__main__':
     # step 1: download the raw corpus from elsivier
-    # download_corpus()
+    download_corpus()
 
     # step 2: reformat the corpus for faster manipulation
     # reformat_corpus()
 
     # step 3: reformat the corpus for faster manipulation
-    process_corpus()
+    # process_corpus()
 
     # step 4: load the corpus reader
-    corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-        "Corpus/Processed_corpus/")
+    # corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+    #     "Corpus/Processed_corpus/")
 
     # step 5: plot author connectivity
     # plot_features()
