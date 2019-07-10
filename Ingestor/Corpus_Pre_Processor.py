@@ -20,9 +20,12 @@ from tqdm import tqdm
 
 from Utils import Utils
 
-logging.basicConfig(filename='logs/PreProcess.log',
-                    format='%(asctime)s %(message)s',
-                    level=logging.INFO)
+try:
+    logging.basicConfig(filename='logs/PreProcess.log',
+                        format='%(asctime)s %(message)s',
+                        level=logging.INFO)
+except FileNotFoundError:
+    pass
 
 
 def split_corpus(corpus, target) -> None:
@@ -41,7 +44,7 @@ def split_corpus(corpus, target) -> None:
     -------
 
     """
-    logging.info('Start')
+    logging.info('Start splitting raw corpus files')
     start = time.time()
 
     # create the target folder
@@ -70,56 +73,99 @@ def split_corpus(corpus, target) -> None:
     print("Time to reformat corpus {}seconds".format(end - start))
 
 
-class PickledCorpusPreProcessor(object):
+class ScopusCorpusProcessor(object):
     """
-    A wrapper for a corpus object that reads the raw imported data
-    and reformat sections to have a more suitable for text processing.
+    wrapper for a SplitCorpusReader that adds processed data to the file.
+    Data processing includes:
+        * tokenize text into format where one document returns
+            [list of paragraphs
+                [list of sentences
+                    [list of tagged tokens
+                        (token, tag)]]]
+        * tokenize additional text fields such as author, city, journal names
+        * add the file path each document
     """
-    #also add the file name to the data
 
     def __init__(self, corpus, target=None):
         """
         The corpus is the `HTMLCorpusReader` to preprocess and pickle.
         The target is the directory on disk to output the pickled corpus to.
+
+        Parameters
+        ----------
+        target : str
+            path to store new files
+        corpus : object
+            a SplitCorpusReader object
         """
         self.corpus = corpus
-        self.target = target
+        if target is not None:
+            self.target = target
+        else:
+            self.target = self.corpus.root
 
-    def fileids(self, fileids=None, categories=None):
+    def fileids(self, **kwargs):
         """
         Helper function access the fileids of the corpus
         """
-        fileids = self.corpus.resolve(fileids, categories)
+        if not any(key.startswith('fileids') for key in kwargs.keys()):
+            kwargs['fileids'] = None
+
+        if not any(key.startswith('categories') for key in kwargs.keys()):
+            kwargs['categories'] = None
+
+        fileids = self.corpus.resolve(**kwargs)
         if fileids:
             return fileids
         return self.corpus.fileids()
 
-    def tokenize(self, document):
+    @staticmethod
+    def tokenize(text) -> list:
         """
-        Segments, tokenizes, and tags a document title in the corpus. Returns a
-        title, which is a list of sentences, which in turn is a lists of part
-        of speech tagged words.
+        Segments, tokenizes, and tags document text in the corpus. Returns
+        text, which is a list of sentences, in turn is a lists of part of
+        speech tagged words (token, tag).
+
+        Parameters
+        ----------
+        text : str
+            single string containing the text to be tokenized
+
+        Returns
+        -------
+            a list of formatted text
+
         """
         try:
-            return [
+            tokenized_text = [
                 pos_tag(wordpunct_tokenize(sent))
-                for sent in sent_tokenize(document['dc:title'])
+                for sent in sent_tokenize(text)
             ]
         except KeyError:
-            pass
+            tokenized_text = [[('', '')]]
 
-    def process(self, fileid):
+        try:
+            if type(tokenized_text[0]) is tuple:
+                return [tokenized_text]
+            else:
+                return tokenized_text
+        except IndexError:
+            return [[('', '')]]
+
+    def process(self, fileid, fields=None):
         """
-                For a single file does the following preprocessing work:
+        For a single file does the following preprocessing work:
             1. Get the location of the document
             2. Generate a structured text list,
             3. Append the new structured text to the existing document
-            4. Writes the document as a pickle to the target location.
-            5. Clean up the document
-            6. Return the target file name
+            4. Append filename to document
+            5. Writes the document as a pickle to the target location.
+            6. Clean up the document
         This method is called multiple times from the transform runner.
         Parameters
         ----------
+        fields : list
+            list of field identifiers
         fileid : str
             the file id to be processed
 
@@ -128,32 +174,38 @@ class PickledCorpusPreProcessor(object):
             None
 
         """
-        # 1. Get the location of the document
-        target = self.corpus.abspath(fileid)
+        if fields is None:
+            fields = ['dc:title', 'dc:description']
 
-        # 2 & 3. Generate and append structured form of text to document
+        # 1. Get the location to store file
+        file_path = os.path.join(self.target, fileid)
+
+        # iterate over fields
         document = self.corpus.read_single(fileid)
-        title_token = self.tokenize(document)
-        try:
-            if type(title_token[0]) is tuple:
-                document["struct:title"] = [title_token]
-            else:
-                document["struct:title"] = title_token
-        except TypeError:
-            # pass
-            document["struct:title"] = [[('', '')]]
+        # 2 Generate structured form of text
+        for field in fields:
+            try:
+                text = document[field]
+            except KeyError:
+                text = ''
 
-        # 4. Writes the document as a pickle to the target location.
-        with open(target, 'wb') as f:
+            tokenized_text = self.tokenize(text)
+
+            # 3 Append structured form of text to document
+            new_field = "processed:{}".format(field)
+            document[new_field] = tokenized_text
+
+        # 4. Append filename to document
+        document['file_name'] = fileid
+
+        # 5. Writes the document as a pickle to the target location.
+        with open(file_path, 'wb') as f:
             pickle.dump(document, f, pickle.HIGHEST_PROTOCOL)
 
-        # 5. Clean up the document
+        # 6. Clean up the document
         del document
 
-        # 6. Return the target file name
-        # return target
-
-    def transform(self, fileids=None, categories=None):
+    def transform(self, **kwargs):
         """
         Take an existing corpus and transform it such that it contains more
         suitably formatted data.
@@ -161,11 +213,6 @@ class PickledCorpusPreProcessor(object):
         process each file in the corpus
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
         Returns
         -------
             None
@@ -173,14 +220,43 @@ class PickledCorpusPreProcessor(object):
         """
         start = time.time()
         # serial file processing
-        for filename in tqdm(self.fileids(fileids, categories),
-                         desc="transforming pickled corpus"):
-            self.process(filename)
 
-        # parallel file processing
-        # with Pool(6) as p:
-        #     tqdm(p.imap(self.process, self.fileids(fileids, categories)),
-        #          desc="preprocess corpus parallel")
+        # create the target folders
+
+        for cat in self.corpus.categories():
+            Utils.make_folder('{}/{}'.format(self.target, cat))
+
+        for filename in tqdm(self.fileids(**kwargs),
+                         desc="Processing corpus"):
+            self.process(filename, fields=None)
 
         end = time.time()
-        print("Time to pre process {}seconds".format(end - start))
+        print("Time to process {}seconds".format(end - start))
+
+
+if __name__ == '__main__':
+    from CorpusReaders import Elsevier_Corpus_Reader
+    from pprint import PrettyPrinter
+
+    root = "Corpus/Split_corpus/"
+    corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(root=root)
+    target = "Corpus/Processed_corpus/"
+
+    # gen = corpus.docs()
+    # aa = next(gen)
+    # pp = PrettyPrinter(indent=4)
+    # pp.pprint(aa['dc:title'])
+    #
+    # text = aa['dc:title']
+    # bb = [pos_tag(wordpunct_tokenize(sent)) for sent in sent_tokenize(text)]
+
+    processor = ScopusCorpusProcessor(corpus=corpus, target=target)
+    processor.transform()
+
+    corpus2 = Elsevier_Corpus_Reader.ScopusCorpusReader(root=target)
+    gen2 = corpus2.docs()
+    aa2 = next(gen2)
+    pp = PrettyPrinter(indent=4)
+    pp.pprint(aa2['processed:dc:title'])
+    pp.pprint(aa2['processed:dc:description'])
+    pp.pprint(aa2['file_name'])

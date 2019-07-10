@@ -6,7 +6,7 @@ from Ingestor import Elsivier_Ingestor
 class TestScopusIngestionEngine(TestCase):
     def setUp(self) -> None:
         self.ingestor = Elsivier_Ingestor.ScopusIngestionEngine(
-            file_path="Test/Corpus/Raw_corpus/",
+            file_path="Test_Corpus_download/Raw_corpus/",
             home=False,
             batch_size=25)
 
@@ -32,7 +32,7 @@ class TestScopusIngestionEngine(TestCase):
 class TestSciDirIngestionEngine(TestCase):
     def setUp(self) -> None:
         self.ingestor = Elsivier_Ingestor.SciDirIngestionEngine(
-            file_path="Test/Corpus/Raw_corpus/",
+            file_path="Test_Corpus_download/Raw_corpus/",
             home=False,
             batch_size=25)
 

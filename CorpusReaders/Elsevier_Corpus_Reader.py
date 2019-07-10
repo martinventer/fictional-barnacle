@@ -23,8 +23,6 @@ import nltk
 
 from datetime import datetime
 
-from Utils import Utils
-
 import logging
 
 try:
@@ -141,52 +139,7 @@ class ScopusCorpusReader(RawCorpusReader):
         if not any(key.startswith('pkl_') for key in kwargs.keys()):
             kwargs['pkl_pattern'] = ScopusCorpusReader.PKL_PATTERN
 
-        # CategorizedCorpusReader.__init__(self, kwargs)
-        # CorpusReader.__init__(self, root,
-        #                       fileids=ScopusCorpusReader.PKL_PATTERN)
         RawCorpusReader.__init__(self, root=root, **kwargs)
-
-    # restructure reader with nested functions
-
-    ## document attributes
-    # 'affiliation'
-    # 'prism:doi'
-    # 'prism:issn'
-    # 'prism:url'
-    # 'pubmed-id'
-    # 'source-id'
-    # 'link'
-    # 'eid'
-    # 'dc:identifier'
-
-    # 'prism:issueIdentifier'
-    # 'prism:pageRange'
-    # 'prism:publicationName'
-    # 'prism:volume'
-    # 'subtype'
-    # 'subtypeDescription'
-
-    # 'prism:aggregationType'
-    # 'prism:coverDate'
-    # 'prism:coverDisplayDate'
-    # 'authkeywords'
-
-    ## author information
-    # 'author'
-
-
-    ## statistics
-    # 'citedby-count'
-    # 'author-count'
-
-    # 'dc:creator'
-    'dc:description'
-    'dc:title'
-
-    # 'fund-no'
-
-    # 'openaccess'
-    # 'openaccessFlag'
 
     def affiliation_l(self, **kwargs) -> list:
         """
@@ -443,10 +396,13 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for keywords in self.keywords_l(**kwargs):
-            try:
-                for phrase in keywords:
-                    yield phrase
-            except KeyError:
+            if keywords:
+                try:
+                    for phrase in keywords:
+                        yield phrase
+                except KeyError:
+                    yield ''
+            else:
                 yield ''
 
     def keywords_s(self, **kwargs) -> str:
@@ -497,12 +453,15 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for data in self.author_data_l(**kwargs):
-            try:
-                author_ids = []
-                for author in data:
-                    author_ids.append(author['authid'])
-                yield author_ids
-            except KeyError:
+            if data:
+                try:
+                    author_ids = []
+                    for author in data:
+                        author_ids.append(author['authid'])
+                    yield author_ids
+                except KeyError:
+                    yield []
+            else:
                 yield []
 
     def author_data_id_s(self, **kwargs) -> str:
@@ -1330,15 +1289,16 @@ if __name__ == '__main__':
     from pprint import PrettyPrinter
     # RawCorpusReader
     # root = "Corpus/Split_corpus/"
-    # root = "Corpus/Raw_corpus/"
-    # corpus = RawCorpusReader(root=root)
+    root = "Tests/Test_Corpus/Raw_corpus/"
+    corpus = RawCorpusReader(root=root)
+    aa = next(corpus.docs())[0]
 
-    # ScopusCorpusReader
-    root = "Corpus/Split_corpus/"
-    corpus = ScopusCorpusReader(root=root)
-    # gen = corpus.affiliation()
-    gen = corpus.docs()
-    # gen = corpus.author_keywords_l()
-    aa = next(gen)
-    pp = PrettyPrinter(indent=4)
-    pp.pprint(aa)
+    # # ScopusCorpusReader
+    # root = "Corpus/Split_corpus/"
+    # corpus = ScopusCorpusReader(root=root)
+    # # gen = corpus.affiliation()
+    # gen = corpus.docs()
+    # # gen = corpus.author_keywords_l()
+    # aa = next(gen)
+    # pp = PrettyPrinter(indent=4)
+    # pp.pprint(aa)

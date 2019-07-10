@@ -33,7 +33,7 @@ def process_corpus():
     corp = Elsevier_Corpus_Reader.ScopusCorpusReader(
             "Corpus/Processed_corpus/")
 
-    formatter = Corpus_Pre_Processor.PickledCorpusPreProcessor(corp)
+    formatter = Corpus_Pre_Processor.ScopusCorpusProcessor(corp)
 
     formatter.transform()
 

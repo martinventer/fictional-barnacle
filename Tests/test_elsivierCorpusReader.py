@@ -8,11 +8,11 @@ from CorpusReaders import Elsevier_Corpus_Reader
 class TestRawCorpusReader(TestCase):
     def setUp(self) -> None:
         self.corp = Elsevier_Corpus_Reader.RawCorpusReader(
-            "Corpus/Raw_corpus/")
+            "Test_Corpus/Raw_corpus/")
 
     def test_docs(self):
-        target = [{'@_fa': 'true', 'link': [{'@_fa': 'true', '@ref': 'self', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/85060282060'}, {'@_fa': 'true', '@ref': 'author-affiliation', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/85060282060?field=author,affiliation'}, {'@_fa': 'true', '@ref': 'scopus', '@href': 'https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp=85060282060&origin=inward'}, {'@_fa': 'true', '@ref': 'scopus-citedby', '@href': 'https://www.scopus.com/inward/citedby.uri?partnerID=HzOxMe3b&scp=85060282060&origin=inward'}], 'prism:url': 'https://api.elsevier.com/content/abstract/scopus_id/85060282060', 'dc:identifier': 'SCOPUS_ID:85060282060', 'eid': '2-s2.0-85060282060', 'dc:title': 'Robots, productivity and quality', 'dc:creator': 'Rosen C.', 'prism:publicationName': 'Proceedings of the ACM Annual Conference, ACM 1972', 'prism:volume': '1', 'prism:pageRange': '47-57', 'prism:coverDate': '1972-08-01', 'prism:coverDisplayDate': '1 August 1972', 'dc:description': '© Association for Computing Machinery, Inc 1972. All rights reserved. There is a growing national need to increase the real productivity of our society, wherein "productivity" is redefined to include such major factors as the quality of life of workers and the quality of products, consistent with the desires and expectations of the general public. This paper proposed the development of automation technology designed to increase quality, in all its aspects, at an acceptable cost to society. The proposed program is divided into two phases. The first phase is designed to catalyze the potential resources of industrial concerns by developing two demonstrable systems that include generalpurpose programmed manipulation and automated inspection. The second phase, with longer term objectives, would aim at devising techniques to broaden the utilization of programmed manipulators and sensors, to provide supervisory control of these systems by human speech, and to develop a capability for automatic manipulation of two or more sensor-controlled "hands" working cooperatively.', 'citedby-count': '2', 'affiliation': [{'@_fa': 'true', 'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60000461', 'afid': '60000461', 'affilname': 'SRI International', 'affiliation-city': 'Menlo Park', 'affiliation-country': 'United States'}], 'prism:aggregationType': 'Conference Proceeding', 'subtype': 'cp', 'subtypeDescription': 'Conference Paper', 'author-count': {'@limit': '100', '$': '1'}, 'author': [{'@_fa': 'true', '@seq': '1', 'author-url': 'https://api.elsevier.com/content/author/author_id/7202592484', 'authid': '7202592484', 'authname': 'Rosen C.', 'surname': 'Rosen', 'given-name': 'Charles A.', 'initials': 'C.A.', 'afid': [{'@_fa': 'true', '$': '60000461'}]}], 'source-id': '21100903188', 'fund-no': 'undefined', 'openaccess': '0', 'openaccessFlag': False}, {'@_fa': 'true', 'link': [{'@_fa': 'true', '@ref': 'self', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/0015346272'}, {'@_fa': 'true', '@ref': 'author-affiliation', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/0015346272?field=author,affiliation'}, {'@_fa': 'true', '@ref': 'scopus', '@href': 'https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp=0015346272&origin=inward'}, {'@_fa': 'true', '@ref': 'scopus-citedby', '@href': 'https://www.scopus.com/inward/citedby.uri?partnerID=HzOxMe3b&scp=0015346272&origin=inward'}], 'prism:url': 'https://api.elsevier.com/content/abstract/scopus_id/0015346272', 'dc:identifier': 'SCOPUS_ID:0015346272', 'eid': '2-s2.0-0015346272', 'dc:title': 'Review of materials processing literature 1966-1968: 4—plastic working of metals', 'dc:creator': 'Boulger F.', 'prism:publicationName': 'Journal of Manufacturing Science and Engineering, Transactions of the ASME', 'prism:issn': '10871357', 'prism:eIssn': '15288935', 'prism:volume': '94', 'prism:issueIdentifier': '2', 'prism:pageRange': '721-725', 'prism:coverDate': '1972-01-01', 'prism:coverDisplayDate': 'May 1972', 'prism:doi': '10.1115/1.3428235', 'citedby-count': '0', 'affiliation': [{'@_fa': 'true', 'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60033479', 'afid': '60033479', 'affilname': 'Battelle Columbus Lab', 'affiliation-city': 'Columbus', 'affiliation-country': 'United States'}], 'prism:aggregationType': 'Journal', 'subtype': 're', 'subtypeDescription': 'Review', 'author-count': {'@limit': '100', '$': '1'}, 'author': [{'@_fa': 'true', '@seq': '1', 'author-url': 'https://api.elsevier.com/content/author/author_id/6602887172', 'authid': '6602887172', 'authname': 'Boulger F.', 'surname': 'Boulger', 'given-name': 'F. W.', 'initials': 'F.W.', 'afid': [{'@_fa': 'true', '$': '60033479'}]}], 'source-id': '20966', 'fund-no': 'undefined', 'openaccess': '0', 'openaccessFlag': False}]
-        result = next(self.corp.docs())
+        target = {'@_fa': 'true', 'link': [{'@_fa': 'true', '@ref': 'self', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/84963627673'}, {'@_fa': 'true', '@ref': 'author-affiliation', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/84963627673?field=author,affiliation'}, {'@_fa': 'true', '@ref': 'scopus', '@href': 'https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp=84963627673&origin=inward'}, {'@_fa': 'true', '@ref': 'scopus-citedby', '@href': 'https://www.scopus.com/inward/citedby.uri?partnerID=HzOxMe3b&scp=84963627673&origin=inward'}], 'prism:url': 'https://api.elsevier.com/content/abstract/scopus_id/84963627673', 'dc:identifier': 'SCOPUS_ID:84963627673', 'eid': '2-s2.0-84963627673', 'dc:title': 'Development of a hall-effect based skin sensor', 'dc:creator': 'Tomo T.', 'prism:publicationName': '2015 IEEE SENSORS - Proceedings', 'prism:isbn': [{'@_fa': 'true', '$': '9781479982028'}], 'prism:pageRange': None, 'prism:coverDate': '2015-12-31', 'prism:coverDisplayDate': '31 December 2015', 'prism:doi': '10.1109/ICSENS.2015.7370435', 'dc:description': "© 2015 IEEE. In this paper we introduce a prototype of a novel hall-effect based skin sensor for robotic applications. It uses a small sized chip that provides 3-axis digital output in a compact package. Our purpose was to evaluate the feasibility of measuring 3-axis force while maintain a soft exterior for safe interactions. Silicone was used to produce the soft skin layer with about 8 mm thickness. An MLX90393 chip was installed at the bottom of layer, with a small magnet approximately 5mm above it to measure 3-axial magnetic field data. To evaluate the sensor's performance, an experiment was conducted by measuring normal and shear force when applying total forces of 0.7-14N in the normal and tangential directions of the sensor. The test revealed that the sensor prototype was able to differentiate the components of the force vector, with limited crosstalk. A calibration was performed to convert the measurements of the magnetic field to force values.", 'citedby-count': '5', 'affiliation': [{'@_fa': 'true', 'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60023462', 'afid': '60023462', 'affilname': 'Waseda University', 'affiliation-city': 'Tokyo', 'affiliation-country': 'Japan'}, {'@_fa': 'true', 'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60004956', 'afid': '60004956', 'affilname': 'Instituto Superior Técnico', 'affiliation-city': 'Lisbon', 'affiliation-country': 'Portugal'}], 'prism:aggregationType': 'Conference Proceeding', 'subtype': 'cp', 'subtypeDescription': 'Conference Paper', 'author-count': {'@limit': '100', '$': '6'}, 'author': [{'@_fa': 'true', '@seq': '1', 'author-url': 'https://api.elsevier.com/content/author/author_id/57188759249', 'authid': '57188759249', 'authname': 'Tomo T.', 'surname': 'Tomo', 'given-name': 'Tito Pradhono', 'initials': 'T.P.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '2', 'author-url': 'https://api.elsevier.com/content/author/author_id/56531989700', 'authid': '56531989700', 'authname': 'Somlor S.', 'surname': 'Somlor', 'given-name': 'Sophon', 'initials': 'S.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '3', 'author-url': 'https://api.elsevier.com/content/author/author_id/36662716600', 'authid': '36662716600', 'authname': 'Schmitz A.', 'surname': 'Schmitz', 'given-name': 'Alexander', 'initials': 'A.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '4', 'author-url': 'https://api.elsevier.com/content/author/author_id/35355828000', 'authid': '35355828000', 'authname': 'Hashimoto S.', 'surname': 'Hashimoto', 'given-name': 'Shuji', 'initials': 'S.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '5', 'author-url': 'https://api.elsevier.com/content/author/author_id/7102227917', 'authid': '7102227917', 'authname': 'Sugano S.', 'surname': 'Sugano', 'given-name': 'Shigeki', 'initials': 'S.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '6', 'author-url': 'https://api.elsevier.com/content/author/author_id/24479375600', 'authid': '24479375600', 'authname': 'Jamone L.', 'surname': 'Jamone', 'given-name': 'Lorenzo', 'initials': 'L.', 'afid': [{'@_fa': 'true', '$': '60004956'}]}], 'authkeywords': 'magnetic | sensor | skin | tactile', 'article-number': '7370435', 'source-id': '21100455562', 'fund-no': 'undefined', 'openaccess': '0', 'openaccessFlag': False}
+        result = next(self.corp.docs())[0]
         print(result)
         self.assertEqual(result, target)
 
@@ -20,245 +20,188 @@ class TestRawCorpusReader(TestCase):
 class TestScopusCorpusReader(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(
-            "Corpus/Split_corpus/")
+            "Test_Corpus/Split_corpus/")
+        # self.gen = self.corpus.docs()
+        # self.trial_doc = next(self.gen)
+        # self.trial_doc_a = next(self.gen)
+        # self.trial_doc_b = next(self.gen)
 
     def test_affiliation_l(self):
-        target = [{'@_fa': 'true',
-                   'affiliation-city': 'Augusta',
-                   'affiliation-country': 'United States',
-                   'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60024399',
-                   'affilname': 'Medical College of Georgia',
-                   'afid': '60024399'},
-                   {'@_fa': 'true',
-                  'affiliation-city': 'Los Angeles',
-                    'affiliation-country': 'United States',
-                    'affiliation-url':
-                        'https://api.elsevier.com/content/affiliation/affiliation_id/60019009',
-                    'affilname': 'University of Southern California, School of Dentistry',
-                    'afid': '60019009'},
-                    {'@_fa': 'true',
-                    'affiliation-city': 'Gothenburg',
-                    'affiliation-country': 'Sweden',
-                    'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60016437',
-                    'affilname': 'Göteborgs Universitet',
-                    'afid': '60016437'},
-                    {'@_fa': 'true',
-                    'affiliation-city': 'Seattle',
-                    'affiliation-country': 'United States',
-                    'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60015481',
-                    'affilname': 'University of Washington, Seattle',
-                    'afid': '60015481'},
-                    {'@_fa': 'true',
-                    'affiliation-city': 'Jerusalem',
-                    'affiliation-country': 'Israel',
-                    'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60007903',
-                    'affilname': 'Hebrew University of Jerusalem',
-                    'afid': '60007903'}]
-        result = next(self.corpus.affiliation_l())
-        self.assertEqual(target, result)
+        gen = self.corpus.docs()
+        for result in self.corpus.affiliation_l():
+            try:
+                target = next(gen)['affiliation']
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(list, type(result))
 
     def test_affiliation_city_l(self):
-        target = ['Augusta', 'Los Angeles', 'Gothenburg', 'Seattle', 'Jerusalem']
-        result = next(self.corpus.affiliation_city_l())
-        self.assertEqual(target, result)
+        gen = self.corpus.docs()
+        for result in self.corpus.affiliation_city_l():
+            try:
+                target = next(gen)['affiliation']
+                target2 = target[0]['affiliation-city']
+            except KeyError:
+                target = []
+
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(target2, result[0])
+            self.assertEqual(list, type(result))
 
     def test_affiliation_city_s(self):
-        target = 'Augusta'
+        target = self.trial_doc['affiliation'][0]['affiliation-city']
         result = next(self.corpus.affiliation_city_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_affiliation_country_l(self):
-        target = ['United States', 'United States', 'Sweden', 'United States', 'Israel']
+        target = self.trial_doc['affiliation'][0]['affiliation-country']
         result = next(self.corpus.affiliation_country_l())
-        self.assertEqual(target, result)
+        self.assertEqual(target, result[0])
+        target2 = len(self.trial_doc['affiliation'])
+        self.assertEqual(target2, len(result))
+        self.assertEqual(list, type(result))
 
     def test_affiliation_country_s(self):
-        target = 'United States'
+        target = self.trial_doc['affiliation'][0]['affiliation-country']
         result = next(self.corpus.affiliation_country_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_affiliation_url_l(self):
-        target = ['https://api.elsevier.com/content/affiliation/affiliation_id/60024399',
-                     'https://api.elsevier.com/content/affiliation/affiliation_id/60019009',
-                     'https://api.elsevier.com/content/affiliation/affiliation_id/60016437',
-                     'https://api.elsevier.com/content/affiliation/affiliation_id/60015481',
-                     'https://api.elsevier.com/content/affiliation/affiliation_id/60007903']
+        target = self.trial_doc['affiliation'][0]['affiliation-url']
         result = next(self.corpus.affiliation_url_l())
-        self.assertEqual(target, result)
+        self.assertEqual(target, result[0])
+        target2 = len(self.trial_doc['affiliation'])
+        self.assertEqual(target2, len(result))
+        self.assertEqual(list, type(result))
 
     def test_affiliation_url_s(self):
-        target = 'https://api.elsevier.com/content/affiliation/affiliation_id/60024399'
+        target = self.trial_doc['affiliation'][0]['affiliation-url']
         result = next(self.corpus.affiliation_url_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_affiliation_name_l(self):
-        target = ['Medical College of Georgia',
-                     'University of Southern California, School of Dentistry',
-                     'Göteborgs Universitet',
-                     'University of Washington, Seattle',
-                     'Hebrew University of Jerusalem']
+        target = self.trial_doc['affiliation'][0]['affilname']
         result = next(self.corpus.affiliation_name_l())
-        self.assertEqual(target, result)
+        self.assertEqual(target, result[0])
+        target2 = len(self.trial_doc['affiliation'])
+        self.assertEqual(target2, len(result))
+        self.assertEqual(list, type(result))
 
     def test_affiliation_name_s(self):
-        target = 'Medical College of Georgia'
+        target = self.trial_doc['affiliation'][0]['affilname']
         result = next(self.corpus.affiliation_name_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_affiliation_id_l(self):
-        target = ['60024399', '60019009', '60016437', '60015481', '60007903']
+        target = self.trial_doc['affiliation'][0]['afid']
         result = next(self.corpus.affiliation_id_l())
-        self.assertEqual(target, result)
+        self.assertEqual(target, result[0])
+        target2 = len(self.trial_doc['affiliation'])
+        self.assertEqual(target2, len(result))
+        self.assertEqual(list, type(result))
 
     def test_affiliation_id_s(self):
-        target = '60024399'
+        target = self.trial_doc['affiliation'][0]['afid']
         result = next(self.corpus.affiliation_id_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_keywords_l(self):
-        target = ['Dental implants', 'Histology', 'Osseointegration', 'Surgery']
-        result = next(self.corpus.keywords_l())
+        target = [keyword.strip() for keyword in self.trial_doc_a[
+            'authkeywords'].split("|")]
+        gen = self.corpus.keywords_l()
+        _ = next(gen)
+        result = next(gen)
         self.assertEqual(target, result)
+        self.assertEqual(list, type(result))
 
     def test_keywords_string(self):
-        target = 'Dental implants Histology Osseointegration Surgery'
-        result = next(self.corpus.keywords_string())
+        target = ' '.join([keyword.strip() for keyword in self.trial_doc_a[
+            'authkeywords'].split("|")])
+        gen = self.corpus.keywords_string()
+        _ = next(gen)
+        result = next(gen)
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_keywords_phrase(self):
-        target = 'Dental implants'
-        result = next(self.corpus.keywords_phrase())
+        target = [keyword.strip() for keyword in self.trial_doc_a[
+            'authkeywords'].split("|")][0]
+        gen = self.corpus.keywords_phrase()
+        _ = next(gen)
+        result = next(gen)
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_keywords_s(self):
-        target = 'Dental'
-        result = next(self.corpus.keywords_s())
+        target = [keyword.strip() for keyword in self.trial_doc_a[
+            'authkeywords'].split("|")][0].split(' ')[0]
+        gen = self.corpus.keywords_s()
+        _ = next(gen)
+        result = next(gen)
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_author_data_l(self):
-        target = [{'@_fa': 'true',
-                      '@seq': '1',
-                      'afid': [{'$': '60019009', '@_fa': 'true'},
-                               {'$': '60015481', '@_fa': 'true'}],
-                      'authid': '55547124100',
-                      'authname': 'Becker W.',
-                      'author-url': 'https://api.elsevier.com/content/author/author_id/55547124100',
-                      'given-name': 'William',
-                      'initials': 'W.',
-                      'surname': 'Becker'},
-                     {'@_fa': 'true',
-                      '@seq': '2',
-                      'afid': [{'$': '60024399', '@_fa': 'true'}],
-                      'authid': '7007040311',
-                      'authname': 'Wikesjö U.',
-                      'author-url': 'https://api.elsevier.com/content/author/author_id/7007040311',
-                      'given-name': 'Ulf M.E.',
-                      'initials': 'U.M.E.',
-                      'surname': 'Wikesjö'},
-                     {'@_fa': 'true',
-                      '@seq': '3',
-                      'afid': [{'$': '60016437', '@_fa': 'true'}],
-                      'authid': '7005071364',
-                      'authname': 'Sennerby L.',
-                      'author-url': 'https://api.elsevier.com/content/author/author_id/7005071364',
-                      'given-name': 'Lars',
-                      'initials': 'L.',
-                      'surname': 'Sennerby'},
-                     {'@_fa': 'true',
-                      '@seq': '4',
-                      'afid': [{'$': '60024399', '@_fa': 'true'}],
-                      'authid': '6507418137',
-                      'authname': 'Qahash M.',
-                      'author-url': 'https://api.elsevier.com/content/author/author_id/6507418137',
-                      'given-name': 'Mohammed',
-                      'initials': 'M.',
-                      'surname': 'Qahash'},
-                     {'@_fa': 'true',
-                      '@seq': '5',
-                      'afid': [{'$': '60007903', '@_fa': 'true'}],
-                      'authid': '7006267759',
-                      'authname': 'Hujoel P.',
-                      'author-url': 'https://api.elsevier.com/content/author/author_id/7006267759',
-                      'given-name': 'Philippe',
-                      'initials': 'P.',
-                      'surname': 'Hujoel'},
-                     {'@_fa': 'true',
-                      '@seq': '6',
-                      'authid': '7403014169',
-                      'authname': 'Goldstein M.',
-                      'author-url': 'https://api.elsevier.com/content/author/author_id/7403014169',
-                      'given-name': 'Moshe',
-                      'initials': 'M.',
-                      'surname': 'Goldstein'},
-                     {'@_fa': 'true',
-                      '@seq': '7',
-                      'afid': [{'$': '60016437', '@_fa': 'true'}],
-                      'authid': '15052667100',
-                      'authname': 'Turkyilmaz I.',
-                      'author-url': 'https://api.elsevier.com/content/author/author_id/15052667100',
-                      'given-name': 'Ilser',
-                      'initials': 'I.',
-                      'surname': 'Turkyilmaz'}]
+        target = self.trial_doc['author']
         result = next(self.corpus.author_data_l())
         self.assertEqual(target, result)
+        target2 = len(self.trial_doc['author'])
+        self.assertEqual(target2, len(result))
+        self.assertEqual(list, type(result))
 
     def test_author_data_id_l(self):
-        target = ['55547124100',
-                     '7007040311',
-                     '7005071364',
-                     '6507418137',
-                     '7006267759',
-                     '7403014169',
-                     '15052667100']
+        target = [auth['authid'] for auth in self.trial_doc['author']]
         result = next(self.corpus.author_data_id_l())
         self.assertEqual(target, result)
+        self.assertEqual(list, type(result))
 
     def test_author_data_id_s(self):
-        target = '55547124100'
+        target = self.trial_doc['author'][0]['authid']
         result = next(self.corpus.author_data_id_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_author_data_name_full_l(self):
-        target = ['Becker W.',
-                     'Wikesjö U.',
-                     'Sennerby L.',
-                     'Qahash M.',
-                     'Hujoel P.',
-                     'Goldstein M.',
-                     'Turkyilmaz I.']
+        target = [auth['authname'] for auth in self.trial_doc['author']]
         result = next(self.corpus.author_data_name_full_l())
         self.assertEqual(target, result)
+        self.assertEqual(list, type(result))
 
     def test_author_data_name_full_s(self):
-        target = 'Becker W.'
+        target = self.trial_doc['author'][0]['authname']
         result = next(self.corpus.author_data_name_full_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_author_data_url_l(self):
-        target = ['https://api.elsevier.com/content/author/author_id/55547124100',
-                     'https://api.elsevier.com/content/author/author_id/7007040311',
-                     'https://api.elsevier.com/content/author/author_id/7005071364',
-                     'https://api.elsevier.com/content/author/author_id/6507418137',
-                     'https://api.elsevier.com/content/author/author_id/7006267759',
-                     'https://api.elsevier.com/content/author/author_id/7403014169',
-                     'https://api.elsevier.com/content/author/author_id/15052667100']
+        target = [auth['author-url'] for auth in self.trial_doc['author']]
         result = next(self.corpus.author_data_url_l())
         self.assertEqual(target, result)
+        self.assertEqual(list, type(result))
 
     def test_author_data_url_s(self):
-        target = 'https://api.elsevier.com/content/author/author_id/55547124100'
+        target = self.trial_doc['author'][0]['author-url']
         result = next(self.corpus.author_data_url_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_author_data_name_given_l(self):
-        target = ['William', 'Ulf M.E.', 'Lars', 'Mohammed', 'Philippe', 'Moshe', 'Ilser']
+        target = [auth['given-name'] for auth in self.trial_doc['author']]
         result = next(self.corpus.author_data_name_given_l())
         self.assertEqual(target, result)
+        self.assertEqual(list, type(result))
 
     def test_author_data_name_given_s(self):
-        target = 'William'
+        target = self.trial_doc['author'][0]['given-name']
         result = next(self.corpus.author_data_name_given_s())
         self.assertEqual(target, result)
+        self.assertEqual(str, type(result))
 
     def test_author_data_initial_l(self):
         target = ['W.', 'U.M.E.', 'L.', 'M.', 'P.', 'M.', 'I.']
