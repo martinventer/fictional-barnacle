@@ -46,11 +46,11 @@ def document_feature_counter(path,
     -------
         dict like object, either a Counter object or an OrderedDict
     """
-    corp = Elsevier_Corpus_Reader.ScopusRawCorpusReader(path)
+    corp = Elsevier_Corpus_Reader.ScopusCorpusReader(path)
     feature_map = {'pub_date': corp.pub_date,
                    # 'pub_type': corp.pub_type,
                    'publication': corp.publication,
-                   'author_count': corp.author_count}
+                   'author_count': corp.stat_num_authors}
     sort_how_map = {'class': 0,
                     'count': 1}
     if kwargs:

@@ -10,6 +10,7 @@ Reads the raw data from Elsivier Ingestor and refactors it into a per article
 
 import pickle
 import os
+import time
 
 from functools import partial
 
@@ -21,7 +22,8 @@ from nltk import wordpunct_tokenize
 import nltk
 
 from datetime import datetime
-import time
+
+from Utils import Utils
 
 import logging
 
@@ -29,7 +31,7 @@ try:
     logging.basicConfig(filename='logs/reader.log',
                         format='%(asctime)s %(message)s',
                         level=logging.INFO)
-except:
+except FileNotFoundError:
     pass
 
 
@@ -57,8 +59,11 @@ class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
         if not any(key.startswith('cat_') for key in kwargs.keys()):
             kwargs['cat_pattern'] = RawCorpusReader.CAT_PATTERN
 
+        if not any(key.startswith('pkl_') for key in kwargs.keys()):
+            kwargs['pkl_pattern'] = RawCorpusReader.PKL_PATTERN
+
         CategorizedCorpusReader.__init__(self, kwargs)
-        CorpusReader.__init__(self, root, fileids=RawCorpusReader.PKL_PATTERN)
+        CorpusReader.__init__(self, root, fileids=kwargs['pkl_pattern'])
 
     def resolve(self, fileids, categories):
         """
@@ -84,7 +89,7 @@ class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
             return self.fileids(categories)
         return fileids
 
-    def docs(self, fileids=None, categories=None):
+    def docs(self, fileids=None, categories=None) -> dict:
         """
         Returns the document loaded from a pickled object for every file in
         the corpus. Similar to the BaleenCorpusReader, this uses a generator
@@ -108,13 +113,13 @@ class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
             with open(path, 'rb') as f:
                 yield pickle.load(f)
 
-    def read_single(self, fileid=None, root=None):
+    def read_single(self, fileid=None, root=None) -> dict:
         root = self.root if (root is None) else root
         with open(os.path.join(root, fileid), 'rb') as f:
             return pickle.load(f)
 
 
-class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
+class ScopusCorpusReader(RawCorpusReader):
     PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
     CAT_PATTERN = r'([a-z_\s]+)/.*'
 
@@ -131,639 +136,912 @@ class ScopusRawCorpusReader(CategorizedCorpusReader, CorpusReader):
         """
         # Add the default category pattern if not passed into the class.
         if not any(key.startswith('cat_') for key in kwargs.keys()):
-            kwargs['cat_pattern'] = ScopusRawCorpusReader.CAT_PATTERN
+            kwargs['cat_pattern'] = ScopusCorpusReader.CAT_PATTERN
 
-        CategorizedCorpusReader.__init__(self, kwargs)
-        CorpusReader.__init__(self, root,
-                              fileids=ScopusRawCorpusReader.PKL_PATTERN)
+        if not any(key.startswith('pkl_') for key in kwargs.keys()):
+            kwargs['pkl_pattern'] = ScopusCorpusReader.PKL_PATTERN
 
-    def resolve(self, fileids, categories):
+        # CategorizedCorpusReader.__init__(self, kwargs)
+        # CorpusReader.__init__(self, root,
+        #                       fileids=ScopusCorpusReader.PKL_PATTERN)
+        RawCorpusReader.__init__(self, root=root, **kwargs)
+
+    # restructure reader with nested functions
+
+    ## document attributes
+    # 'affiliation'
+    # 'prism:doi'
+    # 'prism:issn'
+    # 'prism:url'
+    # 'pubmed-id'
+    # 'source-id'
+    # 'link'
+    # 'eid'
+    # 'dc:identifier'
+
+    # 'prism:issueIdentifier'
+    # 'prism:pageRange'
+    # 'prism:publicationName'
+    # 'prism:volume'
+    # 'subtype'
+    # 'subtypeDescription'
+
+    # 'prism:aggregationType'
+    # 'prism:coverDate'
+    # 'prism:coverDisplayDate'
+    # 'authkeywords'
+
+    ## author information
+    # 'author'
+
+
+    ## statistics
+    # 'citedby-count'
+    # 'author-count'
+
+    # 'dc:creator'
+    'dc:description'
+    'dc:title'
+
+    # 'fund-no'
+
+    # 'openaccess'
+    # 'openaccessFlag'
+
+    def affiliation_l(self, **kwargs) -> list:
         """
-         Returns a list of fileids or categories depending on what is passed
-        to each internal corpus reader function. This primarily bubbles up to
-        the high level ``docs`` method, but is implemented here similar to
-        the nltk ``CategorizedPlaintextCorpusReader``.
+        Generator for document affiliations
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            a list of file Ids for the corpus
+            document affiliations
+
         """
-        if fileids is not None and categories is not None:
-            raise ValueError("Specify fileids or categories, not both")
-
-        if categories is not None:
-            return self.fileids(categories)
-        return fileids
-
-    def docs(self, fileids=None, categories=None) -> dict:
-        """
-        Returns the document loaded from a pickled object for every file in
-        the corpus. Similar to the BaleenCorpusReader, this uses a generator
-        to archeive memory safe iteration.
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a dictionary containing all the metadata for a given document
-
-        Example output
-        --------------
-        {'@_fa': 'true',
-         'link': [{'@_fa': 'true',
-           '@ref': 'self',
-           '@href': 'https://api.elsevier.com/content/abstract/scopus_id/85062801216'},
-          {'@_fa': 'true',
-           '@ref': 'author_name-affiliation',
-           '@href': 'https://api.elsevier.com/content/abstract/scopus_id/85062801216?field=author,affiliation'},
-          {'@_fa': 'true',
-           '@ref': 'scopus',
-           '@href': 'https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp=85062801216&origin=inward'},
-          {'@_fa': 'true',
-           '@ref': 'scopus-citedby',
-           '@href': 'https://www.scopus.com/inward/citedby.uri?partnerID=HzOxMe3b&scp=85062801216&origin=inward'}],
-         'prism:url': 'https://api.elsevier.com/content/abstract/scopus_id/85062801216',
-         'dc:identifier': 'SCOPUS_ID:85062801216',
-         'eid': '2-s2.0-85062801216',
-         'dc:title': 'Spatio-Temporal Reasoning within a Neural Network framework for Intelligent Physical Systems',
-         'dc:creator': 'Sathish Kumar A.',
-         'prism:publicationName': 'Proceedings of the 2018 IEEE Symposium Series on Computational Intelligence, SSCI 2018',
-         'prism:isbn': [{'@_fa': 'true', '$': '9781538692769'}],
-         'prism:pageRange': '274-280',
-         'prism:coverDate': '2019-01-28',
-         'prism:coverDisplayDate': '28 January 2019',
-         'prism:doi': '10.1109/SSCI.2018.8628748',
-         'dc:description': '© 2018 IEEE. Existing functionality for intelligent physical systems (IPS), such as autonomous vehicles (AV), generally lacks the ability to reason and evaluate the environment and to learn from other intelligent agents in an autonomous fashion. Such capabilities for IPS is required for scenarios where an human intervention is unlikely to be available and robust long-term autonomous operation is necessary in potentially dynamic environments. To address these issues, the IPS will then need to reason about the interactions with these items through time and space. Incorporating spatio-temporal reasoning into the IPS will provide the capability to understand these interactions. This paper describes our proposed neural network framework that incorporates spatio-temporal reasoning for IPS. The preliminary experimental results addressing research challenges related to spatio-temporal reasoning within neural network framework for IPS are promising.',
-         'citedby-count': '0',
-         'affiliation': [{'@_fa': 'true',
-           'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60019213',
-           'afid': '60019213',
-           'affilname': 'Coastal Carolina University',
-           'affiliation-city': 'Conway',
-           'affiliation-country': 'United States'},
-          {'@_fa': 'true',
-           'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/101522664',
-           'afid': '101522664',
-           'affilname': 'Research and Development Service',
-           'affiliation-city': 'San Antonio',
-           'affiliation-country': 'United States'}],
-         'prism:aggregationType': 'Conference Proceeding',
-         'subtype': 'cp',
-         'subtypeDescription': 'Conference Paper',
-         'author_name-count': {'@limit': '100', '$': '2'},
-         'author_name': [{'@_fa': 'true',
-           '@seq': '1',
-           'author_name-url': 'https://api.elsevier.com/content/author/author_id/57195136226',
-           'authid': '57195136226',
-           'authname': 'Sathish Kumar A.',
-           'surname': 'Sathish Kumar',
-           'given-name': 'A. P.',
-           'initials': 'A.P.',
-           'afid': [{'@_fa': 'true', '$': '60019213'}]},
-          {'@_fa': 'true',
-           '@seq': '2',
-           'author_name-url': 'https://api.elsevier.com/content/author/author_id/57207867215',
-           'authid': '57207867215',
-           'authname': 'Brown M.',
-           'surname': 'Brown',
-           'given-name': 'Michael A.',
-           'initials': 'M.A.',
-           'afid': [{'@_fa': 'true', '$': '101522664'}]}],
-         'authkeywords': 'Automated Vehicles | convolution neural networks | Spatio-Temporal Reasoning',
-         'article-number': '8628748',
-         'source-id': '21100901193',
-         'fund-no': 'undefined',
-         'openaccess': '0',
-         'openaccessFlag': False}
-        """
-        fileids = self.resolve(fileids, categories)
-        # Create a generator, loading one document into memory at a time.
-        for path, enc, fileid in self.abspaths(fileids, True, True):
-            with open(path, 'rb') as f:
-                yield pickle.load(f)
-
-    def title_raw(self, fileids=None, categories=None) -> str:
-        """
-        generates the title of the next document in the corpus
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a string containing the next document title
-        or
-            ''
-
-        Example output
-        --------------
-        'Knowledge resource tools for information access'
-        """
-        for doc in self.docs(fileids, categories):
+        for doc in self.docs(**kwargs):
             try:
-                yield doc['dc:title']
-            except KeyError:
-                yield ''
-
-    def abstracts(self, fileids=None, categories=None) -> str:
-        """
-        generates the abstracts of the next document in the corpus
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a string containing the next document title
-        or
-            ''
-
-        Example output
-        --------------
-        'Knowledge resource tools for information access'
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield doc['dc:description']
-            except KeyError:
-                yield ''
-
-    def doc_ids(self, fileids=None, categories=None, form='prism:url') -> str:
-        """
-        generates the next document in the corpus. Typically a DOI Number or
-        similar
-        Parameters
-        ----------
-            form: str default 'prism:url'
-                form of document Identification
-                    'prism:url' - Content Abstract Retrieval API URI
-                    'dc:identifier' - Scopus ID
-                    'eid' - Electronic ID
-                    'prism:isbn' - Source Identifier
-                    'prism:doi' - Document Object Identifier
-                    'article-number' - Article Number
-
-            fileids: basestring or None
-                complete path to specified file
-            categories: basestring or None
-                path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a string containing the next document ID
-
-        or
-            ''
-
-        Example output
-        --------------
-        'SCOPUS_ID:85062801216'
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield doc[form]
-            except KeyError:
-                yield ''
-
-    def publication(self, fileids=None, categories=None,
-                    form='prism:publicationName') -> str:
-        """
-        generates the next journal or publication name in the corpus.
-        Parameters
-        ----------
-        form: str default 'prism:publicationName'
-                form of document Identification
-                    'prism:publicationName' - Source Title
-                    'subtypeDescription' - Document Type description
-                    'prism:aggregationType' - Source Type
-                    'subtype' - Document Type code
-
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a string containing the next publication name
-
-        or
-            ''
-
-        Example output
-        --------------
-        'Computer Compacts'
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield doc[form]
-            except KeyError:
-                yield ''
-
-    def pub_date(self, fileids=None, categories=None, form=None) -> object:
-        """
-        generates the next date of publication in the corpus.
-        Parameters
-        ----------
-        form: str
-            'year' - restricts output to year of publication only
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a datetime object containing the next date of publication
-
-        or
-            None
-
-        Example output
-        --------------
-        2019-01-28 00:00:00
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                date_string = doc['prism:coverDate']
-                if form is None:
-                    yield datetime.strptime(date_string, '%Y-%m-%d')
-                elif form is 'year':
-                    yield datetime.strptime(date_string, '%Y-%m-%d').year
-            except KeyError:
-                yield None
-
-    def author_data(self, fileids=None, categories=None) -> list:
-        """
-        generates the dictionary of author_list for the next in the corpus.
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields a dictionary containing the author_list of the  next document
-            type
-
-        or
-            None
-
-        Example output
-        --------------
-            [{'@_fa': 'true',
-              '@seq': '1',
-              'author_name-url': 'https://api.elsevier.com/content/author/author_id/57207938844',
-              'authid': '57207938844',
-              'authname': 'Tamatsukuri A.',
-              'surname': 'Tamatsukuri',
-              'given-name': 'Akihiro',
-              'initials': 'A.',
-              'afid': [{'@_fa': 'true', '$': '60003414'}]},
-             {'@_fa': 'true',
-              '@seq': '2',
-              'author_name-url': 'https://api.elsevier.com/content/author/author_id/7406460920',
-              'authid': '7406460920',
-              'authname': 'Takahashi T.',
-              'surname': 'Takahashi',
-              'given-name': 'Tatsuji',
-              'initials': 'T.',
-              'afid': [{'@_fa': 'true', '$': '60003414'},
-               {'@_fa': 'true', '$': '116598425'}]}]
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield doc['author']
+                yield doc['affiliation']
             except KeyError:
                 yield []
 
-    def author_count(self, fileids=None, categories=None) -> int:
+    def affiliation_city_l(self, **kwargs) -> list:
         """
-        generates the number of authors in the next document in the corpus.
+        Generator for document city affiliation list
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            yields the number of authors in the next document
+            document city affiliation list
 
-        or
-            None
-
-        Example output
-        --------------
-        1
         """
-        for doc in self.docs(fileids, categories):
+        for affiliation in self.affiliation_l(**kwargs):
             try:
-                yield int(doc['author-count']["$"])
-            except (KeyError, TypeError):
-                yield None
-
-    def author_name(self, fileids=None, categories=None, form='authname') -> \
-            str:
-        """
-        generates the an author next in the corpus.
-        Parameters
-        ----------
-            form : str default 'authname'
-                form of the author name requested options:
-                    'author-url' - author scopus URL
-                    'authid' - scopus author ID
-                    'authname' - full author name and initial
-                    'surname' - author surname only
-                    'given-name' - author given name only
-                    'initials' - initials
-            fileids: basestring or None
-                complete path to specified file
-            categories: basestring or None
-                path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields the next author
-
-        or
-            None
-
-        Example output
-        --------------
-        'D. E. Walker'
-        """
-        for authors in self.author_data(fileids, categories):
-            try:
-                if type(authors) is list:
-                    for author in authors:
-                        yield author[form]
-            except (KeyError, TypeError):
-                yield None
-
-    def author_list(self, fileids=None, categories=None, form='authname') -> \
-            list:
-        """
-        generates the a list of authors for a document next in the corpus.
-        Parameters
-        ----------
-            form : str default 'authname'
-                form of the author name requested options:
-                    'author-url' - author scopus URL
-                    'authid' - scopus author ID
-                    'authname' - full author name and initial
-                    'surname' - author surname only
-                    'given-name' - author given name only
-                    'initials' - initials
-            fileids: basestring or None
-                complete path to specified file
-            categories: basestring or None
-                path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            yields list of authors on a document
-
-        or
-            []
-
-        Example output
-        --------------
-        ['D. E. Walker', 'Tamatsukuri A.']
-        """
-        for authors in self.author_data(fileids, categories):
-            try:
-                if type(authors) is list:
-                    yield [author[form] for author in authors]
-            except (KeyError, TypeError):
+                cities =[]
+                for affiliate in affiliation:
+                    cities.append(affiliate['affiliation-city'])
+                yield cities
+            except KeyError:
                 yield []
 
-    def author_keyword_list(self, fileids=None, categories=None) -> list:
+    def affiliation_city_s(self, **kwargs) -> str:
         """
-        generates a list of author keywords for the next document in the
-        corpus.
+        Generator for document city affiliation
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            yields a string containing the next  author keywords
+            document city affiliation
 
-        or
-            []
-
-        Example output
-        --------------
-        ['Bio-inspired design', 'Minimally invasive', 'Paramecium']
         """
-        for doc in self.docs(fileids, categories):
+        for cities in self.affiliation_city_l(**kwargs):
+            for city in cities:
+                try:
+                    yield city
+                except KeyError:
+                    yield ''
+
+    def affiliation_country_l(self, **kwargs) -> list:
+        """
+        Generator for document county affiliation list
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document county affiliation list
+
+        """
+        for affiliation in self.affiliation_l(**kwargs):
+            try:
+                countries =[]
+                for affiliate in affiliation:
+                    countries.append(affiliate['affiliation-country'])
+                yield countries
+            except KeyError:
+                yield []
+
+    def affiliation_country_s(self, **kwargs) -> str:
+        """
+        Generator for document country affiliation
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document country affiliation
+
+        """
+        for countries in self.affiliation_country_l(**kwargs):
+            for country in countries:
+                try:
+                    yield country
+                except KeyError:
+                    yield ''
+
+    def affiliation_url_l(self, **kwargs) -> list:
+        """
+        Generator for document affiliation url list
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document affiliation url list
+
+        """
+        for affiliation in self.affiliation_l(**kwargs):
+            try:
+                urls = []
+                for affiliate in affiliation:
+                    urls.append(affiliate['affiliation-url'])
+                yield urls
+            except KeyError:
+                yield []
+
+    def affiliation_url_s(self, **kwargs) -> str:
+        """
+        Generator for document affiliation url
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document affiliation url
+
+        """
+        for urls in self.affiliation_url_l(**kwargs):
+            for url in urls:
+                try:
+                    yield url
+                except KeyError:
+                    yield ''
+
+    def affiliation_name_l(self, **kwargs) -> list:
+        """
+        Generator for document affiliation name list
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document affiliation name list
+
+        """
+        for affiliation in self.affiliation_l(**kwargs):
+            try:
+                names = []
+                for affiliate in affiliation:
+                    names.append(affiliate['affilname'])
+                yield names
+            except KeyError:
+                yield []
+
+    def affiliation_name_s(self, **kwargs) -> str:
+        """
+        Generator for document affiliation name
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document affiliation name
+
+        """
+        for names in self.affiliation_name_l(**kwargs):
+            for name in names:
+                try:
+                    yield name
+                except KeyError:
+                    yield ''
+
+    def affiliation_id_l(self, **kwargs) -> list:
+        """
+        Generator for document affiliation id list
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document affiliation id list
+
+        """
+        for affiliation in self.affiliation_l(**kwargs):
+            try:
+                ids = []
+                for affiliate in affiliation:
+                    ids.append(affiliate['afid'])
+                yield ids
+            except KeyError:
+                yield []
+
+    def affiliation_id_s(self, **kwargs) -> str:
+        """
+        Generator for document affiliation id
+        Parameters
+        ----------
+
+        Returns
+        -------
+            document affiliation id
+
+        """
+        for ids in self.affiliation_id_l(**kwargs):
+            for ident in ids:
+                try:
+                    yield ident
+                except KeyError:
+                    yield ''
+
+    def keywords_l(self, **kwargs) -> list:
+        """
+        Generator for document author assigned keywords for document
+        Parameters
+        ----------
+
+        Returns
+        -------
+            author keywords
+
+        """
+        for doc in self.docs(**kwargs):
             try:
                 yield [keyword.strip() for keyword in doc[
                     'authkeywords'].split("|")]
             except KeyError:
                 yield []
 
-    def author_keyword(self, fileids=None, categories=None) -> str:
+    def keywords_string(self, **kwargs) -> str:
         """
-        generates a string for author keywords for the next document in the
-        corpus.
+        Generator for document author assigned keywords for document as single
+        string
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            yields a string containing the next  author keywords
+            author keywords
 
-        or
-            ''
-
-        Example output
-        --------------
-        'Automated Vehicles'
         """
-        for keywords in self.author_keyword_list(fileids, categories):
+        for keywords in self.keywords_l(**kwargs):
             try:
-                for keyword in keywords:
-                    yield keyword
+                yield ' '.join(keywords)
             except KeyError:
                 yield ''
 
-    def doc_volume(self, fileids=None, categories=None) -> int:
+    def keywords_phrase(self, **kwargs) -> str:
         """
-        generates an intiger number for the volume of the next document in the
-        corpus.
+        Generator for document author assigned keyword phrases
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            yields an intiger number for the volume
+            author keyword phrases
 
-        or
-            None
-
-        Example output
-        --------------
-        4
         """
-        for doc in self.docs(fileids, categories):
+        for keywords in self.keywords_l(**kwargs):
             try:
-                yield doc['prism:volume']
+                for phrase in keywords:
+                    yield phrase
             except KeyError:
-                yield None
+                yield ''
 
-    def doc_page_range(self, fileids=None, categories=None) -> (int, int):
+    def keywords_s(self, **kwargs) -> str:
         """
-        generates an intiger tupple for the first and last page number of the
-        next
-        document in the corpus.
+        Generator for document author assigned keyword
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            yields an intiger tuple for the first and last page number
+            author keyword
 
-        or
-            (None, None)
-
-        Example output
-        --------------
-        (274, 280)
         """
-        for doc in self.docs(fileids, categories):
+        for phrase in self.keywords_phrase(**kwargs):
+            words = [x.strip() for x in phrase.split(' ')]
             try:
-                yield tuple(int(p) for p in doc['prism:pageRange'].split('-'))
-            except (KeyError, AttributeError):
-                yield (None, None)
-
-    def doc_citation_number(self, fileids=None, categories=None) -> int:
-        """
-        generator for number of citations
-        Parameters
-        ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
-
-        Returns
-        -------
-            int
-
-        or
-            None
-
-        Example output
-        --------------
-        4
-        """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield int(doc['citedby-count']['$'])
+                for word in words:
+                    yield word
             except KeyError:
-                if type(doc['citedby-count']) is str:
-                    yield int(doc['author_name-count'])
-                else:
-                    yield int(doc['author_name-count']['$'])
-            except TypeError:
-                yield int(doc['citedby-count'])
+                yield ''
 
-    def affiliation_list(self, fileids=None, categories=None) -> list:
+    def author_data_l(self, **kwargs) -> list:
         """
-        generates list of affiliatons.
+        Generator for document author data.
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            yields a dictionary containing the author_list of the  next document
-            type
+            list of author data
 
-        or
-            None
-
-        Example output
-        --------------
-            [{'@_fa': 'true',
-              'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60003414',
-              'afid': '60003414',
-              'affilname': 'Tokyo Denki University',
-              'affiliation-city': 'Tokyo',
-              'affiliation-country': 'Japan'},
-             {'@_fa': 'true',
-              'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/116598425',
-              'afid': '116598425',
-              'affilname': 'Dwango Artificial Intelligence Laboratory',
-              'affiliation-city': 'Tokyo',
-              'affiliation-country': 'Japan'}]
         """
-        for doc in self.docs(fileids, categories):
+        for doc in self.docs(**kwargs):
             try:
-                yield doc['affiliation']
+                yield doc['author']
             except KeyError:
                 yield []
 
-    def read_single(self, fileid=None, root=None):
+    def author_data_id_l(self, **kwargs) -> list:
         """
-        Depricated single read. with new method of preprocessing data,
-        each pickle file contains only one file.
+        Generator for document author ids.
         Parameters
         ----------
-        fileid: basestring
-            Name of file name
-        root: basestring
-            Root directoy
 
         Returns
         -------
-            a dictionary object containing a the meta-data for a single article
+            list of author ids
+
         """
-        root = self.root if (root is None) else root
-        with open(os.path.join(root, fileid), 'rb') as f:
-            return pickle.load(f)
+        for data in self.author_data_l(**kwargs):
+            try:
+                author_ids = []
+                for author in data:
+                    author_ids.append(author['authid'])
+                yield author_ids
+            except KeyError:
+                yield []
+
+    def author_data_id_s(self, **kwargs) -> str:
+        """
+        Generator for document author id.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author id
+
+        """
+        for identifiers in self.author_data_id_l(**kwargs):
+            for identifier in identifiers:
+                try:
+                    yield identifier
+                except KeyError:
+                    yield ''
+
+    def author_data_name_full_l(self, **kwargs) -> list:
+        """
+        Generator for document author full names.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author full name list
+
+        """
+        for data in self.author_data_l(**kwargs):
+            try:
+                author_names = []
+                for author in data:
+                    author_names.append(author['authname'])
+                yield author_names
+            except KeyError:
+                yield []
+
+    def author_data_name_full_s(self, **kwargs) -> str:
+        """
+        Generator for document author full name.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author full name
+
+        """
+        for full_names in self.author_data_name_full_l(**kwargs):
+            for full_name in full_names:
+                try:
+                    yield full_name
+                except KeyError:
+                    yield ''
+
+    def author_data_url_l(self, **kwargs) -> list:
+        """
+        Generator for document author urls.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author url list
+
+        """
+        for data in self.author_data_l(**kwargs):
+            try:
+                author_urls = []
+                for author in data:
+                    author_urls.append(author['author-url'])
+                yield author_urls
+            except KeyError:
+                yield []
+
+    def author_data_url_s(self, **kwargs) -> str:
+        """
+        Generator for document author url.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author url
+
+        """
+        for urls in self.author_data_url_l(**kwargs):
+            for url in urls:
+                try:
+                    yield url
+                except KeyError:
+                    yield ''
+
+    def author_data_name_given_l(self, **kwargs) -> list:
+        """
+        Generator for document author given names.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author given name list
+
+        """
+        for data in self.author_data_l(**kwargs):
+            try:
+                author_names = []
+                for author in data:
+                    author_names.append(author['given-name'])
+                yield author_names
+            except KeyError:
+                yield []
+
+    def author_data_name_given_s(self, **kwargs) -> str:
+        """
+        Generator for document author given name.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author given name
+
+        """
+        for names in self.author_data_name_given_l(**kwargs):
+            for name in names:
+                try:
+                    yield name
+                except KeyError:
+                    yield ''
+
+    def author_data_initial_l(self, **kwargs) -> list:
+        """
+        Generator for document author initials.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author initials list
+
+        """
+        for data in self.author_data_l(**kwargs):
+            try:
+                initials = []
+                for author in data:
+                    initials.append(author['initials'])
+                yield initials
+            except KeyError:
+                yield []
+
+    def author_data_initial_s(self, **kwargs) -> str:
+        """
+        Generator for document author initial.
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author initial
+
+        """
+        for initials in self.author_data_initial_l(**kwargs):
+            for initial in initials:
+                try:
+                    yield initial
+                except KeyError:
+                    yield ''
+
+    def author_data_name_surname_l(self, **kwargs) -> list:
+        """
+        Generator for document author surname .
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author surname  list
+
+        """
+        for data in self.author_data_l(**kwargs):
+            try:
+                author_names = []
+                for author in data:
+                    author_names.append(author['surname'])
+                yield author_names
+            except KeyError:
+                yield []
+
+    def author_data_name_surname_s(self, **kwargs) -> str:
+        """
+        Generator for document author surname .
+        Parameters
+        ----------
+
+        Returns
+        -------
+            list of author surname
+
+        """
+        for names in self.author_data_name_surname_l(**kwargs):
+            for name in names:
+                try:
+                    yield name
+                except KeyError:
+                    yield ''
+
+    def stat_num_authors(self, **kwargs) -> int:
+        """
+        generator for document author count
+        Parameters
+        ----------
+
+        Returns
+        -------
+            yields the number of authors for a document
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield int(doc['author-count']["$"])
+            except (KeyError, TypeError):
+                yield 0
+
+    def stat_num_citations(self, **kwargs) -> int:
+        """
+        generator for number of citations for document
+        Parameters
+        ----------
+
+        Returns
+        -------
+            number of citations for document
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield int(doc['citedby-count'])
+            except (KeyError, TypeError):
+                yield 0
+
+    def identifier_scopus(self, **kwargs) -> str:
+        """
+        Generator for scopus identifiers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            scopus identifier
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['dc:identifier']
+            except (KeyError, TypeError):
+                yield ''
+
+    def identifier_electronic(self, **kwargs) -> str:
+        """
+        Generator for electronic identifiers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            electronic identifier
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['eid']
+            except (KeyError, TypeError):
+                yield ''
+
+    def identifier_link(self, **kwargs) -> str:
+        """
+        Generator for web link identifiers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            web link identifier
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['link'][0]['@href']
+            except (KeyError, TypeError):
+                yield ''
+
+    def identifier_doi(self, **kwargs) -> str:
+        """
+        Generator for doi identifiers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            doi identifier
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['prism:doi']
+            except (KeyError, TypeError):
+                yield ''
+
+    def identifier_issn(self, **kwargs) -> str:
+        """
+        Generator for issn identifiers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            issn identifier
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['prism:issn']
+            except (KeyError, TypeError):
+                yield ''
+
+    def identifier_pubmed(self, **kwargs) -> str:
+        """
+        Generator for issn identifiers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            issn identifier
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['pubmed-id']
+            except (KeyError, TypeError):
+                yield ''
+
+    def identifier_source(self, **kwargs) -> str:
+        """
+        Generator for issn identifiers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            issn identifier
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['source-id']
+            except (KeyError, TypeError):
+                yield ''
+
+    def publication_type(self, **kwargs) -> str:
+        """
+        Generator for publication type
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication type
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['prism:aggregationType']
+            except (KeyError, TypeError):
+                yield ''
+
+    def publication_name(self, **kwargs) -> str:
+        """
+        Generator for publication name
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication name
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['prism:publicationName']
+            except (KeyError, TypeError):
+                yield ''
+
+    def publication_subtype(self, **kwargs) -> str:
+        """
+        Generator for publication subtype
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication subtype
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['subtypeDescription']
+            except (KeyError, TypeError):
+                yield ''
+
+    def publication_volume(self, **kwargs) -> int:
+        """
+        Generator for publication volume number
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication volume number
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield int(doc['prism:volume'])
+            except (KeyError, TypeError):
+                yield 0
+
+    def publication_issue(self, **kwargs) -> int:
+        """
+        Generator for publication issue number
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication issue number
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield int(doc['prism:issueIdentifier'])
+            except (KeyError, TypeError):
+                yield 0
+
+    def publication_pages(self, **kwargs) -> (int, int):
+        """
+        Generator for publication page numbers
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication page numbers
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield tuple(int(p) for p in doc['prism:pageRange'].split('-'))
+            except (KeyError, AttributeError):
+                yield (0, 0)
+
+    def publication_date(self, **kwargs) -> object:
+        """
+        Generator for publication cover date
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication cover date
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                date_string = doc['prism:coverDate']
+                yield datetime.strptime(date_string, '%Y-%m-%d')
+            except KeyError:
+                date_string = '1800-01-01'
+                yield datetime.strptime(date_string, '%Y-%m-%d')
+
+    def publication_year(self, **kwargs) -> int:
+        """
+        Generator for publication cover date
+        Parameters
+        ----------
+
+        Returns
+        -------
+            publication cover date
+
+        """
+        for date in self.publication_date(**kwargs):
+            try:
+                yield date.year
+            except KeyError:
+                date_string = '1800-01-01'
+                datetime.strptime(date_string, '%Y-%m-%d')
+                yield date.year
+
+    def document_title(self, **kwargs) -> str:
+        """
+        generates the title of the next document in the corpus
+        Parameters
+        ----------
+
+        Returns
+        -------
+            yields a string containing the next document title
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['dc:title']
+            except KeyError:
+                yield ''
+
+    def document_description(self, **kwargs) -> str:
+        """
+        generates the description of the next document in the corpus
+        Parameters
+        ----------
+
+        Returns
+        -------
+            yields a string containing the next document description
+
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc['dc:description']
+            except KeyError:
+                yield ''
 
 
-class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
+class ScopusProcessedCorpusReader(ScopusCorpusReader):
     PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
     CAT_PATTERN = r'([a-z_\s]+)/.*'
 
@@ -780,7 +1058,7 @@ class ScopusProcessedCorpusReader(ScopusRawCorpusReader):
         kwargs :
             Additional arguements passed to the nltk corpus readers
         """
-        ScopusRawCorpusReader.__init__(self, root, fileids, **kwargs)
+        ScopusCorpusReader.__init__(self, root, fileids, **kwargs)
 
     def title_tagged(self, fileids=None, categories=None) -> list:
         """
@@ -1049,25 +1327,18 @@ class CorpuKfoldLoader(object):
 
 
 if __name__ == '__main__':
-    # corpus = ScopusProcessedCorpusReader(
-    #     "Corpus/Processed_corpus/")
-    #
-    # loader = CorpuKfoldLoader(corpus, n_folds=12, shuffle=False)
-    #
-    # subset = next(loader.fileids(test=True))
-    # # subset = next(loader.fileids(train=True))
-    #
-    # # docs = list(corpus.title_tagged(fileids=loader.fileids(test=True)))
-    # # pickles = list(loader.fileids(1, test=True))
-    #
-    # # check ngrammer
-    # ngram = corpus.ngrams(n=3, fileids=subset)
-    # print(next(ngram))
-
-
-
-
-    root = "Corpus/Split_corpus/"
+    from pprint import PrettyPrinter
+    # RawCorpusReader
+    # root = "Corpus/Split_corpus/"
     # root = "Corpus/Raw_corpus/"
+    # corpus = RawCorpusReader(root=root)
 
-    corpus = RawCorpusReader(root=root)
+    # ScopusCorpusReader
+    root = "Corpus/Split_corpus/"
+    corpus = ScopusCorpusReader(root=root)
+    # gen = corpus.affiliation()
+    gen = corpus.docs()
+    # gen = corpus.author_keywords_l()
+    aa = next(gen)
+    pp = PrettyPrinter(indent=4)
+    pp.pprint(aa)

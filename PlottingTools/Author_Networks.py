@@ -41,7 +41,7 @@ class AuthorNetworks():
 
         """
         self.path = path
-        self.corpus = Elsevier_Corpus_Reader.ScopusRawCorpusReader(path)
+        self.corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(path)
 
     def build_co_author_network(self, **kwargs) -> list:
         """

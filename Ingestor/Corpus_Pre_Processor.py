@@ -75,6 +75,7 @@ class PickledCorpusPreProcessor(object):
     A wrapper for a corpus object that reads the raw imported data
     and reformat sections to have a more suitable for text processing.
     """
+    #also add the file name to the data
 
     def __init__(self, corpus, target=None):
         """
