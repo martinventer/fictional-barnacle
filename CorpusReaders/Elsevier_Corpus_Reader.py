@@ -171,10 +171,8 @@ class ScopusCorpusReader(RawCorpusReader):
         """
         for affiliation in self.affiliation_l(**kwargs):
             try:
-                cities =[]
-                for affiliate in affiliation:
-                    cities.append(affiliate['affiliation-city'])
-                yield cities
+                yield [affiliate['affiliation-city'] for
+                       affiliate in affiliation]
             except KeyError:
                 yield []
 
@@ -190,11 +188,14 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for cities in self.affiliation_city_l(**kwargs):
-            for city in cities:
-                try:
-                    yield city
-                except KeyError:
-                    yield ''
+            if cities:
+                for city in cities:
+                    if city is not None:
+                        yield city
+                    else:
+                        yield ''
+            else:
+                yield ''
 
     def affiliation_country_l(self, **kwargs) -> list:
         """
@@ -1289,9 +1290,20 @@ if __name__ == '__main__':
     from pprint import PrettyPrinter
     # RawCorpusReader
     # root = "Corpus/Split_corpus/"
-    root = "Tests/Test_Corpus/Raw_corpus/"
+    # root = "Tests/Test_Corpus/Raw_corpus/"
+    # corpus = RawCorpusReader(root=root)
+    # gen = corpus.docs()
+    # aa = [x['affiliation-city'] for x in next(gen)['affiliation']]
+
+    root = "Tests/Test_Corpus/Split_corpus/"
     corpus = RawCorpusReader(root=root)
-    aa = next(corpus.docs())[0]
+    gen = corpus.docs()
+    doc = next(gen)
+    print([x['affiliation-city'] for x in doc['affiliation']])
+
+    print(doc['affiliation'])
+
+
 
     # # ScopusCorpusReader
     # root = "Corpus/Split_corpus/"

@@ -40,20 +40,35 @@ class TestScopusCorpusReader(TestCase):
         gen = self.corpus.docs()
         for result in self.corpus.affiliation_city_l():
             try:
-                target = next(gen)['affiliation']
-                target2 = target[0]['affiliation-city']
+                affiliations = next(gen)['affiliation']
+                target = [affiliation['affiliation-city'] for affiliation in
+                          affiliations]
             except KeyError:
                 target = []
-
+            print(target)
+            print(result)
+            self.assertEqual(target, result)
             self.assertEqual(len(target), len(result))
-            self.assertEqual(target2, result[0])
             self.assertEqual(list, type(result))
 
     def test_affiliation_city_s(self):
-        target = self.trial_doc['affiliation'][0]['affiliation-city']
-        result = next(self.corpus.affiliation_city_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                affiliations = doc['affiliation']
+                for affiliation in affiliations:
+                    if affiliation['affiliation-city'] is not None:
+                        targets.append(affiliation['affiliation-city'])
+                    else:
+                        targets.append('')
+            except KeyError:
+                targets.append('')
+
+        results = list(self.corpus.affiliation_city_s())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(str, type(result))
 
     def test_affiliation_country_l(self):
         target = self.trial_doc['affiliation'][0]['affiliation-country']
