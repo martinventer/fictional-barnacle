@@ -20,370 +20,296 @@ class TestScopusCorpusReader(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(
             "Test_Corpus/Split_corpus/")
-        # self.gen = self.corpus.docs()
-        # self.trial_doc = next(self.gen)
-        # self.trial_doc_a = next(self.gen)
-        # self.trial_doc_b = next(self.gen)
 
-    def _affiliation_helper_l(self, attribute):
+    def _helper_dict(self, gen_method, field):
         gen = self.corpus.docs()
-        for result in self.corpus.affiliation_city_l():
+        for result in gen_method:
             try:
-                affiliations = next(gen)['affiliation']
-                target = [affiliation[attribute] for affiliation in
-                          affiliations]
+                target = next(gen)[field]
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(list, type(result))
+
+    def _helper_list(self, gen_method, field, attribute):
+        gen = self.corpus.docs()
+        for result in gen_method:
+            try:
+                _dict = next(gen)[field]
+                target = [_item[attribute] for _item in
+                          _dict]
             except KeyError:
                 target = []
             self.assertEqual(target, result)
             self.assertEqual(len(target), len(result))
             self.assertEqual(list, type(result))
+
+    def _helper_string(self, gen_method, field=None, attribute=None):
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                _dict = doc[field]
+                if attribute is not None:
+                    for _item in _dict:
+                        if _item[attribute] is not None:
+                            targets.append(_item[attribute])
+                        else:
+                            targets.append('unk')
+                else:
+                    if _dict is not None:
+                        targets.append(_dict)
+                    else:
+                        targets.append('unk')
+            except KeyError:
+                targets.append('unk')
+
+        results = list(gen_method)
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(str, type(result))
 
     def test_affiliation_l(self):
-        gen = self.corpus.docs()
-        for result in self.corpus.affiliation_l():
-            try:
-                target = next(gen)['affiliation']
-            except KeyError:
-                target = []
-            self.assertEqual(target, result)
-            self.assertEqual(list, type(result))
+        self._helper_dict(self.corpus.affiliation_l(),
+                          'affiliation')
 
     def test_affiliation_city_l(self):
-        self._affiliation_helper_l('affiliation-city')
-        # gen = self.corpus.docs()
-        # for result in self.corpus.affiliation_city_l():
-        #     try:
-        #         affiliations = next(gen)['affiliation']
-        #         target = [affiliation['affiliation-city'] for affiliation in
-        #                   affiliations]
-        #     except KeyError:
-        #         target = []
-        #     self.assertEqual(target, result)
-        #     self.assertEqual(len(target), len(result))
-        #     self.assertEqual(list, type(result))
+        self._helper_list(self.corpus.affiliation_city_l(),
+                          'affiliation',
+                          'affiliation-city')
 
     def test_affiliation_city_s(self):
-        targets = []
-        for doc in self.corpus.docs():
-            try:
-                affiliations = doc['affiliation']
-                for affiliation in affiliations:
-                    if affiliation['affiliation-city'] is not None:
-                        targets.append(affiliation['affiliation-city'])
-                    else:
-                        targets.append('unknownCity')
-            except KeyError:
-                targets.append('unknownCity')
-
-        results = list(self.corpus.affiliation_city_s())
-        self.assertEqual(len(targets), len(results))
-        for result, target in zip(results, targets):
-            self.assertEqual(target, result)
-            self.assertEqual(str, type(result))
+        self._helper_string(self.corpus.affiliation_city_s(),
+                            'affiliation',
+                            'affiliation-city')
 
     def test_affiliation_country_l(self):
-        gen = self.corpus.docs()
-        for result in self.corpus.affiliation_country_l():
-            try:
-                affiliations = next(gen)['affiliation']
-                target = [affiliation['affiliation-country'] for affiliation in
-                          affiliations]
-            except KeyError:
-                target = []
-            self.assertEqual(target, result)
-            self.assertEqual(len(target), len(result))
-            self.assertEqual(list, type(result))
+        self._helper_list(self.corpus.affiliation_country_l(),
+                          'affiliation',
+                          'affiliation-country')
 
     def test_affiliation_country_s(self):
-        targets = []
-        for doc in self.corpus.docs():
-            try:
-                affiliations = doc['affiliation']
-                for affiliation in affiliations:
-                    if affiliation['affiliation-country'] is not None:
-                        targets.append(affiliation['affiliation-country'])
-                    else:
-                        targets.append('unknownCountry')
-            except KeyError:
-                targets.append('unknownCountry')
-
-        results = list(self.corpus.affiliation_country_s())
-        self.assertEqual(len(targets), len(results))
-        for result, target in zip(results, targets):
-            self.assertEqual(target, result)
-            self.assertEqual(str, type(result))
+        self._helper_string(self.corpus.affiliation_country_s(),
+                            'affiliation',
+                            'affiliation-country')
 
     def test_affiliation_url_l(self):
-        gen = self.corpus.docs()
-        for result in self.corpus.affiliation_url_l():
-            try:
-                affiliations = next(gen)['affiliation']
-                target = [affiliation['affiliation-url'] for affiliation in
-                          affiliations]
-            except KeyError:
-                target = []
-            self.assertEqual(target, result)
-            self.assertEqual(len(target), len(result))
-            self.assertEqual(list, type(result))
+        self._helper_list(self.corpus.affiliation_url_l(),
+                          'affiliation',
+                          'affiliation-url')
 
     def test_affiliation_url_s(self):
-        targets = []
-        for doc in self.corpus.docs():
-            try:
-                affiliations = doc['affiliation']
-                for affiliation in affiliations:
-                    if affiliation['affiliation-url'] is not None:
-                        targets.append(affiliation['affiliation-url'])
-                    else:
-                        targets.append('unknownUrl')
-            except KeyError:
-                targets.append('unknownUrl')
-
-        results = list(self.corpus.affiliation_url_s())
-        self.assertEqual(len(targets), len(results))
-        for result, target in zip(results, targets):
-            self.assertEqual(target, result)
-            self.assertEqual(str, type(result))
+        self._helper_string(self.corpus.affiliation_url_s(),
+                            'affiliation',
+                            'affiliation-url')
 
     def test_affiliation_name_l(self):
+        self._helper_list(self.corpus.affiliation_name_l(),
+                          'affiliation',
+                          'affilname')
+
+    def test_affiliation_name_s(self):
+        self._helper_string(self.corpus.affiliation_name_s(),
+                            'affiliation',
+                            'affilname')
+
+    def test_affiliation_id_l(self):
+        self._helper_list(self.corpus.affiliation_id_l(),
+                          'affiliation',
+                          'afid')
+
+    def test_affiliation_id_s(self):
+        self._helper_string(self.corpus.affiliation_id_s(),
+                            'affiliation',
+                            'afid')
+
+    def test_keywords_l(self):
         gen = self.corpus.docs()
-        for result in self.corpus.affiliation_name_l():
+        for result in self.corpus.keywords_l():
             try:
-                affiliations = next(gen)['affiliation']
-                target = [affiliation['affilname'] for affiliation in
-                          affiliations]
+                target = [keyword.strip() for keyword in
+                            next(gen)['authkeywords'].split("|")]
             except KeyError:
                 target = []
             self.assertEqual(target, result)
             self.assertEqual(len(target), len(result))
             self.assertEqual(list, type(result))
 
-    def test_affiliation_name_s(self):
+    def test_keywords_string(self):
+        gen = self.corpus.docs()
+        for result in self.corpus.keywords_string():
+            try:
+                target = ' '.join([keyword.strip() for keyword in
+                                   next(gen)[
+                    'authkeywords'].split("|")])
+            except KeyError:
+                target = 'unk'
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(str, type(result))
+
+    def test_keywords_phrase(self):
         targets = []
         for doc in self.corpus.docs():
             try:
-                affiliations = doc['affiliation']
-                for affiliation in affiliations:
-                    if affiliation['affilname'] is not None:
-                        targets.append(affiliation['affilname'])
-                    else:
-                        targets.append('unknownName')
+                target_list = [keyword.strip() for keyword in
+                               doc['authkeywords'].split("|")]
             except KeyError:
-                targets.append('unknownName')
+                target_list = []
 
-        results = list(self.corpus.affiliation_name_s())
+            if target_list:
+                for phrase in target_list:
+                    targets.append(phrase)
+            else:
+                targets.append('unk')
+
+        results = list(self.corpus.keywords_phrase())
         self.assertEqual(len(targets), len(results))
         for result, target in zip(results, targets):
             self.assertEqual(target, result)
             self.assertEqual(str, type(result))
 
-    def test_affiliation_id_l(self):
-        gen = self.corpus.docs()
-        for result in self.corpus.affiliation_id_l():
-            try:
-                affiliations = next(gen)['affiliation']
-                target = [affiliation['afid'] for affiliation in
-                          affiliations]
-            except KeyError:
-                target = []
-            self.assertEqual(target, result)
-            self.assertEqual(len(target), len(result))
-            self.assertEqual(list, type(result))
-
-    def test_affiliation_id_s(self):
+    def test_keywords_s(self):
         targets = []
         for doc in self.corpus.docs():
             try:
-                affiliations = doc['affiliation']
-                for affiliation in affiliations:
-                    if affiliation['affilname'] is not None:
-                        targets.append(affiliation['affilname'])
-                    else:
-                        targets.append('unknownName')
+                target_list = [keyword.strip() for keyword in
+                               doc['authkeywords'].split("|")]
             except KeyError:
-                targets.append('unknownName')
+                target_list = []
 
-        results = list(self.corpus.affiliation_name_s())
+            if target_list:
+                for phrase in target_list:
+                    for word in phrase.split(" "):
+                        targets.append(word.strip())
+            else:
+                targets.append('unk')
+
+        results = list(self.corpus.keywords_s())
         self.assertEqual(len(targets), len(results))
         for result, target in zip(results, targets):
             self.assertEqual(target, result)
-        #
-        # target = self.trial_doc['affiliation'][0]['afid']
-        # result = next(self.corpus.affiliation_id_s())
-        # self.assertEqual(target, result)
-        # self.assertEqual(str, type(result))
-
-    def test_keywords_l(self):
-        target = [keyword.strip() for keyword in self.trial_doc_a[
-            'authkeywords'].split("|")]
-        gen = self.corpus.keywords_l()
-        _ = next(gen)
-        result = next(gen)
-        self.assertEqual(target, result)
-        self.assertEqual(list, type(result))
-
-    def test_keywords_string(self):
-        target = ' '.join([keyword.strip() for keyword in self.trial_doc_a[
-            'authkeywords'].split("|")])
-        gen = self.corpus.keywords_string()
-        _ = next(gen)
-        result = next(gen)
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
-
-    def test_keywords_phrase(self):
-        target = [keyword.strip() for keyword in self.trial_doc_a[
-            'authkeywords'].split("|")][0]
-        gen = self.corpus.keywords_phrase()
-        _ = next(gen)
-        result = next(gen)
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
-
-    def test_keywords_s(self):
-        target = [keyword.strip() for keyword in self.trial_doc_a[
-            'authkeywords'].split("|")][0].split(' ')[0]
-        gen = self.corpus.keywords_s()
-        _ = next(gen)
-        result = next(gen)
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+            self.assertEqual(str, type(result))
 
     def test_author_data_l(self):
-        target = self.trial_doc['author']
-        result = next(self.corpus.author_data_l())
-        self.assertEqual(target, result)
-        target2 = len(self.trial_doc['author'])
-        self.assertEqual(target2, len(result))
-        self.assertEqual(list, type(result))
+        self._helper_dict(self.corpus.author_data_l(),
+                          'author')
 
     def test_author_data_id_l(self):
-        target = [auth['authid'] for auth in self.trial_doc['author']]
-        result = next(self.corpus.author_data_id_l())
-        self.assertEqual(target, result)
-        self.assertEqual(list, type(result))
+        self._helper_list(self.corpus.author_data_id_l(),
+                          'author',
+                          'authid')
 
     def test_author_data_id_s(self):
-        target = self.trial_doc['author'][0]['authid']
-        result = next(self.corpus.author_data_id_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        self._helper_string(self.corpus.author_data_id_s(),
+                            'author',
+                            'authid')
 
     def test_author_data_name_full_l(self):
-        target = [auth['authname'] for auth in self.trial_doc['author']]
-        result = next(self.corpus.author_data_name_full_l())
-        self.assertEqual(target, result)
-        self.assertEqual(list, type(result))
+        self._helper_list(self.corpus.author_data_name_full_l(),
+                          'author',
+                          'authname')
 
     def test_author_data_name_full_s(self):
-        target = self.trial_doc['author'][0]['authname']
-        result = next(self.corpus.author_data_name_full_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        self._helper_string(self.corpus.author_data_name_full_s(),
+                            'author',
+                            'authname')
 
     def test_author_data_url_l(self):
-        target = [auth['author-url'] for auth in self.trial_doc['author']]
-        result = next(self.corpus.author_data_url_l())
-        self.assertEqual(target, result)
-        self.assertEqual(list, type(result))
+        self._helper_list(self.corpus.author_data_url_l(),
+                          'author',
+                          'author-url')
 
     def test_author_data_url_s(self):
-        target = self.trial_doc['author'][0]['author-url']
-        result = next(self.corpus.author_data_url_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        self._helper_string(self.corpus.author_data_url_s(),
+                            'author',
+                            'author-url')
 
     def test_author_data_name_given_l(self):
-        target = [auth['given-name'] for auth in self.trial_doc['author']]
-        result = next(self.corpus.author_data_name_given_l())
-        self.assertEqual(target, result)
-        self.assertEqual(list, type(result))
+        self._helper_list(self.corpus.author_data_name_given_l(),
+                          'author',
+                          'given-name')
 
     def test_author_data_name_given_s(self):
-        target = self.trial_doc['author'][0]['given-name']
-        result = next(self.corpus.author_data_name_given_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        self._helper_string(self.corpus.author_data_name_given_s(),
+                            'author',
+                            'given-name')
 
     def test_author_data_initial_l(self):
-        target = ['W.', 'U.M.E.', 'L.', 'M.', 'P.', 'M.', 'I.']
-        result = next(self.corpus.author_data_initial_l())
-        self.assertEqual(target, result)
+        self._helper_list(self.corpus.author_data_initial_l(),
+                          'author',
+                          'initials')
 
     def test_author_data_initial_s(self):
-        target = 'W.'
-        result = next(self.corpus.author_data_initial_s())
-        self.assertEqual(target, result)
+        self._helper_string(self.corpus.author_data_initial_s(),
+                            'author',
+                            'initials')
 
     def test_author_data_name_surname_l(self):
-        target = ['Becker', 'Wikesjö', 'Sennerby', 'Qahash', 'Hujoel', 'Goldstein', 'Turkyilmaz']
-        result = next(self.corpus.author_data_name_surname_l())
-        self.assertEqual(target, result)
+        self._helper_list(self.corpus.author_data_name_surname_l(),
+                          'author',
+                          'surname')
 
     def test_author_data_name_surname_s(self):
-        target = 'Becker'
-        result = next(self.corpus.author_data_name_surname_s())
-        self.assertEqual(target, result)
+        self._helper_string(self.corpus.author_data_name_surname_s(),
+                            'author',
+                            'surname')
 
     def test_stat_num_authors(self):
-        target = 7
-        result = next(self.corpus.stat_num_authors())
-        self.assertEqual(target, result)
+        gen = self.corpus.docs()
+        for result in self.corpus.stat_num_authors():
+            try:
+                target = int(next(gen)['author-count']["$"])
+            except (KeyError, TypeError):
+                target = 0
+            self.assertEqual(target, result)
+            self.assertEqual(int, type(result))
 
     def test_stat_num_citations(self):
-        target = 56
-        result = next(self.corpus.stat_num_citations())
-        self.assertEqual(target, result)
+        gen = self.corpus.docs()
+        for result in self.corpus.stat_num_citations():
+            try:
+                target = int(next(gen)['citedby-count'])
+            except (KeyError, TypeError):
+                target = 0
+            self.assertEqual(target, result)
+            self.assertEqual(int, type(result))
 
     def test_identifier_scopus(self):
-        target = 'SCOPUS_ID:33750589187'
-        result = next(self.corpus.identifier_scopus())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.identifier_scopus(),
+                            field='dc:identifier', attribute=None)
 
     def test_identifier_electronic(self):
-        target = '2-s2.0-33750589187'
-        result = next(self.corpus.identifier_electronic())
-        self.assertEqual(target, result)
-
-    def test_identifier_link(self):
-        target = 'https://api.elsevier.com/content/abstract/scopus_id/33750589187'
-        result = next(self.corpus.identifier_link())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.identifier_electronic(),
+                            field='eid', attribute=None)
 
     def test_identifier_doi(self):
-        target = '10.1902/jop.2006.060090'
-        result = next(self.corpus.identifier_doi())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.identifier_doi(),
+                            field='prism:doi', attribute=None)
 
     def test_identifier_issn(self):
-        target = '00223492'
-        result = next(self.corpus.identifier_issn())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.identifier_issn(),
+                            field='prism:issn', attribute=None)
 
     def test_identifier_pubmed(self):
-        target = '17032115'
-        result = next(self.corpus.identifier_pubmed())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.identifier_pubmed(),
+                            field='pubmed-id', attribute=None)
 
     def test_identifier_source(self):
-        target = '26173'
-        result = next(self.corpus.identifier_source())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.identifier_source(),
+                            field='source-id', attribute=None)
 
     def test_publication_type(self):
-        target = 'Journal'
-        result = next(self.corpus.publication_type())
-        self.assertEqual(target, result)
-
-    def test_publication_subtype(self):
-        target = 'Article'
-        result = next(self.corpus.publication_subtype())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.publication_type(),
+                            field='prism:aggregationType', attribute=None)
 
     def test_publication_name(self):
-        target = 'Journal of Periodontology'
-        result = next(self.corpus.publication_name())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.publication_name(),
+                            field='prism:publicationName', attribute=None)
+
+    def test_publication_subtype(self):
+        self._helper_string(gen_method=self.corpus.publication_subtype(),
+                            field='subtypeDescription', attribute=None)
 
     def test_publication_volume(self):
         target = 77
@@ -411,14 +337,12 @@ class TestScopusCorpusReader(TestCase):
         self.assertEqual(target, result)
 
     def test_document_title(self):
-        target = 'Histologic evaluation of implants following flapless and flapped surgery: A study in canines'
-        result = next(self.corpus.document_title())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.document_title(),
+                            field='dc:title', attribute=None)
 
     def test_document_description(self):
-        target = 'Background: Flapless surgery requires penetration of the alveolar mucosa and bone without reflection of mucoperiosteal flaps. Do these techniques force gingival tissue or foreign materials into osteotomies? If so, do such tissues or materials interfere with osseointegration? A proof-of-principle study using a canine model attempted to answer these questions. Methods: Five young adult Hound Labrador mongrel dogs received implants with a moderately roughened surface by anodic oxidation using flapless or conventional one-stage (control) surgery in contralateral jaw quadrants. The implants were placed into the osteotomies, and the international stability quotient (ISQ) was recorded using resonance frequency analysis. These measurements were repeated following a 3-month healing interval when the animals were euthanized, and implants and surrounding tissues were retrieved and processed for histologic analysis. Results: The implants were stable upon insertion and demonstrated increased stability at 3 months without significant differences between surgical protocols. The histologic evaluation showed high bone-implant contact (flapless surgery: 54.7% ± 8.4%; control: 52.2% ± 13.0%; P >0.05) without evidence of gingival tissue or foreign body inclusions. There were no significant differences in marginal bone levels between the surgical protocols. Post-insertion and at 3 months, ISQ values depended on the amount of torque delivered. Immediately post-insertion, for every 1-unit increase in torque value, the ISQ increased by 0.3 (95% confidence interval: 0.1 to 0.4; P = 0.0043). Three months postoperatively, for every one-unit increase in torque the ISQ value decreased 0.2 (95% confidence interval: -0.4 to -0.1; P = 0.00 12). The effect of torque on ISQ values was independent of treatment effects and remained significant after adjustment for treatment. Conclusions: The results suggest that implants placed without flap reflection remain stable and exhibit clinically relevant osseointegration similar to when implants are placed with flapped procedures. Greater torque at implant placement resulted in less implant stability at 3 months.'
-        result = next(self.corpus.document_description())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.document_description(),
+                            field='dc:description', attribute=None)
 
 # class TestScopusProcessedCorpusReader(TestCase):
 #     def setUp(self) -> None:

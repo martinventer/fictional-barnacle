@@ -141,6 +141,77 @@ class ScopusCorpusReader(RawCorpusReader):
 
         RawCorpusReader.__init__(self, root=root, **kwargs)
 
+    def _doc_2_dic_gen_l(self, attribute,  **kwargs) -> list:
+        """
+        a helper method to extract fields from raw document data
+
+        Parameters
+        ----------
+        attribute : str
+            the attribute to be returned
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                yield doc[attribute]
+            except KeyError:
+                yield []
+
+    def _doc_2_str_gen_s(self, attribute,  **kwargs) -> str:
+        """
+        a helper method to extract fields from raw document data
+
+        Parameters
+        ----------
+        attribute : str
+            the attribute to be returned
+        """
+        for doc in self.docs(**kwargs):
+            try:
+                text = doc[attribute]
+            except (KeyError, TypeError):
+                text = 'unk'
+            if text is not None:
+                yield text
+            else:
+                yield 'unk'
+
+    @staticmethod
+    def _dic_2_list_gen_l(gen, attribute) -> list:
+        """
+        a helper method to convert raw document data to list
+
+        Parameters
+        ----------
+        attribute : str
+            the attribute to be returned
+        """
+        for _dict in gen:
+            try:
+                yield [_item[attribute] for
+                       _item in _dict]
+            except KeyError:
+                yield []
+
+    @staticmethod
+    def _list_2_string_gen_s(gen) -> str:
+        """
+        a helper method to convert raw affiliation data to list per document
+
+        Parameters
+        ----------
+        gen : list
+            the attribute to be returned
+        """
+        for _list in gen:
+            if _list:
+                for _item in _list:
+                    if _item is not None:
+                        yield _item
+                    else:
+                        yield 'unk'
+            else:
+                yield 'unk'
+
     def affiliation_l(self, **kwargs) -> list:
         """
         Generator for document affiliations
@@ -152,28 +223,7 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliations
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['affiliation']
-            except KeyError:
-                yield []
-
-    def _affiliation_attribute_gen_l(self, attribute, **kwargs):
-        """
-        a helper method
-
-        Parameters
-        ----------
-        attribute : str
-            the attribute to be returned
-        """
-
-        for affiliation in self.affiliation_l(**kwargs):
-            try:
-                yield [affiliate[attribute] for
-                       affiliate in affiliation]
-            except KeyError:
-                yield []
+        yield from self._doc_2_dic_gen_l('affiliation',  **kwargs)
 
     def affiliation_city_l(self, **kwargs) -> list:
         """
@@ -187,8 +237,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document city affiliation list
 
         """
-        yield from self._affiliation_attribute_gen_l(
-            attribute='affiliation-city', **kwargs)
+        yield from self._dic_2_list_gen_l(gen=self.affiliation_l(**kwargs),
+                                          attribute='affiliation-city')
 
     def affiliation_city_s(self, **kwargs) -> str:
         """
@@ -203,15 +253,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document city affiliation
 
         """
-        for cities in self.affiliation_city_l(**kwargs):
-            if cities:
-                for city in cities:
-                    if city is not None:
-                        yield city
-                    else:
-                        yield 'unknownCity'
-            else:
-                yield 'unknownCity'
+        yield from self._list_2_string_gen_s(
+            self.affiliation_city_l(**kwargs))
 
     def affiliation_country_l(self, **kwargs) -> list:
         """
@@ -225,8 +268,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document county affiliation list
 
         """
-        yield from self._affiliation_attribute_gen_l(
-            attribute='affiliation-country', **kwargs)
+        yield from self._dic_2_list_gen_l(gen=self.affiliation_l(**kwargs),
+                                          attribute='affiliation-country')
 
     def affiliation_country_s(self, **kwargs) -> str:
         """
@@ -240,15 +283,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document country affiliation
 
         """
-        for countries in self.affiliation_country_l(**kwargs):
-            if countries:
-                for country in countries:
-                    if country is not None:
-                        yield country
-                    else:
-                        yield 'unknownCountry'
-            else:
-                yield 'unknownCountry'
+        yield from self._list_2_string_gen_s(
+            self.affiliation_country_l(**kwargs))
 
     def affiliation_url_l(self, **kwargs) -> list:
         """
@@ -261,8 +297,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation url list
 
         """
-        yield from self._affiliation_attribute_gen_l(
-            attribute='affiliation-url', **kwargs)
+        yield from self._dic_2_list_gen_l(gen=self.affiliation_l(**kwargs),
+                                          attribute='affiliation-url')
 
     def affiliation_url_s(self, **kwargs) -> str:
         """
@@ -275,15 +311,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation url
 
         """
-        for urls in self.affiliation_url_l(**kwargs):
-            if urls:
-                for url in urls:
-                    if url is not None:
-                        yield url
-                    else:
-                        yield 'unknownUrl'
-            else:
-                yield 'unknownUrl'
+        yield from self._list_2_string_gen_s(
+            self.affiliation_url_l(**kwargs))
 
     def affiliation_name_l(self, **kwargs) -> list:
         """
@@ -296,8 +325,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation name list
 
         """
-        yield from self._affiliation_attribute_gen_l(
-            attribute='affilname', **kwargs)
+        yield from self._dic_2_list_gen_l(gen=self.affiliation_l(**kwargs),
+                                          attribute='affilname')
 
     def affiliation_name_s(self, **kwargs) -> str:
         """
@@ -310,15 +339,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation name
 
         """
-        for names in self.affiliation_name_l(**kwargs):
-            if names:
-                for name in names:
-                    if name is not None:
-                        yield name
-                    else:
-                        yield 'unknownName'
-            else:
-                yield 'unknownName'
+        yield from self._list_2_string_gen_s(
+            self.affiliation_name_l(**kwargs))
 
     def affiliation_id_l(self, **kwargs) -> list:
         """
@@ -331,8 +353,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation id list
 
         """
-        yield from self._affiliation_attribute_gen_l(
-            attribute='afid', **kwargs)
+        yield from self._dic_2_list_gen_l(gen=self.affiliation_l(**kwargs),
+                                          attribute='afid')
 
     def affiliation_id_s(self, **kwargs) -> str:
         """
@@ -345,12 +367,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation id
 
         """
-        for ids in self.affiliation_id_l(**kwargs):
-            for ident in ids:
-                try:
-                    yield ident
-                except KeyError:
-                    yield ''
+        yield from self._list_2_string_gen_s(
+            self.affiliation_id_l(**kwargs))
 
     def keywords_l(self, **kwargs) -> list:
         """
@@ -383,10 +401,10 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for keywords in self.keywords_l(**kwargs):
-            try:
+            if keywords:
                 yield ' '.join(keywords)
-            except KeyError:
-                yield ''
+            else:
+                yield 'unk'
 
     def keywords_phrase(self, **kwargs) -> str:
         """
@@ -399,15 +417,8 @@ class ScopusCorpusReader(RawCorpusReader):
             author keyword phrases
 
         """
-        for keywords in self.keywords_l(**kwargs):
-            if keywords:
-                try:
-                    for phrase in keywords:
-                        yield phrase
-                except KeyError:
-                    yield ''
-            else:
-                yield ''
+        yield from self._list_2_string_gen_s(
+            self.keywords_l(**kwargs))
 
     def keywords_s(self, **kwargs) -> str:
         """
@@ -424,9 +435,9 @@ class ScopusCorpusReader(RawCorpusReader):
             words = [x.strip() for x in phrase.split(' ')]
             try:
                 for word in words:
-                    yield word
+                    yield word.strip()
             except KeyError:
-                yield ''
+                yield 'unk'
 
     def author_data_l(self, **kwargs) -> list:
         """
@@ -439,11 +450,7 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author data
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['author']
-            except KeyError:
-                yield []
+        yield from self._doc_2_dic_gen_l('author', **kwargs)
 
     def author_data_id_l(self, **kwargs) -> list:
         """
@@ -456,17 +463,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author ids
 
         """
-        for data in self.author_data_l(**kwargs):
-            if data:
-                try:
-                    author_ids = []
-                    for author in data:
-                        author_ids.append(author['authid'])
-                    yield author_ids
-                except KeyError:
-                    yield []
-            else:
-                yield []
+        yield from self._dic_2_list_gen_l(gen=self.author_data_l(**kwargs),
+                                          attribute='authid')
 
     def author_data_id_s(self, **kwargs) -> str:
         """
@@ -479,12 +477,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author id
 
         """
-        for identifiers in self.author_data_id_l(**kwargs):
-            for identifier in identifiers:
-                try:
-                    yield identifier
-                except KeyError:
-                    yield ''
+        yield from self._list_2_string_gen_s(
+            self.author_data_id_l(**kwargs))
 
     def author_data_name_full_l(self, **kwargs) -> list:
         """
@@ -497,14 +491,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author full name list
 
         """
-        for data in self.author_data_l(**kwargs):
-            try:
-                author_names = []
-                for author in data:
-                    author_names.append(author['authname'])
-                yield author_names
-            except KeyError:
-                yield []
+        yield from self._dic_2_list_gen_l(gen=self.author_data_l(**kwargs),
+                                          attribute='authname')
 
     def author_data_name_full_s(self, **kwargs) -> str:
         """
@@ -517,12 +505,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author full name
 
         """
-        for full_names in self.author_data_name_full_l(**kwargs):
-            for full_name in full_names:
-                try:
-                    yield full_name
-                except KeyError:
-                    yield ''
+        yield from self._list_2_string_gen_s(
+            self.author_data_name_full_l(**kwargs))
 
     def author_data_url_l(self, **kwargs) -> list:
         """
@@ -535,14 +519,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author url list
 
         """
-        for data in self.author_data_l(**kwargs):
-            try:
-                author_urls = []
-                for author in data:
-                    author_urls.append(author['author-url'])
-                yield author_urls
-            except KeyError:
-                yield []
+        yield from self._dic_2_list_gen_l(gen=self.author_data_l(**kwargs),
+                                          attribute='author-url')
 
     def author_data_url_s(self, **kwargs) -> str:
         """
@@ -555,12 +533,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author url
 
         """
-        for urls in self.author_data_url_l(**kwargs):
-            for url in urls:
-                try:
-                    yield url
-                except KeyError:
-                    yield ''
+        yield from self._list_2_string_gen_s(
+            self.author_data_url_l(**kwargs))
 
     def author_data_name_given_l(self, **kwargs) -> list:
         """
@@ -573,14 +547,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author given name list
 
         """
-        for data in self.author_data_l(**kwargs):
-            try:
-                author_names = []
-                for author in data:
-                    author_names.append(author['given-name'])
-                yield author_names
-            except KeyError:
-                yield []
+        yield from self._dic_2_list_gen_l(gen=self.author_data_l(**kwargs),
+                                          attribute='given-name')
 
     def author_data_name_given_s(self, **kwargs) -> str:
         """
@@ -593,12 +561,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author given name
 
         """
-        for names in self.author_data_name_given_l(**kwargs):
-            for name in names:
-                try:
-                    yield name
-                except KeyError:
-                    yield ''
+        yield from self._list_2_string_gen_s(
+            self.author_data_name_given_l(**kwargs))
 
     def author_data_initial_l(self, **kwargs) -> list:
         """
@@ -611,14 +575,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author initials list
 
         """
-        for data in self.author_data_l(**kwargs):
-            try:
-                initials = []
-                for author in data:
-                    initials.append(author['initials'])
-                yield initials
-            except KeyError:
-                yield []
+        yield from self._dic_2_list_gen_l(gen=self.author_data_l(**kwargs),
+                                          attribute='initials')
 
     def author_data_initial_s(self, **kwargs) -> str:
         """
@@ -631,12 +589,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author initial
 
         """
-        for initials in self.author_data_initial_l(**kwargs):
-            for initial in initials:
-                try:
-                    yield initial
-                except KeyError:
-                    yield ''
+        yield from self._list_2_string_gen_s(
+            self.author_data_initial_l(**kwargs))
 
     def author_data_name_surname_l(self, **kwargs) -> list:
         """
@@ -649,14 +603,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author surname  list
 
         """
-        for data in self.author_data_l(**kwargs):
-            try:
-                author_names = []
-                for author in data:
-                    author_names.append(author['surname'])
-                yield author_names
-            except KeyError:
-                yield []
+        yield from self._dic_2_list_gen_l(gen=self.author_data_l(**kwargs),
+                                          attribute='surname')
 
     def author_data_name_surname_s(self, **kwargs) -> str:
         """
@@ -669,12 +617,8 @@ class ScopusCorpusReader(RawCorpusReader):
             list of author surname
 
         """
-        for names in self.author_data_name_surname_l(**kwargs):
-            for name in names:
-                try:
-                    yield name
-                except KeyError:
-                    yield ''
+        yield from self._list_2_string_gen_s(
+            self.author_data_name_surname_l(**kwargs))
 
     def stat_num_authors(self, **kwargs) -> int:
         """
@@ -721,11 +665,7 @@ class ScopusCorpusReader(RawCorpusReader):
             scopus identifier
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['dc:identifier']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='dc:identifier', **kwargs)
 
     def identifier_electronic(self, **kwargs) -> str:
         """
@@ -738,28 +678,7 @@ class ScopusCorpusReader(RawCorpusReader):
             electronic identifier
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['eid']
-            except (KeyError, TypeError):
-                yield ''
-
-    def identifier_link(self, **kwargs) -> str:
-        """
-        Generator for web link identifiers
-        Parameters
-        ----------
-
-        Returns
-        -------
-            web link identifier
-
-        """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['link'][0]['@href']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='eid', **kwargs)
 
     def identifier_doi(self, **kwargs) -> str:
         """
@@ -772,11 +691,7 @@ class ScopusCorpusReader(RawCorpusReader):
             doi identifier
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['prism:doi']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='prism:doi', **kwargs)
 
     def identifier_issn(self, **kwargs) -> str:
         """
@@ -789,11 +704,7 @@ class ScopusCorpusReader(RawCorpusReader):
             issn identifier
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['prism:issn']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='prism:issn', **kwargs)
 
     def identifier_pubmed(self, **kwargs) -> str:
         """
@@ -806,11 +717,7 @@ class ScopusCorpusReader(RawCorpusReader):
             issn identifier
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['pubmed-id']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='pubmed-id', **kwargs)
 
     def identifier_source(self, **kwargs) -> str:
         """
@@ -823,11 +730,7 @@ class ScopusCorpusReader(RawCorpusReader):
             issn identifier
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['source-id']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='source-id', **kwargs)
 
     def publication_type(self, **kwargs) -> str:
         """
@@ -840,11 +743,8 @@ class ScopusCorpusReader(RawCorpusReader):
             publication type
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['prism:aggregationType']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='prism:aggregationType',
+                                         **kwargs)
 
     def publication_name(self, **kwargs) -> str:
         """
@@ -857,11 +757,8 @@ class ScopusCorpusReader(RawCorpusReader):
             publication name
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['prism:publicationName']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='prism:publicationName',
+                                         **kwargs)
 
     def publication_subtype(self, **kwargs) -> str:
         """
@@ -874,11 +771,8 @@ class ScopusCorpusReader(RawCorpusReader):
             publication subtype
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['subtypeDescription']
-            except (KeyError, TypeError):
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='subtypeDescription',
+                                         **kwargs)
 
     def publication_volume(self, **kwargs) -> int:
         """
@@ -891,6 +785,8 @@ class ScopusCorpusReader(RawCorpusReader):
             publication volume number
 
         """
+        yield from self._doc_2_str_gen_s(attribute='subtypeDescription',
+                                         **kwargs)
         for doc in self.docs(**kwargs):
             try:
                 yield int(doc['prism:volume'])
@@ -980,11 +876,8 @@ class ScopusCorpusReader(RawCorpusReader):
             yields a string containing the next document title
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['dc:title']
-            except KeyError:
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='dc:title',
+                                         **kwargs)
 
     def document_description(self, **kwargs) -> str:
         """
@@ -997,11 +890,8 @@ class ScopusCorpusReader(RawCorpusReader):
             yields a string containing the next document description
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield doc['dc:description']
-            except KeyError:
-                yield ''
+        yield from self._doc_2_str_gen_s(attribute='dc:description',
+                                         **kwargs)
 
 
 class ScopusProcessedCorpusReader(ScopusCorpusReader):
@@ -1300,11 +1190,11 @@ if __name__ == '__main__':
 
     root = "Tests/Test_Corpus/Split_corpus/"
     corpus = RawCorpusReader(root=root)
-    gen = corpus.docs()
-    doc = next(gen)
-    print([x['affiliation-city'] for x in doc['affiliation']])
-
-    print(doc['affiliation'])
+    # gen = corpus.docs()
+    # doc = next(gen)
+    # print([x['affiliation-city'] for x in doc['affiliation']])
+    #
+    # print(doc['affiliation'])
 
 
 
@@ -1317,3 +1207,4 @@ if __name__ == '__main__':
     # aa = next(gen)
     # pp = PrettyPrinter(indent=4)
     # pp.pprint(aa)
+
