@@ -13,7 +13,6 @@ class TestRawCorpusReader(TestCase):
     def test_docs(self):
         target = {'@_fa': 'true', 'link': [{'@_fa': 'true', '@ref': 'self', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/84963627673'}, {'@_fa': 'true', '@ref': 'author-affiliation', '@href': 'https://api.elsevier.com/content/abstract/scopus_id/84963627673?field=author,affiliation'}, {'@_fa': 'true', '@ref': 'scopus', '@href': 'https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp=84963627673&origin=inward'}, {'@_fa': 'true', '@ref': 'scopus-citedby', '@href': 'https://www.scopus.com/inward/citedby.uri?partnerID=HzOxMe3b&scp=84963627673&origin=inward'}], 'prism:url': 'https://api.elsevier.com/content/abstract/scopus_id/84963627673', 'dc:identifier': 'SCOPUS_ID:84963627673', 'eid': '2-s2.0-84963627673', 'dc:title': 'Development of a hall-effect based skin sensor', 'dc:creator': 'Tomo T.', 'prism:publicationName': '2015 IEEE SENSORS - Proceedings', 'prism:isbn': [{'@_fa': 'true', '$': '9781479982028'}], 'prism:pageRange': None, 'prism:coverDate': '2015-12-31', 'prism:coverDisplayDate': '31 December 2015', 'prism:doi': '10.1109/ICSENS.2015.7370435', 'dc:description': "© 2015 IEEE. In this paper we introduce a prototype of a novel hall-effect based skin sensor for robotic applications. It uses a small sized chip that provides 3-axis digital output in a compact package. Our purpose was to evaluate the feasibility of measuring 3-axis force while maintain a soft exterior for safe interactions. Silicone was used to produce the soft skin layer with about 8 mm thickness. An MLX90393 chip was installed at the bottom of layer, with a small magnet approximately 5mm above it to measure 3-axial magnetic field data. To evaluate the sensor's performance, an experiment was conducted by measuring normal and shear force when applying total forces of 0.7-14N in the normal and tangential directions of the sensor. The test revealed that the sensor prototype was able to differentiate the components of the force vector, with limited crosstalk. A calibration was performed to convert the measurements of the magnetic field to force values.", 'citedby-count': '5', 'affiliation': [{'@_fa': 'true', 'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60023462', 'afid': '60023462', 'affilname': 'Waseda University', 'affiliation-city': 'Tokyo', 'affiliation-country': 'Japan'}, {'@_fa': 'true', 'affiliation-url': 'https://api.elsevier.com/content/affiliation/affiliation_id/60004956', 'afid': '60004956', 'affilname': 'Instituto Superior Técnico', 'affiliation-city': 'Lisbon', 'affiliation-country': 'Portugal'}], 'prism:aggregationType': 'Conference Proceeding', 'subtype': 'cp', 'subtypeDescription': 'Conference Paper', 'author-count': {'@limit': '100', '$': '6'}, 'author': [{'@_fa': 'true', '@seq': '1', 'author-url': 'https://api.elsevier.com/content/author/author_id/57188759249', 'authid': '57188759249', 'authname': 'Tomo T.', 'surname': 'Tomo', 'given-name': 'Tito Pradhono', 'initials': 'T.P.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '2', 'author-url': 'https://api.elsevier.com/content/author/author_id/56531989700', 'authid': '56531989700', 'authname': 'Somlor S.', 'surname': 'Somlor', 'given-name': 'Sophon', 'initials': 'S.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '3', 'author-url': 'https://api.elsevier.com/content/author/author_id/36662716600', 'authid': '36662716600', 'authname': 'Schmitz A.', 'surname': 'Schmitz', 'given-name': 'Alexander', 'initials': 'A.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '4', 'author-url': 'https://api.elsevier.com/content/author/author_id/35355828000', 'authid': '35355828000', 'authname': 'Hashimoto S.', 'surname': 'Hashimoto', 'given-name': 'Shuji', 'initials': 'S.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '5', 'author-url': 'https://api.elsevier.com/content/author/author_id/7102227917', 'authid': '7102227917', 'authname': 'Sugano S.', 'surname': 'Sugano', 'given-name': 'Shigeki', 'initials': 'S.', 'afid': [{'@_fa': 'true', '$': '60023462'}]}, {'@_fa': 'true', '@seq': '6', 'author-url': 'https://api.elsevier.com/content/author/author_id/24479375600', 'authid': '24479375600', 'authname': 'Jamone L.', 'surname': 'Jamone', 'given-name': 'Lorenzo', 'initials': 'L.', 'afid': [{'@_fa': 'true', '$': '60004956'}]}], 'authkeywords': 'magnetic | sensor | skin | tactile', 'article-number': '7370435', 'source-id': '21100455562', 'fund-no': 'undefined', 'openaccess': '0', 'openaccessFlag': False}
         result = next(self.corp.docs())[0]
-        print(result)
         self.assertEqual(result, target)
 
 
@@ -26,6 +25,19 @@ class TestScopusCorpusReader(TestCase):
         # self.trial_doc_a = next(self.gen)
         # self.trial_doc_b = next(self.gen)
 
+    def _affiliation_helper_l(self, attribute):
+        gen = self.corpus.docs()
+        for result in self.corpus.affiliation_city_l():
+            try:
+                affiliations = next(gen)['affiliation']
+                target = [affiliation[attribute] for affiliation in
+                          affiliations]
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(list, type(result))
+
     def test_affiliation_l(self):
         gen = self.corpus.docs()
         for result in self.corpus.affiliation_l():
@@ -37,19 +49,18 @@ class TestScopusCorpusReader(TestCase):
             self.assertEqual(list, type(result))
 
     def test_affiliation_city_l(self):
-        gen = self.corpus.docs()
-        for result in self.corpus.affiliation_city_l():
-            try:
-                affiliations = next(gen)['affiliation']
-                target = [affiliation['affiliation-city'] for affiliation in
-                          affiliations]
-            except KeyError:
-                target = []
-            print(target)
-            print(result)
-            self.assertEqual(target, result)
-            self.assertEqual(len(target), len(result))
-            self.assertEqual(list, type(result))
+        self._affiliation_helper_l('affiliation-city')
+        # gen = self.corpus.docs()
+        # for result in self.corpus.affiliation_city_l():
+        #     try:
+        #         affiliations = next(gen)['affiliation']
+        #         target = [affiliation['affiliation-city'] for affiliation in
+        #                   affiliations]
+        #     except KeyError:
+        #         target = []
+        #     self.assertEqual(target, result)
+        #     self.assertEqual(len(target), len(result))
+        #     self.assertEqual(list, type(result))
 
     def test_affiliation_city_s(self):
         targets = []
@@ -60,9 +71,9 @@ class TestScopusCorpusReader(TestCase):
                     if affiliation['affiliation-city'] is not None:
                         targets.append(affiliation['affiliation-city'])
                     else:
-                        targets.append('')
+                        targets.append('unknownCity')
             except KeyError:
-                targets.append('')
+                targets.append('unknownCity')
 
         results = list(self.corpus.affiliation_city_s())
         self.assertEqual(len(targets), len(results))
@@ -71,60 +82,136 @@ class TestScopusCorpusReader(TestCase):
             self.assertEqual(str, type(result))
 
     def test_affiliation_country_l(self):
-        target = self.trial_doc['affiliation'][0]['affiliation-country']
-        result = next(self.corpus.affiliation_country_l())
-        self.assertEqual(target, result[0])
-        target2 = len(self.trial_doc['affiliation'])
-        self.assertEqual(target2, len(result))
-        self.assertEqual(list, type(result))
+        gen = self.corpus.docs()
+        for result in self.corpus.affiliation_country_l():
+            try:
+                affiliations = next(gen)['affiliation']
+                target = [affiliation['affiliation-country'] for affiliation in
+                          affiliations]
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(list, type(result))
 
     def test_affiliation_country_s(self):
-        target = self.trial_doc['affiliation'][0]['affiliation-country']
-        result = next(self.corpus.affiliation_country_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                affiliations = doc['affiliation']
+                for affiliation in affiliations:
+                    if affiliation['affiliation-country'] is not None:
+                        targets.append(affiliation['affiliation-country'])
+                    else:
+                        targets.append('unknownCountry')
+            except KeyError:
+                targets.append('unknownCountry')
+
+        results = list(self.corpus.affiliation_country_s())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(str, type(result))
 
     def test_affiliation_url_l(self):
-        target = self.trial_doc['affiliation'][0]['affiliation-url']
-        result = next(self.corpus.affiliation_url_l())
-        self.assertEqual(target, result[0])
-        target2 = len(self.trial_doc['affiliation'])
-        self.assertEqual(target2, len(result))
-        self.assertEqual(list, type(result))
+        gen = self.corpus.docs()
+        for result in self.corpus.affiliation_url_l():
+            try:
+                affiliations = next(gen)['affiliation']
+                target = [affiliation['affiliation-url'] for affiliation in
+                          affiliations]
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(list, type(result))
 
     def test_affiliation_url_s(self):
-        target = self.trial_doc['affiliation'][0]['affiliation-url']
-        result = next(self.corpus.affiliation_url_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                affiliations = doc['affiliation']
+                for affiliation in affiliations:
+                    if affiliation['affiliation-url'] is not None:
+                        targets.append(affiliation['affiliation-url'])
+                    else:
+                        targets.append('unknownUrl')
+            except KeyError:
+                targets.append('unknownUrl')
+
+        results = list(self.corpus.affiliation_url_s())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(str, type(result))
 
     def test_affiliation_name_l(self):
-        target = self.trial_doc['affiliation'][0]['affilname']
-        result = next(self.corpus.affiliation_name_l())
-        self.assertEqual(target, result[0])
-        target2 = len(self.trial_doc['affiliation'])
-        self.assertEqual(target2, len(result))
-        self.assertEqual(list, type(result))
+        gen = self.corpus.docs()
+        for result in self.corpus.affiliation_name_l():
+            try:
+                affiliations = next(gen)['affiliation']
+                target = [affiliation['affilname'] for affiliation in
+                          affiliations]
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(list, type(result))
 
     def test_affiliation_name_s(self):
-        target = self.trial_doc['affiliation'][0]['affilname']
-        result = next(self.corpus.affiliation_name_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                affiliations = doc['affiliation']
+                for affiliation in affiliations:
+                    if affiliation['affilname'] is not None:
+                        targets.append(affiliation['affilname'])
+                    else:
+                        targets.append('unknownName')
+            except KeyError:
+                targets.append('unknownName')
+
+        results = list(self.corpus.affiliation_name_s())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(str, type(result))
 
     def test_affiliation_id_l(self):
-        target = self.trial_doc['affiliation'][0]['afid']
-        result = next(self.corpus.affiliation_id_l())
-        self.assertEqual(target, result[0])
-        target2 = len(self.trial_doc['affiliation'])
-        self.assertEqual(target2, len(result))
-        self.assertEqual(list, type(result))
+        gen = self.corpus.docs()
+        for result in self.corpus.affiliation_id_l():
+            try:
+                affiliations = next(gen)['affiliation']
+                target = [affiliation['afid'] for affiliation in
+                          affiliations]
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(list, type(result))
 
     def test_affiliation_id_s(self):
-        target = self.trial_doc['affiliation'][0]['afid']
-        result = next(self.corpus.affiliation_id_s())
-        self.assertEqual(target, result)
-        self.assertEqual(str, type(result))
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                affiliations = doc['affiliation']
+                for affiliation in affiliations:
+                    if affiliation['affilname'] is not None:
+                        targets.append(affiliation['affilname'])
+                    else:
+                        targets.append('unknownName')
+            except KeyError:
+                targets.append('unknownName')
+
+        results = list(self.corpus.affiliation_name_s())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+        #
+        # target = self.trial_doc['affiliation'][0]['afid']
+        # result = next(self.corpus.affiliation_id_s())
+        # self.assertEqual(target, result)
+        # self.assertEqual(str, type(result))
 
     def test_keywords_l(self):
         target = [keyword.strip() for keyword in self.trial_doc_a[

@@ -158,9 +158,27 @@ class ScopusCorpusReader(RawCorpusReader):
             except KeyError:
                 yield []
 
+    def _affiliation_attribute_gen_l(self, attribute, **kwargs):
+        """
+        a helper method
+
+        Parameters
+        ----------
+        attribute : str
+            the attribute to be returned
+        """
+
+        for affiliation in self.affiliation_l(**kwargs):
+            try:
+                yield [affiliate[attribute] for
+                       affiliate in affiliation]
+            except KeyError:
+                yield []
+
     def affiliation_city_l(self, **kwargs) -> list:
         """
-        Generator for document city affiliation list
+        Generator for document city affiliation list. This is an as is list
+        from the raw data, and may contain None values.
         Parameters
         ----------
 
@@ -169,16 +187,14 @@ class ScopusCorpusReader(RawCorpusReader):
             document city affiliation list
 
         """
-        for affiliation in self.affiliation_l(**kwargs):
-            try:
-                yield [affiliate['affiliation-city'] for
-                       affiliate in affiliation]
-            except KeyError:
-                yield []
+        yield from self._affiliation_attribute_gen_l(
+            attribute='affiliation-city', **kwargs)
 
     def affiliation_city_s(self, **kwargs) -> str:
         """
-        Generator for document city affiliation
+        Generator for document city affiliation. This draws single city names
+        from the city affiliation list. None values in the list are replaced
+        with 'unknownCity'
         Parameters
         ----------
 
@@ -193,13 +209,14 @@ class ScopusCorpusReader(RawCorpusReader):
                     if city is not None:
                         yield city
                     else:
-                        yield ''
+                        yield 'unknownCity'
             else:
-                yield ''
+                yield 'unknownCity'
 
     def affiliation_country_l(self, **kwargs) -> list:
         """
-        Generator for document county affiliation list
+        Generator for document county affiliation list. list may containg
+        NoneType data.
         Parameters
         ----------
 
@@ -208,18 +225,13 @@ class ScopusCorpusReader(RawCorpusReader):
             document county affiliation list
 
         """
-        for affiliation in self.affiliation_l(**kwargs):
-            try:
-                countries =[]
-                for affiliate in affiliation:
-                    countries.append(affiliate['affiliation-country'])
-                yield countries
-            except KeyError:
-                yield []
+        yield from self._affiliation_attribute_gen_l(
+            attribute='affiliation-country', **kwargs)
 
     def affiliation_country_s(self, **kwargs) -> str:
         """
-        Generator for document country affiliation
+        Generator for document country affiliation. None values in the list are
+        replaced  with 'unknownCountry'
         Parameters
         ----------
 
@@ -229,11 +241,14 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for countries in self.affiliation_country_l(**kwargs):
-            for country in countries:
-                try:
-                    yield country
-                except KeyError:
-                    yield ''
+            if countries:
+                for country in countries:
+                    if country is not None:
+                        yield country
+                    else:
+                        yield 'unknownCountry'
+            else:
+                yield 'unknownCountry'
 
     def affiliation_url_l(self, **kwargs) -> list:
         """
@@ -246,14 +261,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation url list
 
         """
-        for affiliation in self.affiliation_l(**kwargs):
-            try:
-                urls = []
-                for affiliate in affiliation:
-                    urls.append(affiliate['affiliation-url'])
-                yield urls
-            except KeyError:
-                yield []
+        yield from self._affiliation_attribute_gen_l(
+            attribute='affiliation-url', **kwargs)
 
     def affiliation_url_s(self, **kwargs) -> str:
         """
@@ -267,11 +276,14 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for urls in self.affiliation_url_l(**kwargs):
-            for url in urls:
-                try:
-                    yield url
-                except KeyError:
-                    yield ''
+            if urls:
+                for url in urls:
+                    if url is not None:
+                        yield url
+                    else:
+                        yield 'unknownUrl'
+            else:
+                yield 'unknownUrl'
 
     def affiliation_name_l(self, **kwargs) -> list:
         """
@@ -284,14 +296,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation name list
 
         """
-        for affiliation in self.affiliation_l(**kwargs):
-            try:
-                names = []
-                for affiliate in affiliation:
-                    names.append(affiliate['affilname'])
-                yield names
-            except KeyError:
-                yield []
+        yield from self._affiliation_attribute_gen_l(
+            attribute='affilname', **kwargs)
 
     def affiliation_name_s(self, **kwargs) -> str:
         """
@@ -305,11 +311,14 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for names in self.affiliation_name_l(**kwargs):
-            for name in names:
-                try:
-                    yield name
-                except KeyError:
-                    yield ''
+            if names:
+                for name in names:
+                    if name is not None:
+                        yield name
+                    else:
+                        yield 'unknownName'
+            else:
+                yield 'unknownName'
 
     def affiliation_id_l(self, **kwargs) -> list:
         """
@@ -322,14 +331,8 @@ class ScopusCorpusReader(RawCorpusReader):
             document affiliation id list
 
         """
-        for affiliation in self.affiliation_l(**kwargs):
-            try:
-                ids = []
-                for affiliate in affiliation:
-                    ids.append(affiliate['afid'])
-                yield ids
-            except KeyError:
-                yield []
+        yield from self._affiliation_attribute_gen_l(
+            attribute='afid', **kwargs)
 
     def affiliation_id_s(self, **kwargs) -> str:
         """
