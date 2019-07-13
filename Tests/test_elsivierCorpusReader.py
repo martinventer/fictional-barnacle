@@ -261,7 +261,7 @@ class TestScopusCorpusReader(TestCase):
             try:
                 target = int(next(gen)['author-count']["$"])
             except (KeyError, TypeError):
-                target = 0
+                target = -1
             self.assertEqual(target, result)
             self.assertEqual(int, type(result))
 
@@ -271,7 +271,7 @@ class TestScopusCorpusReader(TestCase):
             try:
                 target = int(next(gen)['citedby-count'])
             except (KeyError, TypeError):
-                target = 0
+                target = -1
             self.assertEqual(target, result)
             self.assertEqual(int, type(result))
 
@@ -312,29 +312,49 @@ class TestScopusCorpusReader(TestCase):
                             field='subtypeDescription', attribute=None)
 
     def test_publication_volume(self):
-        target = 77
-        result = next(self.corpus.publication_volume())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.publication_volume(),
+                            field='prism:volume', attribute=None)
 
     def test_publication_issue(self):
-        target = 10
-        result = next(self.corpus.publication_issue())
-        self.assertEqual(target, result)
+        self._helper_string(gen_method=self.corpus.publication_issue(),
+                            field='prism:issueIdentifier', attribute=None)
 
     def test_publication_pages(self):
-        target = (1717, 1722)
-        result = next(self.corpus.publication_pages())
-        self.assertEqual(target, result)
+        gen = self.corpus.docs()
+        for result in self.corpus.publication_pages():
+            try:
+                target = tuple(int(p) for p in next(gen)[
+                    'prism:pageRange'].split('-'))
+            except (KeyError, AttributeError, ValueError):
+                target = (-1, -1)
+            self.assertEqual(target, result)
+            self.assertEqual(tuple, type(result))
 
     def test_publication_date(self):
-        target = datetime(2006, 10, 1, 0, 0)
-        result = next(self.corpus.publication_date())
-        self.assertEqual(target, result)
+        gen = self.corpus.docs()
+        for result in self.corpus.publication_date():
+            try:
+                date_string = next(gen)['prism:coverDate']
+                target = datetime.strptime(date_string, '%Y-%m-%d')
+            except KeyError:
+                date_string = '1800-01-01'
+                target = datetime.strptime(date_string, '%Y-%m-%d')
+            self.assertEqual(target, result)
+            self.assertEqual(datetime, type(result))
 
     def test_publication_year(self):
-        target = 2006
-        result = next(self.corpus.publication_year())
-        self.assertEqual(target, result)
+        gen = self.corpus.docs()
+        for result in self.corpus.publication_year():
+            try:
+                date_string = next(gen)['prism:coverDate']
+                target = datetime.strptime(date_string, '%Y-%m-%d')
+                target = target.year
+            except KeyError:
+                date_string = '1800-01-01'
+                target = datetime.strptime(date_string, '%Y-%m-%d')
+                target = target.year
+            self.assertEqual(target, result)
+            self.assertEqual(int, type(result))
 
     def test_document_title(self):
         self._helper_string(gen_method=self.corpus.document_title(),

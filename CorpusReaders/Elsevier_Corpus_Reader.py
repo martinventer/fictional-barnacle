@@ -632,10 +632,13 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for doc in self.docs(**kwargs):
-            try:
-                yield int(doc['author-count']["$"])
-            except (KeyError, TypeError):
-                yield 0
+            if doc:
+                try:
+                    yield int(doc['author-count']["$"])
+                except (KeyError, TypeError):
+                    yield -1
+            else:
+                yield -1
 
     def stat_num_citations(self, **kwargs) -> int:
         """
@@ -649,10 +652,13 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for doc in self.docs(**kwargs):
-            try:
-                yield int(doc['citedby-count'])
-            except (KeyError, TypeError):
-                yield 0
+            if doc:
+                try:
+                    yield int(doc['citedby-count'])
+                except (KeyError, TypeError):
+                    yield -1
+            else:
+                yield -1
 
     def identifier_scopus(self, **kwargs) -> str:
         """
@@ -774,9 +780,10 @@ class ScopusCorpusReader(RawCorpusReader):
         yield from self._doc_2_str_gen_s(attribute='subtypeDescription',
                                          **kwargs)
 
-    def publication_volume(self, **kwargs) -> int:
+    def publication_volume(self, **kwargs) -> str:
         """
-        Generator for publication volume number
+        Generator for publication volume Identifier, Some values are not
+        integers, so this method will return a string
         Parameters
         ----------
 
@@ -785,17 +792,14 @@ class ScopusCorpusReader(RawCorpusReader):
             publication volume number
 
         """
-        yield from self._doc_2_str_gen_s(attribute='subtypeDescription',
+        yield from self._doc_2_str_gen_s(attribute='prism:volume',
                                          **kwargs)
-        for doc in self.docs(**kwargs):
-            try:
-                yield int(doc['prism:volume'])
-            except (KeyError, TypeError):
-                yield 0
 
-    def publication_issue(self, **kwargs) -> int:
+    def publication_issue(self, **kwargs) -> str:
         """
-        Generator for publication issue number
+        Generator for publication issue number, some publications make use of
+        month or some other string value so to be conservative I will make these
+         all strings.
         Parameters
         ----------
 
@@ -804,15 +808,13 @@ class ScopusCorpusReader(RawCorpusReader):
             publication issue number
 
         """
-        for doc in self.docs(**kwargs):
-            try:
-                yield int(doc['prism:issueIdentifier'])
-            except (KeyError, TypeError):
-                yield 0
+        yield from self._doc_2_str_gen_s(attribute='prism:issueIdentifier',
+                                         **kwargs)
 
     def publication_pages(self, **kwargs) -> (int, int):
         """
-        Generator for publication page numbers
+        Generator for publication page numbers a tuple containing -1
+        indicates missing data
         Parameters
         ----------
 
@@ -822,14 +824,19 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for doc in self.docs(**kwargs):
-            try:
-                yield tuple(int(p) for p in doc['prism:pageRange'].split('-'))
-            except (KeyError, AttributeError):
-                yield (0, 0)
+            if doc:
+                try:
+                    yield tuple(int(p) for p in
+                                doc['prism:pageRange'].split('-'))
+                except (KeyError, AttributeError, ValueError):
+                    yield (-1, -1)
+            else:
+                yield (-1, -1)
 
     def publication_date(self, **kwargs) -> object:
         """
-        Generator for publication cover date
+        Generator for publication cover date, missing data is replaced by
+        '1800-01-01'
         Parameters
         ----------
 
@@ -839,10 +846,14 @@ class ScopusCorpusReader(RawCorpusReader):
 
         """
         for doc in self.docs(**kwargs):
-            try:
-                date_string = doc['prism:coverDate']
-                yield datetime.strptime(date_string, '%Y-%m-%d')
-            except KeyError:
+            if doc:
+                try:
+                    date_string = doc['prism:coverDate']
+                    yield datetime.strptime(date_string, '%Y-%m-%d')
+                except KeyError:
+                    date_string = '1800-01-01'
+                    yield datetime.strptime(date_string, '%Y-%m-%d')
+            else:
                 date_string = '1800-01-01'
                 yield datetime.strptime(date_string, '%Y-%m-%d')
 
