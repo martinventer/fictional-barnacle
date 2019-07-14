@@ -364,6 +364,100 @@ class TestScopusCorpusReader(TestCase):
         self._helper_string(gen_method=self.corpus.document_description(),
                             field='dc:description', attribute=None)
 
+
+class TestScopusProcessedCorpusReader(TestCase):
+    def setUp(self) -> None:
+        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Test_Corpus/Processed_corpus/")
+
+    def _helper_list(self, gen_method, field):
+        gen = self.corpus.docs()
+        for result in gen_method:
+            try:
+                target = next(gen)[field]
+            except KeyError:
+                target = []
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(list, type(result))
+            self.assertEqual(list, type(result[0]))
+            self.assertEqual(tuple, type(result[0][0]))
+
+    def test_title_tagged(self):
+        gen = self.corpus.docs()
+        for result in self.corpus.title_tagged():
+            try:
+                target = next(gen)['processed:dc:title']
+            except KeyError:
+                target = [[('', '')]]
+            self.assertEqual(target, result)
+            self.assertEqual(len(target), len(result))
+            self.assertEqual(list, type(result))
+            self.assertEqual(list, type(result[0]))
+            self.assertEqual(tuple, type(result[0][0]))
+
+    def test_title_tagged_sents(self):
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                _list = doc['processed:dc:title']
+                for _item in _list:
+                    if _item is not None:
+                        targets.append(_item)
+                    else:
+                        targets.append([('', '')])
+            except KeyError:
+                targets.append([('', '')])
+
+        results = list(self.corpus.title_tagged_sents())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(list, type(result))
+            self.assertEqual(tuple, type(result[0]))
+
+    def test_title_tagged_word(self):
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                _list = doc['processed:dc:title']
+                for _item in _list:
+                    if _item is not None:
+                        for _sub in _item:
+                            if _sub is not None:
+                                targets.append(_sub)
+                    else:
+                        targets.append(('', ''))
+            except KeyError:
+                targets.append(('', ''))
+
+        results = list(self.corpus.title_tagged_word())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(tuple, type(result))
+
+    def test_title_word(self):
+        targets = []
+        for doc in self.corpus.docs():
+            try:
+                _list = doc['processed:dc:title']
+                for _item in _list:
+                    if _item is not None:
+                        for _sub in _item:
+                            if _sub is not None:
+                                targets.append(_sub[0])
+                    else:
+                        targets.append('')
+            except KeyError:
+                targets.append('')
+
+        results = list(self.corpus.title_word())
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+            self.assertEqual(str, type(result))
+
 # class TestScopusProcessedCorpusReader(TestCase):
 #     def setUp(self) -> None:
 #         self.corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(

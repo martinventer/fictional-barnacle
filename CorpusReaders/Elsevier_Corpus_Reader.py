@@ -971,170 +971,88 @@ class ScopusCorpusReader(RawCorpusReader):
 
 
 class ScopusProcessedCorpusReader(ScopusCorpusReader):
-    PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
-    CAT_PATTERN = r'([a-z_\s]+)/.*'
+    """
+    adds additional features to the ScopusCorpusReader that include text
+    specific tools.
+    """
 
-    def __init__(self, root, fileids=PKL_PATTERN, **kwargs):
+    def __init__(self, root, **kwargs):
         """
-        Initialise the pickled corpus reader using two corpus readers from
-        the nltk library
+        Initialise the ScopusCorpusReader. any additional arguements are
+        passed directly to ScopusCorpusReader
         Parameters
         ----------
         root : str like
             the root directory for the corpus
-        fileids : str like
-            a regex pattern for the corpus document files
         kwargs :
-            Additional arguements passed to the nltk corpus readers
+            Additional arguements passed to ScopusCorpusReader
         """
-        ScopusCorpusReader.__init__(self, root, fileids, **kwargs)
+        ScopusCorpusReader.__init__(self, root, **kwargs)
 
-    def title_tagged(self, fileids=None, categories=None) -> list:
+    def title_tagged(self, **kwargs) -> list:
         """
-        Yields the next title as a list of sentances that are a list of
-        taggged words
+        Yields the next title as a list of sentences that are a list of
+        tagged words
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
 
         """
-        for doc in self.docs(fileids, categories):
-            try:
-                yield doc["struct:title"]
-            except (KeyError, TypeError):
-                pass
+        for doc in self.docs(**kwargs):
+            yield doc['processed:dc:title']
 
-    def title_sents(self, fileids=None, categories=None) -> list:
+    def title_tagged_sents(self, **kwargs) -> list:
         """
         Gets the next title sentence
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
-            yields a taggeed list fo tupples
-        or
-            []
+            yields a tagged list fo tuples
 
-        Example output
-        --------------
-        [('Robots', 'NNS'),(',', ','),('productivity', 'NN'),('and', 'CC'),
-        ('quality', 'NN')]
         """
-        for doc in self.docs(fileids, categories):
-            try:
-                for sent in doc["struct:title"]:
-                    yield sent
-            except (KeyError, TypeError):
-                pass
+        for title in self.title_tagged(**kwargs):
+            for sent in title:
+                yield sent
 
-    def title_tagged_word(self, fileids=None, categories=None) -> (str, str):
+    def title_tagged_word(self, **kwargs) -> (str, str):
         """
         yields the next tagged word in the title
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
             yields the next tagged word in the title
-        or
-            ('','')
 
-        Example output
-        --------------
-        ('Robots', 'NNS')
         """
-        for sent in self.title_sents(fileids, categories):
-            try:
-                for tagged_token in sent:
-                    yield tagged_token
-            except KeyError:
-                yield ('', '')
+        for sent in self.title_tagged_sents(**kwargs):
+            for tagged_token in sent:
+                yield tagged_token
 
-    def title_words(self, fileids=None, categories=None) -> str:
+    def title_word(self, **kwargs) -> str:
         """
         yields the next word in the title
         Parameters
         ----------
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
             yields the next word in the title
-        or
-            ''
-
-        Example output
-        --------------
-        'Robots'
         """
-        for tagged in self.title_tagged_word(fileids, categories):
-            try:
-                yield tagged[0]
-            except KeyError:
-                yield ''
+        for word, token in self.title_tagged_word(**kwargs):
+            yield word
 
-    def describe(self, fileids=None, categories=None) -> dict:
-
-        started = time.time()
-
-        # Structures to perform counting.
-        counts = nltk.FreqDist()
-        tokens = nltk.FreqDist()
-
-        # Perform single pass over paragraphs, tokenize and count
-        for title in self.title_raw(fileids, categories):
-            counts['titles'] += 1
-
-            for word in wordpunct_tokenize(title):
-                counts['words'] += 1
-                tokens[word] += 1
-
-        # Compute the number of files and categories in the corpus
-        n_fileids = len(self.resolve(fileids, categories) or self.fileids())
-        n_topics  = len(self.categories(self.resolve(fileids, categories)))
-
-        # Return data structure with information
-        return {
-            'files':  n_fileids,
-            'topics': n_topics,
-            'titles':  counts['titles'],
-            'words':  counts['words'],
-            'vocab':  len(tokens),
-            'lexdiv': float(counts['words']) / float(len(tokens)),
-            'tpdoc':  float(counts['titles']) / float(n_fileids),
-            'wptit':  float(counts['words']) / float(counts['titles']),
-            'secs':   time.time() - started,
-        }
-
-    def ngrams(self, n=2, fileids=None, categories=None) -> tuple:
+    def ngrams(self, n=2, **kwargs) -> tuple:
         """
         a ngram generator for the scopus corpus
         Parameters
         ----------
         n : int
             the number of words in the n-gram
-        fileids: basestring or None
-            complete path to specified file
-        categories: basestring or None
-            path to directory containing a subset of the fileids
 
         Returns
         -------
@@ -1148,11 +1066,50 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
             pad_right=True, right_pad_symbol=RPAD_SYMBOL,
             pad_left=True, left_pad_symbol=LPAD_SYMBOL
         )
-        for sent in self.title_sents(fileids=fileids, categories=categories):
+        for sent in self.title_sents(**kwargs):
             tokens, _ = zip(*sent)
             for ngram in nltk_ngrams(tokens, n):
                 yield ngram
 
+    def describe(self, **kwargs) -> dict:
+
+        started = time.time()
+
+        # ensure fileids and catagories are passed to resolve.
+        if not any(key.startswith('fileids') for key in kwargs.keys()):
+            kwargs['fileids'] = None
+
+        if not any(key.startswith('categories') for key in kwargs.keys()):
+            kwargs['categories'] = None
+
+        # Structures to perform counting.
+        counts = nltk.FreqDist()
+        tokens = nltk.FreqDist()
+
+        # Perform single pass over paragraphs, tokenize and count
+        for title in self.document_title(**kwargs):
+            counts['titles'] += 1
+
+            for word in wordpunct_tokenize(title):
+                counts['words'] += 1
+                tokens[word] += 1
+
+        # Compute the number of files and categories in the corpus
+        n_fileids = len(self.resolve(**kwargs) or self.fileids())
+        n_topics  = len(self.categories(self.resolve(**kwargs)))
+
+        # Return data structure with information
+        return {
+            'files':  n_fileids,
+            'topics': n_topics,
+            'titles':  counts['titles'],
+            'words':  counts['words'],
+            'vocab':  len(tokens),
+            'lexdiv': float(counts['words']) / float(len(tokens)),
+            'tpdoc':  float(counts['titles']) / float(n_fileids),
+            'wptit':  float(counts['words']) / float(counts['titles']),
+            'secs':   time.time() - started,
+        }
 
 
 class CorpusLoader(object):
@@ -1262,16 +1219,9 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # RawCorpusReader
     # --------------------------------------------------------------------------
-    root = "Tests/Test_Corpus/Raw_corpus/"
-    corpus = RawCorpusReader(root=root)
-    pp.pprint(corpus.describe())
-
-    # --------------------------------------------------------------------------
-    # ScopusCorpusReader
-    # --------------------------------------------------------------------------
-    root = "Tests/Test_Corpus/Split_corpus/"
-    corpus = ScopusCorpusReader(root=root)
-    pp.pprint(corpus.describe())
+    # root = "Tests/Test_Corpus/Raw_corpus/"
+    # corpus = RawCorpusReader(root=root)
+    # pp.pprint(corpus.describe())
 
     # --------------------------------------------------------------------------
     # ScopusCorpusReader
@@ -1279,5 +1229,12 @@ if __name__ == '__main__':
     # root = "Tests/Test_Corpus/Split_corpus/"
     # corpus = ScopusCorpusReader(root=root)
     # pp.pprint(corpus.describe())
+
+    # --------------------------------------------------------------------------
+    # ScopusProcessedCorpusReader
+    # --------------------------------------------------------------------------
+    root = "Tests/Test_Corpus/Processed_corpus/"
+    corpus = ScopusProcessedCorpusReader(root=root)
+    pp.pprint(corpus.describe())
 
 
