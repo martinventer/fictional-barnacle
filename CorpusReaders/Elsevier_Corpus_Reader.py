@@ -1046,7 +1046,7 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
         for word, token in self.title_tagged_word(**kwargs):
             yield word
 
-    def ngrams(self, n=2, **kwargs) -> tuple:
+    def title_ngrams(self, n=2, **kwargs) -> tuple:
         """
         a ngram generator for the scopus corpus
         Parameters
@@ -1071,6 +1071,88 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
             for ngram in nltk_ngrams(tokens, n):
                 yield ngram
 
+    def description_tagged(self, **kwargs) -> list:
+        """
+        Yields the next description as a list of sentences that are a list of
+        tagged words
+        Parameters
+        ----------
+
+        Returns
+        -------
+
+        """
+        for doc in self.docs(**kwargs):
+            yield doc['processed:dc:description']
+
+    def description_tagged_sents(self, **kwargs) -> list:
+        """
+        Gets the next description sentence
+        Parameters
+        ----------
+
+        Returns
+        -------
+            yields a tagged list fo tuples
+
+        """
+        for description in self.description_tagged(**kwargs):
+            for sent in description:
+                yield sent
+
+    def description_tagged_word(self, **kwargs) -> (str, str):
+        """
+        yields the next tagged word in the description
+        Parameters
+        ----------
+
+        Returns
+        -------
+            yields the next tagged word in the title
+
+        """
+        for sent in self.description_tagged_sents(**kwargs):
+            for tagged_token in sent:
+                yield tagged_token
+
+    def description_word(self, **kwargs) -> str:
+        """
+        yields the next word in the description
+        Parameters
+        ----------
+
+        Returns
+        -------
+            yields the next word in the title
+        """
+        for word, token in self.description_tagged_word(**kwargs):
+            yield word
+
+    def description_ngrams(self, n=2, **kwargs) -> tuple:
+        """
+        a ngram generator for the scopus corpus
+        Parameters
+        ----------
+        n : int
+            the number of words in the n-gram
+
+        Returns
+        -------
+            tuple
+
+        """
+        LPAD_SYMBOL = "<s>"
+        RPAD_SYMBOL = "</s>"
+        nltk_ngrams = partial(
+            nltk.ngrams,
+            pad_right=True, right_pad_symbol=RPAD_SYMBOL,
+            pad_left=True, left_pad_symbol=LPAD_SYMBOL
+        )
+        for sent in self.description_sents(**kwargs):
+            tokens, _ = zip(*sent)
+            for ngram in nltk_ngrams(tokens, n):
+                yield ngram
+
     def describe(self, **kwargs) -> dict:
 
         started = time.time()
@@ -1084,15 +1166,23 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
 
         # Structures to perform counting.
         counts = nltk.FreqDist()
-        tokens = nltk.FreqDist()
+        t_tokens = nltk.FreqDist()
 
         # Perform single pass over paragraphs, tokenize and count
         for title in self.document_title(**kwargs):
             counts['titles'] += 1
 
             for word in wordpunct_tokenize(title):
-                counts['words'] += 1
-                tokens[word] += 1
+                counts['t_words'] += 1
+                t_tokens[word] += 1
+
+        d_tokens = nltk.FreqDist()
+        for description in self.document_description(**kwargs):
+            counts['description'] += 1
+
+            for word in wordpunct_tokenize(description):
+                counts['d_words'] += 1
+                d_tokens[word] += 1
 
         # Compute the number of files and categories in the corpus
         n_fileids = len(self.resolve(**kwargs) or self.fileids())
@@ -1103,11 +1193,17 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
             'files':  n_fileids,
             'topics': n_topics,
             'titles':  counts['titles'],
-            'words':  counts['words'],
-            'vocab':  len(tokens),
-            'lexdiv': float(counts['words']) / float(len(tokens)),
-            'tpdoc':  float(counts['titles']) / float(n_fileids),
-            'wptit':  float(counts['words']) / float(counts['titles']),
+            't_words':  counts['t_words'],
+            't_vocab':  len(t_tokens),
+            't_lexdiv': float(counts['t_words']) / float(len(t_tokens)),
+            't_tpdoc':  float(counts['titles']) / float(n_fileids),
+            't_wptit':  float(counts['t_words']) / float(counts['titles']),
+            'description': counts['description'],
+            'd_words': counts['d_words'],
+            'd_vocab': len(t_tokens),
+            'd_lexdiv': float(counts['d_words']) / float(len(t_tokens)),
+            'd_tpdoc': float(counts['description']) / float(n_fileids),
+            'd_wptit': float(counts['d_words']) / float(counts['description']),
             'secs':   time.time() - started,
         }
 
