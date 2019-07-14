@@ -31,7 +31,7 @@ def reformat_corpus():
 
 def process_corpus():
     corp = Elsevier_Corpus_Reader.ScopusCorpusReader(
-            "Corpus/Processed_corpus/")
+            "Corpus/Split_corpus/")
 
     formatter = Corpus_Pre_Processor.ScopusCorpusProcessor(corp)
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     # reformat_corpus()
 
     # step 3: reformat the corpus for faster manipulation
-    # process_corpus()
+    process_corpus()
 
     # step 4: load the corpus reader
     # corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(

@@ -13,6 +13,7 @@ import os
 import time
 
 from functools import partial
+from collections import defaultdict
 
 from sklearn.model_selection import KFold
 
@@ -115,6 +116,21 @@ class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
         root = self.root if (root is None) else root
         with open(os.path.join(root, fileid), 'rb') as f:
             return pickle.load(f)
+
+    def describe(self, fileids=None, categories=None) -> dict:
+
+        started = time.time()
+
+        # Compute the number of files and categories in the corpus
+        n_fileids = len(self.resolve(fileids, categories) or self.fileids())
+        n_topics = len(self.categories(self.resolve(fileids, categories)))
+
+        # Return data structure with information
+        return {
+            'files':  n_fileids,
+            'topics': n_topics,
+            'secs':   time.time() - started,
+        }
 
 
 class ScopusCorpusReader(RawCorpusReader):
@@ -904,6 +920,55 @@ class ScopusCorpusReader(RawCorpusReader):
         yield from self._doc_2_str_gen_s(attribute='dc:description',
                                          **kwargs)
 
+    def describe(self, **kwargs) -> dict:
+
+        started = time.time()
+
+        # ensure fileids and catagories are passed to resolve.
+        if not any(key.startswith('fileids') for key in kwargs.keys()):
+            kwargs['fileids'] = None
+
+        if not any(key.startswith('categories') for key in kwargs.keys()):
+            kwargs['categories'] = None
+
+        # Compute the number of files and categories in the corpus
+        n_fileids = len(self.resolve(**kwargs) or self.fileids())
+        n_topics = len(self.categories(self.resolve(**kwargs)))
+
+        # Structures to perform counting.
+        # counts = nltk.FreqDist()
+        counts = defaultdict(int)
+
+        gen_map = {
+            'affiliation_city_s': self.affiliation_city_s(**kwargs),
+            'affiliation_country_s': self.affiliation_country_s(**kwargs),
+            'affiliation_name_s': self.affiliation_name_s(**kwargs),
+            'affiliation_id_s': self.affiliation_id_s(**kwargs),
+            'keywords_phrase': self.keywords_phrase(**kwargs),
+            'author_data_id_s': self.author_data_id_s(**kwargs),
+            'author_data_name_full_s': self.author_data_name_full_s(**kwargs),
+            'publication_type': self.publication_type(**kwargs),
+            'publication_name': self.publication_name(**kwargs),
+            'document_title': self.document_title(**kwargs),
+            'document_description': self.document_description(**kwargs),
+                   }
+        # Perform single pass over each generator and count occurance
+        for name, generator in gen_map.items():
+            unique_values = set()
+            for item in generator:
+                if item is not 'unk':
+                    # counts[name] += 1
+                    unique_values.add(item)
+                    counts['{}_unique'.format(name)] = len(unique_values)
+
+        # Return data structure with information
+
+        counts['files'] = n_fileids
+        counts['topics'] = n_topics
+        counts['secs'] = time.time() - started
+
+        return counts
+
 
 class ScopusProcessedCorpusReader(ScopusCorpusReader):
     PKL_PATTERN = r'(?!\.)[a-z_\s]+/[a-f0-9]+\.pickle'
@@ -1192,30 +1257,27 @@ class CorpuKfoldLoader(object):
 
 if __name__ == '__main__':
     from pprint import PrettyPrinter
+    pp = PrettyPrinter(indent=4)
+
+    # --------------------------------------------------------------------------
     # RawCorpusReader
-    # root = "Corpus/Split_corpus/"
-    # root = "Tests/Test_Corpus/Raw_corpus/"
-    # corpus = RawCorpusReader(root=root)
-    # gen = corpus.docs()
-    # aa = [x['affiliation-city'] for x in next(gen)['affiliation']]
-
-    root = "Tests/Test_Corpus/Split_corpus/"
+    # --------------------------------------------------------------------------
+    root = "Tests/Test_Corpus/Raw_corpus/"
     corpus = RawCorpusReader(root=root)
-    # gen = corpus.docs()
-    # doc = next(gen)
-    # print([x['affiliation-city'] for x in doc['affiliation']])
-    #
-    # print(doc['affiliation'])
+    pp.pprint(corpus.describe())
 
+    # --------------------------------------------------------------------------
+    # ScopusCorpusReader
+    # --------------------------------------------------------------------------
+    root = "Tests/Test_Corpus/Split_corpus/"
+    corpus = ScopusCorpusReader(root=root)
+    pp.pprint(corpus.describe())
 
-
-    # # ScopusCorpusReader
-    # root = "Corpus/Split_corpus/"
+    # --------------------------------------------------------------------------
+    # ScopusCorpusReader
+    # --------------------------------------------------------------------------
+    # root = "Tests/Test_Corpus/Split_corpus/"
     # corpus = ScopusCorpusReader(root=root)
-    # # gen = corpus.affiliation()
-    # gen = corpus.docs()
-    # # gen = corpus.author_keywords_l()
-    # aa = next(gen)
-    # pp = PrettyPrinter(indent=4)
-    # pp.pprint(aa)
+    # pp.pprint(corpus.describe())
+
 
