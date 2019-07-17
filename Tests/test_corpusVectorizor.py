@@ -5,6 +5,7 @@ from CorpusReaders import Elsevier_Corpus_Reader
 
 import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
+from scipy import sparse
 
 
 class TestTextStemTokenize(TestCase):
@@ -189,6 +190,7 @@ class TestCorpus2FrequencyVector(TestCase):
     def test_transform(self):
         vectorizer = Corpus_Vectorizer.Text2FrequencyVector()
         matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))
         results = []
         for document in matrix:
             results.append(document.sum())
@@ -215,6 +217,7 @@ class TestText2OneHotVector(TestCase):
     def test_transform(self):
         vectorizer = Corpus_Vectorizer.Text2OneHotVector()
         matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))
         results = []
         for document in matrix:
             results.append(document.sum())
@@ -248,6 +251,7 @@ class TestText2TFIDVector(TestCase):
     def test_transform(self):
         vectorizer = Corpus_Vectorizer.Text2TFIDVector()
         matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))
         results = []
         for document in matrix:
             results.append(document.sum())
@@ -262,59 +266,14 @@ class TestText2TFIDVector(TestCase):
             self.assertEqual(target, result)
 
 
-# class TestCorpusTFIDVector(TestCase):
-#     def setUp(self) -> None:
-#         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-#             "Corpus/Processed_corpus/")
-#         self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-#                                                               n_folds=12,
-#                                                               shuffle=False)
-#         self.subset = next(self.loader.fileids(test=True))
-#
-#     def test_transform(self):
-#         target = 2.9273075918083933
-#
-#         docs = list(self.corpus.title_tagged(fileids=self.subset))
-#         labels = [
-#             self.corpus.categories(fileids=fileid)[0]
-#             for fileid in self.subset
-#         ]
-#         normal = Corpus_Vectorizer.TextNormalizer()
-#         normal.fit(docs, labels)
-#         normed = normal.transform(docs)
-#
-#         vec = Corpus_Vectorizer.Text2TFIDVector()
-#         vector = vec.fit_transform(normed)
-#
-#         result = list(vector)[0].toarray().sum()
-#
-#         self.assertEqual(result, target)
-#
-#
-# class TestCorpusTFIDVector(TestCase):
-#     def setUp(self) -> None:
-#         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-#             "Corpus/Processed_corpus/")
-#         self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-#                                                               n_folds=12,
-#                                                               shuffle=False)
-#         self.subset = next(self.loader.fileids(test=True))
-#
-#     def test_transform(self):
-#         target = 9
-#
-#         docs = list(self.corpus.title_tagged(fileids=self.subset))
-#         labels = [
-#             self.corpus.categories(fileids=fileid)[0]
-#             for fileid in self.subset
-#         ]
-#         normal = Corpus_Vectorizer.TextNormalizer()
-#         normal.fit(docs, labels)
-#         normed = normal.transform(docs)
-#
-#         vec = Corpus_Vectorizer.Text2OneHotVector()
-#         vector = vec.fit_transform(normed)
-#
-#         result = list(vector)[0].toarray().sum()
-#
-#         self.assertEqual(result, target)
+class TestText2Doc2VecVector(TestCase):
+    def setUp(self) -> None:
+        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Test_Corpus/Processed_corpus/")
+        self.simple = Corpus_Vectorizer.TextSimpleTokenizer()
+        self.input_text = self.simple.transform(self.corpus.title_tagged())
+
+    def test_transform(self):
+        vectorizer = Corpus_Vectorizer.Text2Doc2VecVector()
+        matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))

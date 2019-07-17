@@ -321,7 +321,9 @@ class Text2Doc2VecVector(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
-        return self.model.docvecs
+        temp =  sparse.csr_matrix(self.model.docvecs.doctag_syn0)
+        # return self.model.docvecs, temp
+        return temp
 
 # class OneHotVectorizer(BaseEstimator, TransformerMixin):
 #
@@ -499,18 +501,13 @@ if __name__ == '__main__':
                    'analysis']
                   ]
     vector = vec.fit_transform(input_text)
-    print(vector[0])
-    print(vector[1])
+    for row in vector:
+        print(row)
 
     input_text = simple.transform(corpus.title_tagged())
     vector = vec.fit_transform(input_text)
 
-    print("{} documents, {} words".format(vector.shape[0], vector.shape[1]))
+    print("{} documents, {} components".format(vector.shape[0], vector.shape[
+        1]))
     print(type(vector))
 
-    print(vector[0])
-    print(vector[1])
-
-    sparse.csr_matrix(vector)
-    import numpy as np
-    test = vector.astype()
