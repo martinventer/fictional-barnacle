@@ -10,7 +10,7 @@ from sklearn.pipeline import Pipeline
 class TestKMeansClusters(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
+            "Test_Corpus/Processed_corpus/")
         self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
                                                               n_folds=12,
                                                               shuffle=False)
@@ -32,7 +32,7 @@ class TestKMeansClusters(TestCase):
 class TestMiniBatchKMeansClusters(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
+            "Test_Corpus/Processed_corpus/")
         self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
                                                               n_folds=12,
                                                               shuffle=False)
@@ -54,7 +54,7 @@ class TestMiniBatchKMeansClusters(TestCase):
 class TestHierarchicalClustering(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
+            "Test_Corpus/Processed_corpus/")
         self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
                                                               n_folds=12,
                                                               shuffle=False)
@@ -76,7 +76,7 @@ class TestHierarchicalClustering(TestCase):
 class TestSklearnTopicModels(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
+            "Test_Corpus/Processed_corpus/")
         self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
                                                               n_folds=12,
                                                               shuffle=False)

@@ -2080,3 +2080,6 @@
 2019-07-17 15:22:37,501 worker thread finished; awaiting finish of 0 more threads
 2019-07-17 15:22:37,501 EPOCH - 5 : training on 185031 raw words (160868 effective words) took 0.4s, 421782 effective words/s
 2019-07-17 15:22:37,501 training on a 925155 raw words (804968 effective words) took 1.9s, 415401 effective words/s
+2019-07-17 17:47:22,166 'pattern' package not found; tag filters are not available for English
+2019-07-17 17:51:51,798 'pattern' package not found; tag filters are not available for English
+2019-07-17 18:03:08,899 'pattern' package not found; tag filters are not available for English

@@ -14,16 +14,14 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
 
 from nltk.cluster import KMeansClusterer
+
 from sklearn.cluster import MiniBatchKMeans
-
 from sklearn.cluster import AgglomerativeClustering
-
 from sklearn.decomposition import LatentDirichletAllocation, TruncatedSVD, NMF
-from sklearn.feature_extraction.text import CountVectorizer
 
 import numpy as np
 
-from CorpusProcessingTools import Corpus_Vectorizer
+from scipy import sparse
 
 class KMeansClusters(BaseEstimator, TransformerMixin):
     """
@@ -51,6 +49,8 @@ class KMeansClusters(BaseEstimator, TransformerMixin):
         -------
             fitted model
         """
+        if type(documents) is sparse.csr.csr_matrix:
+            documents = documents.toarray()
         return np.array(self.model.cluster(documents, assign_clusters=True))
 
 
@@ -167,74 +167,40 @@ class SklearnTopicModels(object):
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
     from CorpusProcessingTools import Corpus_Vectorizer
+    from PlottingTools import Cluster_Plotting
+    from sklearn.decomposition import PCA
+    from sklearn.decomposition import TruncatedSVD
 
+    root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-        "Corpus/Processed_corpus/")
+        root=root)
 
-    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 12, shuffle=False)
-    subset = next(loader.fileids(test=True))
-
-    docs = list(corpus.title_tagged(fileids=subset))
-    pickles = subset
-
-    # # K-means clustering pipeline
-    # model = Pipeline([
-    #     ("norm", Corpus_Vectorizer.TitleNormalizer()),
-    #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-    #     ('clusters', KMeansClusters(k=7)) # uses nltk k-means, allows
-    #     # different measures of distance
-    #     # ('clusters', MiniBatchKMeansClusters(k=7)) # uses sklearn clustering
-    #     # with minibatch, but no choice of distance measures
-    # ])
+    # --------------------------------------------------------------------------
+    # KMeansClusters
+    # --------------------------------------------------------------------------
+    raw = list(corpus.title_tagged())
     #
-    # clusters = model.fit_transform(docs)
+    # normalize = Corpus_Vectorizer.TextNormalizer()
+    # norm = normalize.fit_transform(corpus.title_tagged())
     #
-    # # for idx, cluster in enumerate(clusters):
-    # #     print("Document '{}' assigned to cluster {}.".format(pickles[idx],
-    # #                                                          cluster))
+    # vectorize = Corpus_Vectorizer.Text2FrequencyVector()
+    # vector = vectorize.fit_transform(norm)
     #
-    # for idx, fileid in enumerate(pickles):
-    #     print("Document '{}' assigned to cluster {}.".format(fileid,
-    #                                                          clusters[idx]))
+    # cluster = KMeansClusters()
+    # clusters = cluster.fit_transform(vector)
 
-    # # Agglomerative hierarchical clustering pipeline
-    # model = Pipeline([
-    #     ("norm", Corpus_Vectorizer.TitleNormalizer()),
-    #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-    #     ('clusters', HierarchicalClustering())
-    # ])
-    #
-    # clusters = model.fit_transform(docs)
-    # labels = model.named_steps['clusters'].labels
-    #
-    # for idx, fileid in enumerate(pickles):
-    #     print("Document '{}' assigned to cluster {}.".format(fileid,
-    #                                                          labels[idx]))
+    clusterer = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
+                         ('vectorize',
+                         Corpus_Vectorizer.Text2FrequencyVector()),
+                         ('cluster', KMeansClusters())])
 
-    # # Latent Dirchlicht Allocation
-    # skmodel = SklearnTopicModels(n_components=3, estimator='LDA')
-    #
-    # skmodel.fit_transform(docs)
-    # topics = skmodel.get_topics(n=5)
-    # for topic, terms in topics.items():
-    #     print("Topic #{}:".format(topic + 1))
-    #     print(terms)
+    labels = clusterer.fit_transform(corpus.title_tagged())
 
-    # # Latent Semantic Allocation
-    # skmodel = SklearnTopicModels(n_components=5, estimator='LSA')
-    #
-    # skmodel.fit_transform(docs)
-    # topics = skmodel.get_topics(n=6)
-    # for topic, terms in topics.items():
-    #     print("Topic #{}:".format(topic + 1))
-    #     print(terms)
+    reduce = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
+                         ('vectorize',
+                          Corpus_Vectorizer.Text2FrequencyVector()),
+                         ('pca', TruncatedSVD(n_components=2))])
 
-    # Non-Negative Matrix Factorization
-    skmodel = SklearnTopicModels(n_components=5, estimator='NMF')
+    X2d = reduce.fit_transform(corpus.title_tagged())
 
-    skmodel.fit_transform(docs)
-    topics = skmodel.get_topics(n=6)
-    for topic, terms in topics.items():
-        print("Topic #{}:".format(topic + 1))
-        print(terms)
-
+    Cluster_Plotting.plot_clusters(X2d, labels)
