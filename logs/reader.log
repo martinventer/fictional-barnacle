@@ -67,3 +67,1001 @@
 2019-07-09 17:51:33,087 End
 2019-07-10 14:19:17,548 file Corpus/Processed_corpus//shoes already exists
 2019-07-10 14:19:17,552 file Corpus/Processed_corpus//socks already exists
+2019-07-17 10:17:09,417 'pattern' package not found; tag filters are not available for English
+2019-07-17 10:42:04,386 collecting all words and their counts
+2019-07-17 10:42:04,387 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 10:42:04,387 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 10:42:04,387 Loading a fresh vocabulary
+2019-07-17 10:42:04,387 min_count=5 retains 0 unique words (0% of original 17, drops 17)
+2019-07-17 10:42:04,387 min_count=5 leaves 0 word corpus (0% of original 33, drops 33)
+2019-07-17 10:42:04,387 deleting the raw counts dictionary of 17 items
+2019-07-17 10:42:04,387 sample=0.001 downsamples 0 most-common words
+2019-07-17 10:42:04,388 downsampling leaves estimated 0 word corpus (0.0% of prior 0)
+2019-07-17 10:42:04,388 estimated required memory for 0 words and 100 dimensions: 1200 bytes
+2019-07-17 10:42:04,388 resetting layer weights
+2019-07-17 10:42:27,587 collecting all words and their counts
+2019-07-17 10:42:27,587 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 10:42:27,587 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 10:42:27,587 Loading a fresh vocabulary
+2019-07-17 10:42:27,587 min_count=5 retains 0 unique words (0% of original 17, drops 17)
+2019-07-17 10:42:27,587 min_count=5 leaves 0 word corpus (0% of original 33, drops 33)
+2019-07-17 10:42:27,587 deleting the raw counts dictionary of 17 items
+2019-07-17 10:42:27,587 sample=0.001 downsamples 0 most-common words
+2019-07-17 10:42:27,587 downsampling leaves estimated 0 word corpus (0.0% of prior 0)
+2019-07-17 10:42:27,587 estimated required memory for 0 words and 100 dimensions: 1200 bytes
+2019-07-17 10:42:27,587 resetting layer weights
+2019-07-17 10:54:05,787 collecting all words and their counts
+2019-07-17 10:54:45,390 collecting all words and their counts
+2019-07-17 10:54:45,390 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 10:54:45,391 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 10:54:45,391 Loading a fresh vocabulary
+2019-07-17 10:54:45,391 min_count=5 retains 0 unique words (0% of original 17, drops 17)
+2019-07-17 10:54:45,391 min_count=5 leaves 0 word corpus (0% of original 33, drops 33)
+2019-07-17 10:54:45,391 deleting the raw counts dictionary of 17 items
+2019-07-17 10:54:45,391 sample=0.001 downsamples 0 most-common words
+2019-07-17 10:54:45,391 downsampling leaves estimated 0 word corpus (0.0% of prior 0)
+2019-07-17 10:54:45,391 estimated required memory for 0 words and 100 dimensions: 1200 bytes
+2019-07-17 10:54:45,391 resetting layer weights
+2019-07-17 10:56:03,892 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 10:56:03,892 collecting all words and their counts
+2019-07-17 10:56:03,893 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 10:56:03,893 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 10:56:03,893 Loading a fresh vocabulary
+2019-07-17 10:56:03,893 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 10:56:03,893 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 10:56:03,893 deleting the raw counts dictionary of 17 items
+2019-07-17 10:56:03,893 sample=0.001 downsamples 17 most-common words
+2019-07-17 10:56:03,893 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 10:56:03,893 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 10:56:03,893 resetting layer weights
+2019-07-17 10:57:34,426 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 10:57:34,426 collecting all words and their counts
+2019-07-17 10:57:34,426 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 10:57:34,426 collected 18 word types and 3 unique tags from a corpus of 3 examples and 26 words
+2019-07-17 10:57:34,426 Loading a fresh vocabulary
+2019-07-17 10:57:34,426 min_count=0 retains 18 unique words (100% of original 18, drops 0)
+2019-07-17 10:57:34,426 min_count=0 leaves 26 word corpus (100% of original 26, drops 0)
+2019-07-17 10:57:34,427 deleting the raw counts dictionary of 18 items
+2019-07-17 10:57:34,427 sample=0.001 downsamples 18 most-common words
+2019-07-17 10:57:34,427 downsampling leaves estimated 3 word corpus (14.8% of prior 26)
+2019-07-17 10:57:34,427 estimated required memory for 18 words and 5 dimensions: 10380 bytes
+2019-07-17 10:57:34,427 resetting layer weights
+2019-07-17 10:57:34,427 training model with 3 workers on 18 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 10:57:34,428 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 10:57:34,428 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 10:57:34,432 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 10:57:34,432 EPOCH - 1 : training on 26 raw words (9 effective words) took 0.0s, 2384 effective words/s
+2019-07-17 10:57:34,433 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 10:57:34,433 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 10:57:34,433 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 10:57:34,433 EPOCH - 2 : training on 26 raw words (5 effective words) took 0.0s, 9112 effective words/s
+2019-07-17 10:57:34,434 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 10:57:34,435 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 10:57:34,435 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 10:57:34,435 EPOCH - 3 : training on 26 raw words (8 effective words) took 0.0s, 8748 effective words/s
+2019-07-17 10:57:34,436 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 10:57:34,436 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 10:57:34,436 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 10:57:34,436 EPOCH - 4 : training on 26 raw words (6 effective words) took 0.0s, 10357 effective words/s
+2019-07-17 10:57:34,437 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 10:57:34,437 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 10:57:34,437 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 10:57:34,437 EPOCH - 5 : training on 26 raw words (8 effective words) took 0.0s, 18741 effective words/s
+2019-07-17 10:57:34,437 training on a 130 raw words (36 effective words) took 0.0s, 3621 effective words/s
+2019-07-17 10:57:34,437 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:01:44,729 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:02:13,354 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:02:13,355 collecting all words and their counts
+2019-07-17 11:02:13,355 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:02:13,355 collected 18 word types and 3 unique tags from a corpus of 3 examples and 26 words
+2019-07-17 11:02:13,355 Loading a fresh vocabulary
+2019-07-17 11:02:13,355 min_count=0 retains 18 unique words (100% of original 18, drops 0)
+2019-07-17 11:02:13,355 min_count=0 leaves 26 word corpus (100% of original 26, drops 0)
+2019-07-17 11:02:13,355 deleting the raw counts dictionary of 18 items
+2019-07-17 11:02:13,356 sample=0.001 downsamples 18 most-common words
+2019-07-17 11:02:13,356 downsampling leaves estimated 3 word corpus (14.8% of prior 26)
+2019-07-17 11:02:13,356 estimated required memory for 18 words and 5 dimensions: 10380 bytes
+2019-07-17 11:02:13,356 resetting layer weights
+2019-07-17 11:02:13,357 training model with 3 workers on 18 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:02:13,359 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:13,359 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:13,359 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:13,359 EPOCH - 1 : training on 26 raw words (9 effective words) took 0.0s, 10283 effective words/s
+2019-07-17 11:02:13,364 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:13,364 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:13,364 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:13,364 EPOCH - 2 : training on 26 raw words (5 effective words) took 0.0s, 8913 effective words/s
+2019-07-17 11:02:13,364 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:13,365 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:13,365 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:13,365 EPOCH - 3 : training on 26 raw words (8 effective words) took 0.0s, 19472 effective words/s
+2019-07-17 11:02:13,366 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:13,366 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:13,366 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:13,366 EPOCH - 4 : training on 26 raw words (6 effective words) took 0.0s, 9208 effective words/s
+2019-07-17 11:02:13,367 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:13,367 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:13,367 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:13,367 EPOCH - 5 : training on 26 raw words (8 effective words) took 0.0s, 18547 effective words/s
+2019-07-17 11:02:13,367 training on a 130 raw words (36 effective words) took 0.0s, 3404 effective words/s
+2019-07-17 11:02:13,367 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:02:42,592 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:02:42,592 collecting all words and their counts
+2019-07-17 11:02:42,592 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:02:42,592 collected 18 word types and 3 unique tags from a corpus of 3 examples and 26 words
+2019-07-17 11:02:42,592 Loading a fresh vocabulary
+2019-07-17 11:02:42,592 min_count=0 retains 18 unique words (100% of original 18, drops 0)
+2019-07-17 11:02:42,592 min_count=0 leaves 26 word corpus (100% of original 26, drops 0)
+2019-07-17 11:02:42,593 deleting the raw counts dictionary of 18 items
+2019-07-17 11:02:42,593 sample=0.001 downsamples 18 most-common words
+2019-07-17 11:02:42,593 downsampling leaves estimated 3 word corpus (14.8% of prior 26)
+2019-07-17 11:02:42,593 estimated required memory for 18 words and 5 dimensions: 10380 bytes
+2019-07-17 11:02:42,593 resetting layer weights
+2019-07-17 11:02:42,593 training model with 3 workers on 18 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:02:42,595 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:42,595 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:42,595 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:42,595 EPOCH - 1 : training on 26 raw words (9 effective words) took 0.0s, 10438 effective words/s
+2019-07-17 11:02:42,596 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:42,596 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:42,597 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:42,597 EPOCH - 2 : training on 26 raw words (5 effective words) took 0.0s, 7050 effective words/s
+2019-07-17 11:02:42,597 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:42,598 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:42,598 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:42,598 EPOCH - 3 : training on 26 raw words (8 effective words) took 0.0s, 16436 effective words/s
+2019-07-17 11:02:42,598 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:42,599 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:42,599 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:42,599 EPOCH - 4 : training on 26 raw words (6 effective words) took 0.0s, 11881 effective words/s
+2019-07-17 11:02:42,600 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:02:42,600 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:02:42,600 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:02:42,600 EPOCH - 5 : training on 26 raw words (8 effective words) took 0.0s, 15258 effective words/s
+2019-07-17 11:02:42,600 training on a 130 raw words (36 effective words) took 0.0s, 5261 effective words/s
+2019-07-17 11:02:42,600 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:03:20,001 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:03:20,001 collecting all words and their counts
+2019-07-17 11:03:20,001 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:03:20,001 collected 18 word types and 3 unique tags from a corpus of 3 examples and 26 words
+2019-07-17 11:03:20,001 Loading a fresh vocabulary
+2019-07-17 11:03:20,001 min_count=0 retains 18 unique words (100% of original 18, drops 0)
+2019-07-17 11:03:20,002 min_count=0 leaves 26 word corpus (100% of original 26, drops 0)
+2019-07-17 11:03:20,002 deleting the raw counts dictionary of 18 items
+2019-07-17 11:03:20,002 sample=0.001 downsamples 18 most-common words
+2019-07-17 11:03:20,002 downsampling leaves estimated 3 word corpus (14.8% of prior 26)
+2019-07-17 11:03:20,002 estimated required memory for 18 words and 5 dimensions: 10380 bytes
+2019-07-17 11:03:20,002 resetting layer weights
+2019-07-17 11:03:20,002 training model with 3 workers on 18 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:03:20,003 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:03:20,003 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:03:20,003 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:03:20,003 EPOCH - 1 : training on 26 raw words (9 effective words) took 0.0s, 17623 effective words/s
+2019-07-17 11:03:20,004 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:03:20,005 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:03:20,005 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:03:20,005 EPOCH - 2 : training on 26 raw words (5 effective words) took 0.0s, 8382 effective words/s
+2019-07-17 11:03:20,005 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:03:20,006 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:03:20,006 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:03:20,006 EPOCH - 3 : training on 26 raw words (8 effective words) took 0.0s, 18287 effective words/s
+2019-07-17 11:03:20,007 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:03:20,008 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:03:20,008 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:03:20,008 EPOCH - 4 : training on 26 raw words (6 effective words) took 0.0s, 14474 effective words/s
+2019-07-17 11:03:20,008 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:03:20,008 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:03:20,008 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:03:20,009 EPOCH - 5 : training on 26 raw words (8 effective words) took 0.0s, 23002 effective words/s
+2019-07-17 11:03:20,009 training on a 130 raw words (36 effective words) took 0.0s, 5639 effective words/s
+2019-07-17 11:03:20,009 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:03:54,635 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:04:21,890 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:05:36,980 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:05:36,980 collecting all words and their counts
+2019-07-17 11:05:36,980 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:05:36,980 collected 18 word types and 3 unique tags from a corpus of 3 examples and 26 words
+2019-07-17 11:05:36,981 Loading a fresh vocabulary
+2019-07-17 11:05:36,981 min_count=0 retains 18 unique words (100% of original 18, drops 0)
+2019-07-17 11:05:36,981 min_count=0 leaves 26 word corpus (100% of original 26, drops 0)
+2019-07-17 11:05:36,981 deleting the raw counts dictionary of 18 items
+2019-07-17 11:05:36,981 sample=0.001 downsamples 18 most-common words
+2019-07-17 11:05:36,981 downsampling leaves estimated 3 word corpus (14.8% of prior 26)
+2019-07-17 11:05:36,981 estimated required memory for 18 words and 5 dimensions: 10380 bytes
+2019-07-17 11:05:36,981 resetting layer weights
+2019-07-17 11:05:36,981 training model with 3 workers on 18 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:05:36,983 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:05:36,983 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:05:36,983 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:05:36,983 EPOCH - 1 : training on 26 raw words (9 effective words) took 0.0s, 11767 effective words/s
+2019-07-17 11:05:36,984 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:05:36,984 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:05:36,984 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:05:36,984 EPOCH - 2 : training on 26 raw words (5 effective words) took 0.0s, 9787 effective words/s
+2019-07-17 11:05:36,987 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:05:36,987 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:05:36,987 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:05:36,987 EPOCH - 3 : training on 26 raw words (8 effective words) took 0.0s, 15249 effective words/s
+2019-07-17 11:05:36,988 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:05:36,988 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:05:36,988 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:05:36,988 EPOCH - 4 : training on 26 raw words (6 effective words) took 0.0s, 11050 effective words/s
+2019-07-17 11:05:36,989 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:05:36,989 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:05:36,989 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:05:36,989 EPOCH - 5 : training on 26 raw words (8 effective words) took 0.0s, 20978 effective words/s
+2019-07-17 11:05:36,989 training on a 130 raw words (36 effective words) took 0.0s, 4375 effective words/s
+2019-07-17 11:05:36,989 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:06:06,867 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:06:25,340 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:10:00,993 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:10:00,993 collecting all words and their counts
+2019-07-17 11:10:00,993 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:10:00,993 collected 17 word types and 3 unique tags from a corpus of 3 examples and 48 words
+2019-07-17 11:10:00,993 Loading a fresh vocabulary
+2019-07-17 11:10:00,993 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:10:00,993 min_count=0 leaves 48 word corpus (100% of original 48, drops 0)
+2019-07-17 11:10:00,993 deleting the raw counts dictionary of 17 items
+2019-07-17 11:10:00,994 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:10:00,994 downsampling leaves estimated 7 word corpus (14.6% of prior 48)
+2019-07-17 11:10:00,994 estimated required memory for 17 words and 5 dimensions: 9840 bytes
+2019-07-17 11:10:00,994 resetting layer weights
+2019-07-17 11:10:00,994 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:10:00,995 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:00,995 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:00,995 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:00,995 EPOCH - 1 : training on 48 raw words (8 effective words) took 0.0s, 16008 effective words/s
+2019-07-17 11:10:00,996 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:00,996 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:00,996 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:00,996 EPOCH - 2 : training on 48 raw words (10 effective words) took 0.0s, 17932 effective words/s
+2019-07-17 11:10:00,997 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:00,997 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:00,998 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:00,998 EPOCH - 3 : training on 48 raw words (7 effective words) took 0.0s, 12938 effective words/s
+2019-07-17 11:10:00,998 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:00,999 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:00,999 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:00,999 EPOCH - 4 : training on 48 raw words (8 effective words) took 0.0s, 14589 effective words/s
+2019-07-17 11:10:00,999 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:00,999 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:00,999 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:00,999 EPOCH - 5 : training on 48 raw words (9 effective words) took 0.0s, 20825 effective words/s
+2019-07-17 11:10:01,000 training on a 240 raw words (42 effective words) took 0.0s, 7653 effective words/s
+2019-07-17 11:10:01,000 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:10:26,339 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:10:26,339 collecting all words and their counts
+2019-07-17 11:10:26,339 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:10:26,339 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:10:26,339 Loading a fresh vocabulary
+2019-07-17 11:10:26,340 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:10:26,340 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:10:26,340 deleting the raw counts dictionary of 17 items
+2019-07-17 11:10:26,340 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:10:26,340 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:10:26,340 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:10:26,340 resetting layer weights
+2019-07-17 11:10:26,340 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:10:26,342 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:26,342 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:26,342 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:26,342 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 9220 effective words/s
+2019-07-17 11:10:26,343 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:26,344 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:26,344 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:26,344 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 10316 effective words/s
+2019-07-17 11:10:26,345 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:26,345 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:26,345 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:26,345 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 16761 effective words/s
+2019-07-17 11:10:26,345 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:26,346 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:26,346 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:26,346 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 8972 effective words/s
+2019-07-17 11:10:26,346 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:10:26,347 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:10:26,347 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:10:26,347 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 18583 effective words/s
+2019-07-17 11:10:26,347 training on a 165 raw words (30 effective words) took 0.0s, 4626 effective words/s
+2019-07-17 11:10:26,347 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:11:15,491 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:12:49,806 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:12:49,806 collecting all words and their counts
+2019-07-17 11:12:49,806 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:12:49,806 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:12:49,806 Loading a fresh vocabulary
+2019-07-17 11:12:49,806 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:12:49,806 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:12:49,806 deleting the raw counts dictionary of 17 items
+2019-07-17 11:12:49,806 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:12:49,806 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:12:49,806 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:12:49,806 resetting layer weights
+2019-07-17 11:12:49,807 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:12:49,808 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:12:49,808 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:12:49,808 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:12:49,808 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 11941 effective words/s
+2019-07-17 11:12:49,809 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:12:49,809 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:12:49,809 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:12:49,809 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 10629 effective words/s
+2019-07-17 11:12:49,810 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:12:49,810 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:12:49,810 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:12:49,810 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 15363 effective words/s
+2019-07-17 11:12:49,811 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:12:49,811 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:12:49,811 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:12:49,811 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 8943 effective words/s
+2019-07-17 11:12:49,812 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:12:49,812 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:12:49,812 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:12:49,812 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 13671 effective words/s
+2019-07-17 11:12:49,812 training on a 165 raw words (30 effective words) took 0.0s, 5393 effective words/s
+2019-07-17 11:12:49,812 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:13:38,441 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:13:38,442 collecting all words and their counts
+2019-07-17 11:13:38,442 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:13:38,442 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:13:38,442 Loading a fresh vocabulary
+2019-07-17 11:13:38,442 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:13:38,442 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:13:38,442 deleting the raw counts dictionary of 17 items
+2019-07-17 11:13:38,442 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:13:38,442 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:13:38,442 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:13:38,442 resetting layer weights
+2019-07-17 11:13:38,442 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:13:38,444 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,444 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,444 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,444 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 9653 effective words/s
+2019-07-17 11:13:38,445 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,445 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,445 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,445 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 12994 effective words/s
+2019-07-17 11:13:38,446 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,446 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,446 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,446 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 12875 effective words/s
+2019-07-17 11:13:38,447 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,447 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,447 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,447 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 11656 effective words/s
+2019-07-17 11:13:38,448 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,448 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,448 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,448 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 15760 effective words/s
+2019-07-17 11:13:38,448 training on a 165 raw words (30 effective words) took 0.0s, 5515 effective words/s
+2019-07-17 11:13:38,448 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:13:38,448 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:13:38,448 collecting all words and their counts
+2019-07-17 11:13:38,448 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:13:38,448 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:13:38,448 Loading a fresh vocabulary
+2019-07-17 11:13:38,448 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:13:38,448 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:13:38,448 deleting the raw counts dictionary of 17 items
+2019-07-17 11:13:38,449 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:13:38,449 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:13:38,449 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:13:38,449 resetting layer weights
+2019-07-17 11:13:38,449 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:13:38,450 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,450 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,450 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,450 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 16157 effective words/s
+2019-07-17 11:13:38,451 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,451 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,451 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,451 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 10255 effective words/s
+2019-07-17 11:13:38,452 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,452 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,453 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,453 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 13754 effective words/s
+2019-07-17 11:13:38,453 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,454 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,454 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,454 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 7485 effective words/s
+2019-07-17 11:13:38,455 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:38,455 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:38,455 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:38,455 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 12889 effective words/s
+2019-07-17 11:13:38,455 training on a 165 raw words (30 effective words) took 0.0s, 4682 effective words/s
+2019-07-17 11:13:38,455 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:13:50,938 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:13:50,938 collecting all words and their counts
+2019-07-17 11:13:50,938 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:13:50,939 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:13:50,939 Loading a fresh vocabulary
+2019-07-17 11:13:50,939 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:13:50,939 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:13:50,939 deleting the raw counts dictionary of 17 items
+2019-07-17 11:13:50,939 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:13:50,939 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:13:50,940 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:13:50,940 resetting layer weights
+2019-07-17 11:13:50,940 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:13:50,941 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:50,941 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:50,941 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:50,941 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 10907 effective words/s
+2019-07-17 11:13:50,943 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:50,943 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:50,943 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:50,943 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 7057 effective words/s
+2019-07-17 11:13:50,944 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:50,944 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:50,944 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:50,944 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 10327 effective words/s
+2019-07-17 11:13:50,946 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:50,946 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:50,946 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:50,946 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 7134 effective words/s
+2019-07-17 11:13:50,947 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:13:50,947 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:13:50,947 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:13:50,947 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 11388 effective words/s
+2019-07-17 11:13:50,947 training on a 165 raw words (30 effective words) took 0.0s, 4083 effective words/s
+2019-07-17 11:13:50,947 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:14:29,561 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:14:29,561 collecting all words and their counts
+2019-07-17 11:14:29,561 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:14:29,561 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:14:29,561 Loading a fresh vocabulary
+2019-07-17 11:14:29,561 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:14:29,561 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:14:29,561 deleting the raw counts dictionary of 17 items
+2019-07-17 11:14:29,562 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:14:29,562 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:14:29,562 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:14:29,562 resetting layer weights
+2019-07-17 11:14:29,562 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:14:29,563 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:29,563 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:29,563 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:29,563 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 17196 effective words/s
+2019-07-17 11:14:29,564 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:29,564 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:29,564 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:29,564 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 8586 effective words/s
+2019-07-17 11:14:29,565 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:29,565 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:29,565 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:29,565 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 15674 effective words/s
+2019-07-17 11:14:29,566 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:29,566 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:29,566 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:29,566 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 9235 effective words/s
+2019-07-17 11:14:29,567 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:29,567 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:29,567 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:29,567 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 15461 effective words/s
+2019-07-17 11:14:29,567 training on a 165 raw words (30 effective words) took 0.0s, 5465 effective words/s
+2019-07-17 11:14:29,567 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:14:57,004 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:14:57,004 collecting all words and their counts
+2019-07-17 11:14:57,004 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:14:57,004 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:14:57,004 Loading a fresh vocabulary
+2019-07-17 11:14:57,004 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:14:57,004 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:14:57,004 deleting the raw counts dictionary of 17 items
+2019-07-17 11:14:57,005 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:14:57,005 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:14:57,005 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:14:57,005 resetting layer weights
+2019-07-17 11:14:57,005 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:14:57,007 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:57,007 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:57,007 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:57,007 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 9211 effective words/s
+2019-07-17 11:14:57,008 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:57,008 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:57,008 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:57,008 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 7932 effective words/s
+2019-07-17 11:14:57,009 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:57,009 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:57,010 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:57,010 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 14162 effective words/s
+2019-07-17 11:14:57,010 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:57,010 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:57,010 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:57,010 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 8721 effective words/s
+2019-07-17 11:14:57,011 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:14:57,011 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:14:57,011 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:14:57,011 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 18240 effective words/s
+2019-07-17 11:14:57,011 training on a 165 raw words (30 effective words) took 0.0s, 4873 effective words/s
+2019-07-17 11:14:57,011 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:15:45,416 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:15:45,416 collecting all words and their counts
+2019-07-17 11:15:45,419 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:15:45,419 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:15:45,419 Loading a fresh vocabulary
+2019-07-17 11:15:45,419 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:15:45,419 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:15:45,419 deleting the raw counts dictionary of 17 items
+2019-07-17 11:15:45,419 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:15:45,419 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:15:45,419 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:15:45,419 resetting layer weights
+2019-07-17 11:15:45,420 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:15:45,421 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:15:45,421 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:15:45,421 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:15:45,421 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 12834 effective words/s
+2019-07-17 11:15:45,422 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:15:45,422 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:15:45,422 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:15:45,422 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 11343 effective words/s
+2019-07-17 11:15:45,423 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:15:45,423 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:15:45,423 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:15:45,423 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 14574 effective words/s
+2019-07-17 11:15:45,424 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:15:45,424 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:15:45,424 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:15:45,424 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 9212 effective words/s
+2019-07-17 11:15:45,425 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:15:45,425 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:15:45,425 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:15:45,426 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 11903 effective words/s
+2019-07-17 11:15:45,426 training on a 165 raw words (30 effective words) took 0.0s, 5153 effective words/s
+2019-07-17 11:15:45,426 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:16:23,289 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:16:23,289 collecting all words and their counts
+2019-07-17 11:16:23,292 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:16:23,293 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:16:23,293 Loading a fresh vocabulary
+2019-07-17 11:16:23,293 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:16:23,293 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:16:23,293 deleting the raw counts dictionary of 17 items
+2019-07-17 11:16:23,293 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:16:23,293 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:16:23,293 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:16:23,293 resetting layer weights
+2019-07-17 11:16:23,294 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:16:23,295 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:23,295 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:23,295 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:23,295 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 15112 effective words/s
+2019-07-17 11:16:23,296 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:23,296 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:23,296 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:23,296 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 12505 effective words/s
+2019-07-17 11:16:23,297 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:23,297 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:23,297 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:23,297 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 15693 effective words/s
+2019-07-17 11:16:23,298 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:23,298 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:23,298 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:23,298 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 9374 effective words/s
+2019-07-17 11:16:23,299 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:23,299 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:23,299 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:23,299 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 16253 effective words/s
+2019-07-17 11:16:23,299 training on a 165 raw words (30 effective words) took 0.0s, 5437 effective words/s
+2019-07-17 11:16:23,299 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:16:44,781 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:16:44,782 collecting all words and their counts
+2019-07-17 11:16:44,782 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:16:44,782 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:16:44,782 Loading a fresh vocabulary
+2019-07-17 11:16:44,782 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:16:44,782 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:16:44,782 deleting the raw counts dictionary of 17 items
+2019-07-17 11:16:44,782 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:16:44,782 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:16:44,782 estimated required memory for 17 words and 5 dimensions: 9620 bytes
+2019-07-17 11:16:44,782 resetting layer weights
+2019-07-17 11:16:44,782 training model with 3 workers on 17 vocabulary and 5 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:16:44,784 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:44,784 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:44,784 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:44,784 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 12307 effective words/s
+2019-07-17 11:16:44,785 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:44,785 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:44,785 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:44,785 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 8760 effective words/s
+2019-07-17 11:16:44,786 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:44,786 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:44,786 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:44,786 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 16603 effective words/s
+2019-07-17 11:16:44,787 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:44,787 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:44,787 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:44,787 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 8953 effective words/s
+2019-07-17 11:16:44,788 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:44,788 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:44,788 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:44,788 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 19744 effective words/s
+2019-07-17 11:16:44,788 training on a 165 raw words (30 effective words) took 0.0s, 5432 effective words/s
+2019-07-17 11:16:44,788 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:16:51,960 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:16:51,960 collecting all words and their counts
+2019-07-17 11:16:51,963 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:16:51,963 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:16:51,963 Loading a fresh vocabulary
+2019-07-17 11:16:51,963 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:16:51,963 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:16:51,963 deleting the raw counts dictionary of 17 items
+2019-07-17 11:16:51,963 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:16:51,963 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:16:51,963 estimated required memory for 17 words and 3 dimensions: 9332 bytes
+2019-07-17 11:16:51,963 resetting layer weights
+2019-07-17 11:16:51,964 training model with 3 workers on 17 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:16:51,965 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:51,965 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:51,965 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:51,965 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 11943 effective words/s
+2019-07-17 11:16:51,967 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:51,967 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:51,967 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:51,967 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 8882 effective words/s
+2019-07-17 11:16:51,968 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:51,969 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:51,969 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:51,969 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 11930 effective words/s
+2019-07-17 11:16:51,970 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:51,970 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:51,970 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:51,970 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 7133 effective words/s
+2019-07-17 11:16:51,972 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:16:51,972 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:16:51,972 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:16:51,972 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 17434 effective words/s
+2019-07-17 11:16:51,972 training on a 165 raw words (30 effective words) took 0.0s, 3608 effective words/s
+2019-07-17 11:16:51,972 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:17:45,448 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:17:45,449 collecting all words and their counts
+2019-07-17 11:17:45,449 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:17:45,449 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:17:45,449 Loading a fresh vocabulary
+2019-07-17 11:17:45,449 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:17:45,449 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:17:45,449 deleting the raw counts dictionary of 17 items
+2019-07-17 11:17:45,449 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:17:45,449 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:17:45,450 estimated required memory for 17 words and 3 dimensions: 9332 bytes
+2019-07-17 11:17:45,450 resetting layer weights
+2019-07-17 11:17:45,450 training model with 3 workers on 17 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:17:45,451 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:45,451 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:45,451 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:45,451 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 11995 effective words/s
+2019-07-17 11:17:45,452 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:45,452 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:45,452 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:45,452 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 9434 effective words/s
+2019-07-17 11:17:45,453 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:45,453 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:45,454 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:45,454 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 12084 effective words/s
+2019-07-17 11:17:45,455 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:45,455 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:45,455 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:45,455 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 6649 effective words/s
+2019-07-17 11:17:45,456 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:45,456 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:45,456 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:45,456 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 15137 effective words/s
+2019-07-17 11:17:45,456 training on a 165 raw words (30 effective words) took 0.0s, 4947 effective words/s
+2019-07-17 11:17:45,456 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:17:46,633 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:17:46,633 collecting all words and their counts
+2019-07-17 11:17:46,633 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:17:46,671 PROGRESS: at example #10000, processed 127599 words (3411290/s), 14559 word types, 10000 tags
+2019-07-17 11:17:46,688 collected 17571 word types and 14524 unique tags from a corpus of 14524 examples and 185031 words
+2019-07-17 11:17:46,688 Loading a fresh vocabulary
+2019-07-17 11:17:46,741 min_count=0 retains 17571 unique words (100% of original 17571, drops 0)
+2019-07-17 11:17:46,742 min_count=0 leaves 185031 word corpus (100% of original 185031, drops 0)
+2019-07-17 11:17:46,774 deleting the raw counts dictionary of 17571 items
+2019-07-17 11:17:46,774 sample=0.001 downsamples 29 most-common words
+2019-07-17 11:17:46,774 downsampling leaves estimated 146451 word corpus (79.1% of prior 185031)
+2019-07-17 11:17:46,802 estimated required memory for 17571 words and 3 dimensions: 12286292 bytes
+2019-07-17 11:17:46,802 resetting layer weights
+2019-07-17 11:17:47,017 training model with 3 workers on 17571 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:17:47,378 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:47,387 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:47,388 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:47,388 EPOCH - 1 : training on 185031 raw words (161121 effective words) took 0.4s, 440513 effective words/s
+2019-07-17 11:17:47,748 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:47,751 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:47,757 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:47,757 EPOCH - 2 : training on 185031 raw words (161034 effective words) took 0.4s, 441523 effective words/s
+2019-07-17 11:17:48,113 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:48,120 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:48,126 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:48,126 EPOCH - 3 : training on 185031 raw words (161006 effective words) took 0.4s, 442640 effective words/s
+2019-07-17 11:17:48,501 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:48,504 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:48,505 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:48,505 EPOCH - 4 : training on 185031 raw words (160797 effective words) took 0.4s, 429443 effective words/s
+2019-07-17 11:17:48,868 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:17:48,872 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:17:48,872 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:17:48,872 EPOCH - 5 : training on 185031 raw words (160945 effective words) took 0.4s, 444505 effective words/s
+2019-07-17 11:17:48,872 training on a 925155 raw words (804903 effective words) took 1.9s, 433845 effective words/s
+2019-07-17 11:20:59,622 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:20:59,622 collecting all words and their counts
+2019-07-17 11:20:59,625 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:20:59,625 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:20:59,625 Loading a fresh vocabulary
+2019-07-17 11:20:59,625 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:20:59,625 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:20:59,625 deleting the raw counts dictionary of 17 items
+2019-07-17 11:20:59,625 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:20:59,625 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:20:59,625 estimated required memory for 17 words and 3 dimensions: 9332 bytes
+2019-07-17 11:20:59,625 resetting layer weights
+2019-07-17 11:20:59,626 training model with 3 workers on 17 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:20:59,627 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:20:59,627 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:20:59,627 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:20:59,627 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 13292 effective words/s
+2019-07-17 11:20:59,628 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:20:59,628 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:20:59,628 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:20:59,628 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 9303 effective words/s
+2019-07-17 11:20:59,629 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:20:59,629 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:20:59,629 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:20:59,629 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 11735 effective words/s
+2019-07-17 11:20:59,630 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:20:59,630 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:20:59,630 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:20:59,630 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 9303 effective words/s
+2019-07-17 11:20:59,631 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:20:59,631 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:20:59,631 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:20:59,631 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 16946 effective words/s
+2019-07-17 11:20:59,631 training on a 165 raw words (30 effective words) took 0.0s, 5410 effective words/s
+2019-07-17 11:20:59,631 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:21:00,802 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:21:00,802 collecting all words and their counts
+2019-07-17 11:21:00,803 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:21:00,876 PROGRESS: at example #10000, processed 127599 words (1733836/s), 14559 word types, 10000 tags
+2019-07-17 11:21:00,895 collected 17571 word types and 14524 unique tags from a corpus of 14524 examples and 185031 words
+2019-07-17 11:21:00,895 Loading a fresh vocabulary
+2019-07-17 11:21:00,916 min_count=0 retains 17571 unique words (100% of original 17571, drops 0)
+2019-07-17 11:21:00,916 min_count=0 leaves 185031 word corpus (100% of original 185031, drops 0)
+2019-07-17 11:21:00,951 deleting the raw counts dictionary of 17571 items
+2019-07-17 11:21:00,952 sample=0.001 downsamples 29 most-common words
+2019-07-17 11:21:00,952 downsampling leaves estimated 146451 word corpus (79.1% of prior 185031)
+2019-07-17 11:21:00,980 estimated required memory for 17571 words and 3 dimensions: 12286292 bytes
+2019-07-17 11:21:00,980 resetting layer weights
+2019-07-17 11:21:01,216 training model with 3 workers on 17571 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:21:01,593 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:01,609 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:01,610 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:01,610 EPOCH - 1 : training on 185031 raw words (160885 effective words) took 0.4s, 413248 effective words/s
+2019-07-17 11:21:01,994 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:01,998 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:02,003 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:02,003 EPOCH - 2 : training on 185031 raw words (160978 effective words) took 0.4s, 415093 effective words/s
+2019-07-17 11:21:02,393 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:02,397 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:02,399 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:02,399 EPOCH - 3 : training on 185031 raw words (160828 effective words) took 0.4s, 411208 effective words/s
+2019-07-17 11:21:02,780 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:02,786 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:02,789 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:02,789 EPOCH - 4 : training on 185031 raw words (161025 effective words) took 0.4s, 418631 effective words/s
+2019-07-17 11:21:03,178 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:03,183 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:03,187 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:03,187 EPOCH - 5 : training on 185031 raw words (160985 effective words) took 0.4s, 409458 effective words/s
+2019-07-17 11:21:03,187 training on a 925155 raw words (804701 effective words) took 2.0s, 408125 effective words/s
+2019-07-17 11:21:11,748 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:21:11,748 collecting all words and their counts
+2019-07-17 11:21:11,748 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:21:11,748 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:21:11,748 Loading a fresh vocabulary
+2019-07-17 11:21:11,748 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:21:11,748 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:21:11,748 deleting the raw counts dictionary of 17 items
+2019-07-17 11:21:11,749 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:21:11,749 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:21:11,749 estimated required memory for 17 words and 3 dimensions: 9332 bytes
+2019-07-17 11:21:11,749 resetting layer weights
+2019-07-17 11:21:11,749 training model with 3 workers on 17 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:21:11,751 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:11,751 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:11,751 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:11,751 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 12374 effective words/s
+2019-07-17 11:21:11,752 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:11,752 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:11,752 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:11,752 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 10422 effective words/s
+2019-07-17 11:21:11,753 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:11,753 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:11,753 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:11,753 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 14447 effective words/s
+2019-07-17 11:21:11,754 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:11,754 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:11,754 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:11,755 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 8402 effective words/s
+2019-07-17 11:21:11,755 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:11,755 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:11,755 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:11,755 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 20516 effective words/s
+2019-07-17 11:21:11,755 training on a 165 raw words (30 effective words) took 0.0s, 4733 effective words/s
+2019-07-17 11:21:11,755 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:21:12,945 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:21:12,946 collecting all words and their counts
+2019-07-17 11:21:12,946 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:21:12,985 PROGRESS: at example #10000, processed 127599 words (3246202/s), 14559 word types, 10000 tags
+2019-07-17 11:21:13,003 collected 17571 word types and 14524 unique tags from a corpus of 14524 examples and 185031 words
+2019-07-17 11:21:13,003 Loading a fresh vocabulary
+2019-07-17 11:21:13,058 min_count=0 retains 17571 unique words (100% of original 17571, drops 0)
+2019-07-17 11:21:13,058 min_count=0 leaves 185031 word corpus (100% of original 185031, drops 0)
+2019-07-17 11:21:13,091 deleting the raw counts dictionary of 17571 items
+2019-07-17 11:21:13,091 sample=0.001 downsamples 29 most-common words
+2019-07-17 11:21:13,091 downsampling leaves estimated 146451 word corpus (79.1% of prior 185031)
+2019-07-17 11:21:13,121 estimated required memory for 17571 words and 3 dimensions: 12286292 bytes
+2019-07-17 11:21:13,121 resetting layer weights
+2019-07-17 11:21:13,343 training model with 3 workers on 17571 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:21:13,729 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:13,732 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:13,738 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:13,738 EPOCH - 1 : training on 185031 raw words (160968 effective words) took 0.4s, 412279 effective words/s
+2019-07-17 11:21:14,100 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:14,113 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:14,114 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:14,114 EPOCH - 2 : training on 185031 raw words (160982 effective words) took 0.4s, 434611 effective words/s
+2019-07-17 11:21:14,496 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:14,497 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:14,505 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:14,505 EPOCH - 3 : training on 185031 raw words (160984 effective words) took 0.4s, 415953 effective words/s
+2019-07-17 11:21:14,876 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:14,888 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:14,893 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:14,893 EPOCH - 4 : training on 185031 raw words (161083 effective words) took 0.4s, 421202 effective words/s
+2019-07-17 11:21:15,266 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:21:15,274 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:21:15,277 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:21:15,277 EPOCH - 5 : training on 185031 raw words (160919 effective words) took 0.4s, 423787 effective words/s
+2019-07-17 11:21:15,277 training on a 925155 raw words (804936 effective words) took 1.9s, 416128 effective words/s
+2019-07-17 11:25:23,936 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:25:23,936 collecting all words and their counts
+2019-07-17 11:25:23,936 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:25:23,936 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:25:23,937 Loading a fresh vocabulary
+2019-07-17 11:25:23,937 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:25:23,937 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:25:23,937 deleting the raw counts dictionary of 17 items
+2019-07-17 11:25:23,937 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:25:23,937 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:25:23,937 estimated required memory for 17 words and 3 dimensions: 9332 bytes
+2019-07-17 11:25:23,937 resetting layer weights
+2019-07-17 11:25:23,937 training model with 3 workers on 17 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:25:23,938 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:25:23,938 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:25:23,939 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:25:23,939 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 11706 effective words/s
+2019-07-17 11:25:23,939 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:25:23,939 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:25:23,940 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:25:23,940 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 10625 effective words/s
+2019-07-17 11:25:23,940 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:25:23,941 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:25:23,941 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:25:23,941 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 12826 effective words/s
+2019-07-17 11:25:23,941 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:25:23,942 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:25:23,942 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:25:23,942 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 9415 effective words/s
+2019-07-17 11:25:23,942 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:25:23,943 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:25:23,943 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:25:23,943 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 12362 effective words/s
+2019-07-17 11:25:23,943 training on a 165 raw words (30 effective words) took 0.0s, 5415 effective words/s
+2019-07-17 11:25:23,943 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:27:52,022 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:27:52,022 collecting all words and their counts
+2019-07-17 11:27:52,022 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:27:52,022 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:27:52,022 Loading a fresh vocabulary
+2019-07-17 11:27:52,022 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:27:52,022 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:27:52,022 deleting the raw counts dictionary of 17 items
+2019-07-17 11:27:52,022 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:27:52,022 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:27:52,022 estimated required memory for 17 words and 3 dimensions: 9332 bytes
+2019-07-17 11:27:52,022 resetting layer weights
+2019-07-17 11:27:52,023 training model with 3 workers on 17 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:27:52,024 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:27:52,024 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:27:52,024 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:27:52,024 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 7549 effective words/s
+2019-07-17 11:27:52,025 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:27:52,025 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:27:52,025 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:27:52,025 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 12664 effective words/s
+2019-07-17 11:27:52,026 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:27:52,026 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:27:52,026 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:27:52,026 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 16183 effective words/s
+2019-07-17 11:27:52,027 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:27:52,027 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:27:52,027 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:27:52,027 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 6034 effective words/s
+2019-07-17 11:27:52,028 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:27:52,028 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:27:52,028 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:27:52,028 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 23895 effective words/s
+2019-07-17 11:27:52,028 training on a 165 raw words (30 effective words) took 0.0s, 5199 effective words/s
+2019-07-17 11:27:52,028 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:28:13,543 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:28:13,543 collecting all words and their counts
+2019-07-17 11:28:13,544 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:28:13,544 collected 17 word types and 2 unique tags from a corpus of 2 examples and 33 words
+2019-07-17 11:28:13,544 Loading a fresh vocabulary
+2019-07-17 11:28:13,544 min_count=0 retains 17 unique words (100% of original 17, drops 0)
+2019-07-17 11:28:13,544 min_count=0 leaves 33 word corpus (100% of original 33, drops 0)
+2019-07-17 11:28:13,544 deleting the raw counts dictionary of 17 items
+2019-07-17 11:28:13,544 sample=0.001 downsamples 17 most-common words
+2019-07-17 11:28:13,544 downsampling leaves estimated 4 word corpus (14.7% of prior 33)
+2019-07-17 11:28:13,544 estimated required memory for 17 words and 3 dimensions: 9332 bytes
+2019-07-17 11:28:13,544 resetting layer weights
+2019-07-17 11:28:13,544 training model with 3 workers on 17 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:28:13,545 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:13,546 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:13,546 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:13,546 EPOCH - 1 : training on 33 raw words (7 effective words) took 0.0s, 17659 effective words/s
+2019-07-17 11:28:13,547 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:13,547 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:13,547 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:13,547 EPOCH - 2 : training on 33 raw words (5 effective words) took 0.0s, 8632 effective words/s
+2019-07-17 11:28:13,548 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:13,548 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:13,548 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:13,548 EPOCH - 3 : training on 33 raw words (7 effective words) took 0.0s, 14399 effective words/s
+2019-07-17 11:28:13,549 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:13,549 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:13,549 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:13,549 EPOCH - 4 : training on 33 raw words (4 effective words) took 0.0s, 8896 effective words/s
+2019-07-17 11:28:13,550 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:13,550 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:13,550 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:13,550 EPOCH - 5 : training on 33 raw words (7 effective words) took 0.0s, 12751 effective words/s
+2019-07-17 11:28:13,550 training on a 165 raw words (30 effective words) took 0.0s, 5102 effective words/s
+2019-07-17 11:28:13,550 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-07-17 11:28:14,763 consider setting layer size to a multiple of 4 for greater performance
+2019-07-17 11:28:14,763 collecting all words and their counts
+2019-07-17 11:28:14,763 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-07-17 11:28:14,802 PROGRESS: at example #10000, processed 127599 words (3301235/s), 14559 word types, 10000 tags
+2019-07-17 11:28:14,820 collected 17571 word types and 14524 unique tags from a corpus of 14524 examples and 185031 words
+2019-07-17 11:28:14,820 Loading a fresh vocabulary
+2019-07-17 11:28:14,841 min_count=0 retains 17571 unique words (100% of original 17571, drops 0)
+2019-07-17 11:28:14,841 min_count=0 leaves 185031 word corpus (100% of original 185031, drops 0)
+2019-07-17 11:28:14,873 deleting the raw counts dictionary of 17571 items
+2019-07-17 11:28:14,873 sample=0.001 downsamples 29 most-common words
+2019-07-17 11:28:14,873 downsampling leaves estimated 146451 word corpus (79.1% of prior 185031)
+2019-07-17 11:28:14,900 estimated required memory for 17571 words and 3 dimensions: 12286292 bytes
+2019-07-17 11:28:14,901 resetting layer weights
+2019-07-17 11:28:15,122 training model with 3 workers on 17571 vocabulary and 3 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-07-17 11:28:15,517 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:15,519 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:15,519 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:15,519 EPOCH - 1 : training on 185031 raw words (160982 effective words) took 0.4s, 410608 effective words/s
+2019-07-17 11:28:15,897 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:15,904 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:15,910 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:15,910 EPOCH - 2 : training on 185031 raw words (161013 effective words) took 0.4s, 418689 effective words/s
+2019-07-17 11:28:16,288 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:16,296 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:16,297 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:16,297 EPOCH - 3 : training on 185031 raw words (160974 effective words) took 0.4s, 420506 effective words/s
+2019-07-17 11:28:16,684 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:16,689 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:16,696 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:16,697 EPOCH - 4 : training on 185031 raw words (160906 effective words) took 0.4s, 407783 effective words/s
+2019-07-17 11:28:17,080 worker thread finished; awaiting finish of 2 more threads
+2019-07-17 11:28:17,082 worker thread finished; awaiting finish of 1 more threads
+2019-07-17 11:28:17,091 worker thread finished; awaiting finish of 0 more threads
+2019-07-17 11:28:17,091 EPOCH - 5 : training on 185031 raw words (160899 effective words) took 0.4s, 413473 effective words/s
+2019-07-17 11:28:17,091 training on a 925155 raw words (804774 effective words) took 2.0s, 408797 effective words/s

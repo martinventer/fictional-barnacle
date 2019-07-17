@@ -136,9 +136,9 @@ class SklearnTopicModels(object):
 
         self.model = Pipeline([
             ('norm', Corpus_Vectorizer.TextNormalizer()),
-            # ('vect', Corpus_Vectorizer.CorpusFrequencyVector()),
-            # ('vect', Corpus_Vectorizer.CorpusOneHotVector()),
-            ('vect', Corpus_Vectorizer.CorpusTFIDVector()),
+            # ('vect', Corpus_Vectorizer.Text2FrequencyVector()),
+            # ('vect', Corpus_Vectorizer.Text2OneHotVector()),
+            ('vect', Corpus_Vectorizer.Text2TFIDVector()),
             ('model', self.estimator)
         ])
 
