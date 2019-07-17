@@ -172,6 +172,7 @@ if __name__ == '__main__':
     from sklearn.decomposition import TruncatedSVD
 
     root = "Tests/Test_Corpus/Processed_corpus/"
+    # root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         root=root)
 
@@ -192,7 +193,7 @@ if __name__ == '__main__':
     clusterer = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
                          ('vectorize',
                          Corpus_Vectorizer.Text2FrequencyVector()),
-                         ('cluster', KMeansClusters())])
+                         ('cluster', KMeansClusters(k=4))])
 
     labels = clusterer.fit_transform(corpus.title_tagged())
 
