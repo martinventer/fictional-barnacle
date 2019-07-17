@@ -1,21 +1,19 @@
 from unittest import TestCase
 
-from CorpusReaders import Elsevier_Corpus_Reader
-from CorpusFilterTools import Corpus_filters
+from CorpusReaders import Elsevier_Corpus_Reader, Corpus_filters
 
 
-class TestCorpus2Frame(TestCase):
+class TestRawCorpusReader(TestCase):
     def setUp(self) -> None:
-        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+        self.corp = Elsevier_Corpus_Reader.RawCorpusReader(
+            "Test_Corpus/Raw_corpus/")
+        self.all_files = self.corp.fileids()
 
-    def test_transform(self):
-        c_framer = Corpus_filters.Corpus2Frame()
-        df = c_framer.transform(self.corpus, fileids=self.subset)
-        target = (4696, 36)
-        result = df.shape
-        self.assertEqual(target, result)
+    def test_affiliation_city(self):
+        filtered_corpus = Corpus_filters.FilteredCorpus(self.corp)
+
+        subset = filtered_corpus.affiliation_city()
+        self.assertEqual(self.all_files, subset)
+        # gen = self.corp.affiliation_city_s()
+        # in_list = [next(gen) for i in range(10)]
+        # out_list = [next(gen) for i in range(10)]
