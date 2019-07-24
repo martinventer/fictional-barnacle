@@ -62,7 +62,7 @@ class TestTextNormalizer(TestCase):
             "Test_Corpus/Processed_corpus/")
 
     def test_is_punct(self):
-        normal = Corpus_Vectorizer.TextNormalizer()
+        normal = Corpus_Vectorizer
         input_data = ['.', ',', 'i', '?', 't.', '.t']
         targets = [True, True, False, True, False, False]
         for target, text in zip(targets, input_data):

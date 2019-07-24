@@ -8,20 +8,13 @@ from CorpusProcessingTools import Corpus_Vectorizer
 class TestKeyphraseExtractor(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+            "Test_Corpus/Processed_corpus/")
 
     def test_transform(self):
-        docs = list(self.corpus.title_tagged(fileids=self.subset))
         phrase_extractor = Context_Extraction.KeyphraseExtractor()
-        keyphrases = list(phrase_extractor.fit_transform(docs))
-        result = keyphrases[0]
-        target = ['histologic evaluation of implants', 'flapless', 'surgery',
-                  'study in canines']
-        self.assertEqual(target, result)
+        phrases = phrase_extractor.fit_transform(self.corpus.title_tagged())
+        for doc in phrases:
+            self.assertEqual(list, type(doc))
 
 
 class TestEntityExtractor(TestCase):
