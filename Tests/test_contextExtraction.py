@@ -11,7 +11,7 @@ class TestKeyphraseExtractor(TestCase):
             "Test_Corpus/Processed_corpus/")
 
     def test_transform(self):
-        phrase_extractor = Context_Extraction.KeyphraseExtractor()
+        phrase_extractor = Context_Extraction.KeyphraseExtractorL()
         phrases = phrase_extractor.fit_transform(self.corpus.title_tagged())
         for doc in phrases:
             self.assertEqual(list, type(doc))

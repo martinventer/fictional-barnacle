@@ -169,6 +169,94 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
         ]
 
 
+class CorpusSimpleNormalizer(BaseEstimator, TransformerMixin):
+    """
+    wrapper a  [[(token, tag]] corpus item that will return only lemmatized,
+    lowercase words without punctuation
+    """
+
+    def __init__(self, language='english'):
+        """
+        Initialize the text normalizer with the wordnet lemmatizer and the nltk
+        stopwords in a selected language.
+        Parameters
+        ----------
+        language : str
+            string indication of the language
+        """
+        self.stopwords = set(nltk.corpus.stopwords.words(language))
+        self.lemmatizer = WordNetLemmatizer()
+
+    def is_stopword(self, token) -> bool:
+        """
+        returns a boolean True if a string is in the list of stopwords
+        Parameters
+        ----------
+        token : str
+            string token
+
+        Returns
+        -------
+            Bool
+
+        """
+        return token.lower() in self.stopwords
+
+    def lemmatize(self, token, pos_tag) -> str:
+        """
+        returns a lametized string
+        Parameters
+        ----------
+        pos_tag : str
+            string symobol containing the part of speach tag for a given word
+        token : str
+            string token
+
+        Returns
+        -------
+            lematized word
+
+        """
+        tag = {
+            'N': wn.NOUN,
+            'V': wn.VERB,
+            'R': wn.ADV,
+            'J': wn.ADJ
+        }.get(pos_tag[0], wn.NOUN)
+
+        return self.lemmatizer.lemmatize(token, tag)
+
+    def normalize(self, document) -> list:
+        """
+        returns a list of normalized words
+        Parameters
+        ----------
+        document : list
+            list of paragraphs that are lists of sentences that are lists of
+            token tag tuples.
+
+        Returns
+        -------
+            list of normalized words
+
+        """
+        return [
+            self.lemmatize(token, tag).lower()
+            for sentence in document
+            for (token, tag) in sentence
+            if not is_punct(token) and not self.is_stopword(token)
+        ]
+
+    def fit(self, documents):
+        return self
+
+    def transform(self, documents):
+
+        for document in documents:
+            for term in self.normalize(document):
+                yield term
+
+
 class TextSimpleTokenizer(BaseEstimator, TransformerMixin):
     """
     transformer that takes text in the form of list of sentances that are
@@ -196,6 +284,17 @@ class TextSimpleTokenizer(BaseEstimator, TransformerMixin):
             self.get_words(document)
             for document in documents
         ]
+
+
+class Text2wordCountVector(CountVectorizer):
+    """
+    Wrapper for CountVectoriser that converts a corpus into a matrix of term
+    occurrences per document. Requires the input data to be in the form of
+    one list of words per document. This can be done using
+    """
+    def __init__(self):
+        # CountVectorizer.__init__(self, tokenizer=identity, preprocessor=None)
+        CountVectorizer.__init__(self, tokenizer=identity)
 
 
 class Text2FrequencyVector(CountVectorizer):
@@ -296,36 +395,36 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # TextNormalizer
     # --------------------------------------------------------------------------
-    # normal = TextNormalizer()
+    normal = TextNormalizer()
 
-    # input = ['.', ',', 'i', '?', 't.', '.t']
-    # for word in input:
-    #     print(word, normal.is_punct(word))
+    input = ['.', ',', 'i', '?', 't.', '.t']
+    for word in input:
+        print(word, is_punct(word))
 
-    # input = ['.', ',', 'i', '?', 't.', '.t', 'the', 'Steven']
-    # for word in input:
-    #     print(word, normal.is_stopword(word))
+    input = ['.', ',', 'i', '?', 't.', '.t', 'the', 'Steven']
+    for word in input:
+        print(word, normal.is_stopword(word))
 
-    # input = [('gardening', 'V')]
-    # for token, tag in input:
-    #     print(token, tag, normal.lemmatize(token, tag))
+    input = [('gardening', 'V')]
+    for token, tag in input:
+        print(token, tag, normal.lemmatize(token, tag))
 
-    # input = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
-    #           ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
-    #           ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
-    #           ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
-    #           ('sensors', 'NNS')]]]
-    # for doc in input:
-    #     print(normal.normalize(doc))
+    input = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
+              ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
+              ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
+              ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
+              ('sensors', 'NNS')]]]
+    for doc in input:
+        print(normal.normalize(doc))
 
-    # input = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
-    #            ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
-    #            ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
-    #            ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
-    #            ('sensors', 'NNS')]]]
-    # print(normal.transform(input))
-    #
-    # aa = normal.transform(corpus.title_tagged())
+    input = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
+               ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
+               ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
+               ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
+               ('sensors', 'NNS')]]]
+    print(normal.transform(input))
+
+    aa = normal.transform(corpus.title_tagged())
 
     # --------------------------------------------------------------------------
     # TextStemTokenize
@@ -343,15 +442,15 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # TextSimpleTokenizer
     # --------------------------------------------------------------------------
-    simple = TextSimpleTokenizer()
-
-    input = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
-              ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
-              ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
-              ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
-              ('sensors', 'NNS')]]]
-    for doc in input:
-        print(simple.get_words(doc))
+    # simple = TextSimpleTokenizer()
+    #
+    # input = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
+    #           ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
+    #           ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
+    #           ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
+    #           ('sensors', 'NNS')]]]
+    # for doc in input:
+    #     print(simple.get_words(doc))
 
     # --------------------------------------------------------------------------
     # Text2FrequencyVector
@@ -415,7 +514,7 @@ if __name__ == '__main__':
 
     # --------------------------------------------------------------------------
     # Text2Doc2VecVector
-    # # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # simple = TextSimpleTokenizer()
     # vec = Text2Doc2VecVector(vector_size=3,
     #                           min_count=0)

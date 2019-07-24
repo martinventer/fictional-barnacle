@@ -8,17 +8,14 @@ Text_Visualization.py
 Tools for Visualizing Text related data
 """
 
-from CorpusProcessingTools import Corpus_Vectorizer
+from CorpusProcessingTools import Corpus_Vectorizer, Context_Extraction
 
 import matplotlib.pyplot as plt
 from yellowbrick.text.freqdist import FreqDistVisualizer
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
 
 from collections import Counter
 
-import json
-import codecs
 import itertools
 import networkx as nx
 
@@ -26,45 +23,62 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib.colors import LogNorm
-from nltk import sent_tokenize, word_tokenize
 
 
-def plot_term_frequency(subset):
-    ##############################################
-    # Visualize frequency distribution of top 50 tokens
-    ##############################################
-    vectorizer = CountVectorizer()
-    docs = vectorizer.fit_transform(corpus.title_words(fileids=subset))
+def plot_term_frequency(corpus, n=50) -> None:
+    """
+    plot the term frequencies of the n most common terms in a corpus. a raw
+    corpus on [[(token, tag)]], is cleaned and plotted
+    Parameters
+    ----------
+    corpus
+        a coupus object or generator.
+    n : int
+        the number of terms you are interested in
+
+    Returns
+    -------
+
+    """
+    vectorizer = Corpus_Vectorizer.Text2wordCountVector()
+    corpus_cleaner = Corpus_Vectorizer.CorpusSimpleNormalizer()
+    clean_corpus = corpus_cleaner.fit_transform(corpus)
+
+    docs = vectorizer.fit_transform(clean_corpus)
     features = vectorizer.get_feature_names()
 
-
-    visualizer = FreqDistVisualizer(features)
+    visualizer = FreqDistVisualizer(features=features, n=n)
     visualizer.fit(docs)
     visualizer.poof()
 
 
-def plot_term_frequency_no_stop(subset):
-    ##############################################
-    # Visualize stopwords removal
-    ##############################################
-    vectorizer = CountVectorizer(stop_words='english')
-    docs = vectorizer.fit_transform(corpus.title_words(fileids=subset))
+def plot_keyphrase_frequency(corpus, n=50) -> None:
+    """
+    plot the keyphrase frequencies of the n most common terms in a corpus. a raw
+    corpus on [[(token, tag)]], is cleaned and plotted
+    Parameters
+    ----------
+    corpus
+        a coupus object or generator.
+    n : int
+        the number of terms you are interested in
+
+    Returns
+    -------
+
+    """
+    entity_extractor = Context_Extraction.KeyphraseExtractorS()
+    entities = entity_extractor.fit_transform(corpus)
+
+    vectorizer = Corpus_Vectorizer.Text2wordCountVector()
+    docs = vectorizer.fit_transform(entities)
     features = vectorizer.get_feature_names()
+    print(docs.shape)
+    print(len(features))
 
-    visualizer = FreqDistVisualizer(features)
+    visualizer = FreqDistVisualizer(features=features, n=n)
     visualizer.fit(docs)
-    visualizer.poof()
-
-
-# def cooccurrence(text, cast):
-#     possible_pairs = list(itertools.combinations(cast, 2))
-#     cooccurring = dict.fromkeys(possible_pairs, 0)
-#     for title, chapter in text['chapters'].items():
-#         for sent in sent_tokenize(chapter):
-#             for pair in possible_pairs:
-#                 if pair[0] in sent and pair[1] in sent:
-#                     cooccurring[pair] += 1
-#     return cooccurring
+    # visualizer.poof()
 
 
 def most_common_terms(corpus, n=50, fileids=None):
@@ -219,21 +233,30 @@ def plot_tsne_clusters(corpus, fileids=None, labels=None):
     tsne.poof()
 
 
-
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
-    from CorpusProcessingTools import Corpus_Vectorizer, Corpus_Cluster
+    # from CorpusProcessingTools import Corpus_Vectorizer, Corpus_Cluster
     from sklearn.pipeline import Pipeline
 
-
+    root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-        "Corpus/Processed_corpus/")
+        root=root)
+    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
+    subset_fileids = next(loader.fileids(test=True))
 
-    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 12, shuffle=False)
-    subset = next(loader.fileids(test=True))
+    # --------------------------------------------------------------------------
+    # plot_term_frequency
+    # --------------------------------------------------------------------------
+    # plot_term_frequency( corpus.title_tagged(fileids=subset_fileids))
+    # plot_term_frequency(corpus.description_tagged(fileids=subset_fileids))
 
-    # plot_term_frequency(subset)
-    # plot_term_frequency_no_stop(subset)
+    # --------------------------------------------------------------------------
+    # plot_term_frequency
+    # --------------------------------------------------------------------------
+    plot_keyphrase_frequency(corpus.title_tagged(fileids=subset_fileids))
+    # plot_keyphrase_frequency(corpus.description_tagged(fileids=subset_fileids))
+
+
     # plot_term_coocurrance(corpus, n=30, fileids=subset)
     # plot_term_coocurrance_matrix(corpus, n=30, fileids=subset)
     # plot_term_occurance_over_time(corpus, n=30, fileids=subset)

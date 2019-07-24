@@ -32,7 +32,7 @@ GOODTAGS = frozenset(['JJ', 'JJR', 'JJS', 'NN', 'NNP', 'NNS', 'NNPS'])
 GOODLABELS = frozenset(['PERSON', 'ORGANIZATION', 'FACILITY', 'GPE', 'GSP'])
 
 
-class KeyphraseExtractor(BaseEstimator, TransformerMixin):
+class KeyphraseExtractorL(BaseEstimator, TransformerMixin):
     """
     Transformer for pos-tagged documents that outputs keyphrases. Converts a
     corpus into a bag of key phrases.
@@ -88,6 +88,26 @@ class KeyphraseExtractor(BaseEstimator, TransformerMixin):
     def transform(self, documents):
         for document in documents:
             yield list(self.extract_keyphrases(document))
+
+
+class KeyphraseExtractorS(KeyphraseExtractorL):
+    """
+    Transformer for pos-tagged documents that outputs keyphrases. Converts a
+    corpus into a bag of key phrases.
+    """
+    def __init__(self):
+        """
+        sets up he keyphrase extractor to have a grammer and parser
+        Parameters
+        ----------
+        grammar
+        """
+        KeyphraseExtractorL.__init__(self)
+
+    def transform(self, documents):
+        for document in documents:
+            for phrase in self.extract_keyphrases(document):
+                yield phrase.replace(" ", "X")
 
 
 class EntityExtractor(BaseEstimator, TransformerMixin):
@@ -208,11 +228,20 @@ if __name__ == '__main__':
     subset_fileids = next(loader.fileids(test=True))
 
     # --------------------------------------------------------------------------
-    # KeyphraseExtractor
+    # KeyphraseExtractorL
+    # --------------------------------------------------------------------------
+    # docs = corpus.title_tagged(fileids=subset_fileids)
+    #
+    # phrase_extractor = KeyphraseExtractorL()
+    # keyphrases = list(phrase_extractor.fit_transform(docs))
+    # print(keyphrases[:4])
+
+    # --------------------------------------------------------------------------
+    # KeyphraseExtractorS
     # --------------------------------------------------------------------------
     docs = corpus.title_tagged(fileids=subset_fileids)
 
-    phrase_extractor = KeyphraseExtractor()
+    phrase_extractor = KeyphraseExtractorS()
     keyphrases = list(phrase_extractor.fit_transform(docs))
     print(keyphrases[:4])
 
