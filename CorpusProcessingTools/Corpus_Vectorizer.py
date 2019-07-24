@@ -278,15 +278,15 @@ class Text2TFIDVector(TfidfVectorizer):
 class Text2Doc2VecVector(BaseEstimator, TransformerMixin):
     """
     transformer that converts a corpus into a matrix of
-    tifidf vectors per document. Requires the input data to be in the form of
+    doc2vec vectors per document. Requires the input data to be in the form of
     one list of words per document. This can be done using one of the text
     normalizers
     """
-    def __init__(self, vector_size=5, min_count=0):
+    def __init__(self, vector_size=50, min_count=0):
         """
         Parameters
         ----------
-        size : int
+        vector_size : int
             Desired vector length for output
         min_count : int
             Doc2Vec will ignore any tokens with a count below this number
@@ -295,7 +295,8 @@ class Text2Doc2VecVector(BaseEstimator, TransformerMixin):
         self.min_count = min_count
         self.vector_size = vector_size
 
-    def gensim_docs(self, documents) -> list:
+    @staticmethod
+    def gensim_docs(documents) -> list:
         """
         Convert the raw input docs to a tagged document list
         Parameters
@@ -321,7 +322,7 @@ class Text2Doc2VecVector(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
-        temp =  sparse.csr_matrix(self.model.docvecs.doctag_syn0)
+        temp = sparse.csr_matrix(self.model.docvecs.doctag_syn0)
         # return self.model.docvecs, temp
         return temp
 
