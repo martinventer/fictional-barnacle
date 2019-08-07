@@ -186,28 +186,38 @@ def plot_term_coocurrance(docs, n_terms=30) -> None:
 
     # create nodes for each term
     frequent_terms, term_count = most_common_terms(normed, n_terms=n_terms)
+    term_counts = dict(zip(frequent_terms, term_count))
     g.add_nodes_from(list(set(frequent_terms)))
 
     # create edges for each pair of connected terms
     pairs = cooccurrence(observations=normed, terms=frequent_terms)
+    edge_width = []
+    edge_scale = 0.1
     for pair, wgt in pairs.items():
         if wgt > 0:
-            g.add_edge(pair[0], pair[1], weight=wgt)
+            g.add_edge(pair[0], pair[1])
+            edge_width.append(edge_scale * wgt)
+
+    # set layout style
+    # pos = graphviz_layout(g, prog="twopi")
+    pos = graphviz_layout(g, prog="sfdp")
+    # pos = graphviz_layout(g, prog="circo")
+    # pos = nx.spring_layout(g)
 
     node_options = {'alpha': 0.5}
-    # assign node scale
+    # assign node scale to a multiple of its term count.
     if True:
         node_size = []
-        node_scale = 100
+        node_scale = 10.0
         for node in g:
-            node_size.append(node_scale ** 1.1)
+            node_size.append(node_scale * term_counts[node])
         node_options["node_size"] = node_size
 
     # adjust the node layout style
-    pos = graphviz_layout(g, prog="twopi")
+
+
     nx.draw_networkx_nodes(g, pos=pos, **node_options)
 
-    nx.draw_networkx_nodes(g, pos=pos)
     if True:
         node_names = {}
         for node in g:
@@ -218,7 +228,8 @@ def plot_term_coocurrance(docs, n_terms=30) -> None:
 
     # draw in the edges
     nx.draw_networkx_edges(g, pos=pos,
-                           alpha=0.2)
+                           alpha=0.2,
+                           width=edge_width)
 
     # nx.draw(g, pos=pos, ax=ax)
     # nx.draw(g, pos, node_color="gold", node_size=50, edgelist=edges,
