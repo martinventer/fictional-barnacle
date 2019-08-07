@@ -242,7 +242,7 @@ if __name__ == '__main__':
     corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(root=root)
     target = "Corpus/Processed_corpus/"
 
-    # gen = corpus.docs()
+    # gen = corpus.observations()
     # aa = next(gen)
     # pp = PrettyPrinter(indent=4)
     # pp.pprint(aa['dc:title'])

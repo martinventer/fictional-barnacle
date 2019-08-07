@@ -154,7 +154,7 @@ class SklearnTopicModels(BaseEstimator, TransformerMixin):
 
     def get_topics(self, n=25):
         """
-        n is the number of top terms to show for each topic
+        n_terms is the number of top terms to show for each topic
         """
         vectorizer = self.model.named_steps['vect']
         model = self.model.steps[-1][1]
@@ -171,25 +171,25 @@ class SklearnTopicModels(BaseEstimator, TransformerMixin):
 
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
-    # from PlottingTools import Cluster_Plotting
-    # from time import time
-    #
-    # root = "Tests/Test_Corpus/Processed_corpus/"
-    # corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-    #     root=root)
-    # loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
-    # subset_fileids = next(loader.fileids(test=True))
+    from PlottingTools import Cluster_Plotting
+    from time import time
+
+    root = "Tests/Test_Corpus/Processed_corpus/"
+    corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+        root=root)
+    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
+    subset_fileids = next(loader.fileids(test=True))
 
     # --------------------------------------------------------------------------
     # KMeansClusters
     # --------------------------------------------------------------------------
-    # docs = list(corpus.title_tagged(fileids=subset_fileids))
+    docs = list(corpus.title_tagged(fileids=subset_fileids))
 
     # Text2FrequencyVector
     # prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
     #                          ('vectorize',
     #                           Corpus_Vectorizer.Text2FrequencyVector())])
-    # X = prepare_data.fit_transform(docs)
+    # X = prepare_data.fit_transform(observations)
     #
     # model = KMeansClusters(k=10)
     # labels = model.fit_transform(X)
@@ -200,7 +200,7 @@ if __name__ == '__main__':
     # prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
     #                          ('vectorize',
     #                           Corpus_Vectorizer.Text2OneHotVector())])
-    # X = prepare_data.fit_transform(docs)
+    # X = prepare_data.fit_transform(observations)
     #
     # model = KMeansClusters(k=10)
     # labels = model.fit_transform(X)
@@ -211,7 +211,7 @@ if __name__ == '__main__':
     # prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
     #                          ('vectorize',
     #                           Corpus_Vectorizer.Text2Doc2VecVector())])
-    # X = prepare_data.fit_transform(docs)
+    # X = prepare_data.fit_transform(observations)
     #
     # model = KMeansClusters(k=10)
     # labels = model.fit_transform(X)
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     # prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
     #                          ('vectorize',
     #                           Corpus_Vectorizer.Text2TFIDVector())])
-    # X = prepare_data.fit_transform(docs)
+    # X = prepare_data.fit_transform(observations)
     #
     # model = KMeansClusters(k=10)
     # labels = model.fit_transform(X)
@@ -232,13 +232,13 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # HierarchicalClustering
     # --------------------------------------------------------------------------
-    # docs = list(corpus.title_tagged(fileids=subset_fileids))
+    # observations = list(corpus.title_tagged(fileids=subset_fileids))
 
     # Text2FrequencyVector
     # prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
     #                          ('vectorize',
     #                           Corpus_Vectorizer.Text2FrequencyVector())])
-    # X = prepare_data.fit_transform(docs)
+    # X = prepare_data.fit_transform(observations)
     #
     # for linkage in ('ward', 'average', 'complete', 'single'):
     #     clustering = HierarchicalClustering(linkage=linkage, n_clusters=10)
@@ -253,7 +253,7 @@ if __name__ == '__main__':
     #     [('normalize', Corpus_Vectorizer.TextNormalizer()),
     #      ('vectorize',
     #       Corpus_Vectorizer.Text2OneHotVector())])
-    # X = prepare_data.fit_transform(docs)
+    # X = prepare_data.fit_transform(observations)
     #
     # for linkage in ('ward', 'average', 'complete', 'single'):
     #     clustering = HierarchicalClustering(linkage=linkage, n_clusters=10)
@@ -268,7 +268,7 @@ if __name__ == '__main__':
     #     [('normalize', Corpus_Vectorizer.TextNormalizer()),
     #      ('vectorize',
     #       Corpus_Vectorizer.Text2TFIDVector())])
-    # X = prepare_data.fit_transform(docs)
+    # X = prepare_data.fit_transform(observations)
     #
     # for linkage in ('ward', 'average', 'complete', 'single'):
     #     clustering = HierarchicalClustering(linkage=linkage, n_clusters=10)
@@ -279,24 +279,24 @@ if __name__ == '__main__':
     #     Cluster_Plotting.plot_clusters_2d(X, labels)
 
     # Text2Doc2VecVector
-    # prepare_data = Pipeline(
-    #     [('normalize', Corpus_Vectorizer.TextNormalizer()),
-    #      ('vectorize',
-    #       Corpus_Vectorizer.Text2Doc2VecVector())])
-    # X = prepare_data.fit_transform(docs)
-    #
-    # for linkage in ('ward', 'average', 'complete', 'single'):
-    #     clustering = HierarchicalClustering(linkage=linkage, n_clusters=10)
-    #     t0 = time()
-    #     labels = clustering.fit_transform(X)
-    #     print("%s :\t%.2fs" % (linkage, time() - t0))
-    #
-    #     Cluster_Plotting.plot_clusters_2d(X, labels)
+    prepare_data = Pipeline(
+        [('normalize', Corpus_Vectorizer.TextNormalizer()),
+         ('vectorize',
+          Corpus_Vectorizer.Text2Doc2VecVector())])
+    X = prepare_data.fit_transform(docs)
+
+    for linkage in ('ward', 'average', 'complete', 'single'):
+        clustering = HierarchicalClustering(linkage=linkage, n_clusters=10)
+        t0 = time()
+        labels = clustering.fit_transform(X)
+        print("%s :\t%.2fs" % (linkage, time() - t0))
+
+        Cluster_Plotting.plot_clusters_2d(X, labels)
 
     # --------------------------------------------------------------------------
     # SklearnTopicModels
     # --------------------------------------------------------------------------
-    # docs = list(corpus.title_tagged(fileids=subset_fileids))
+    # observations = list(corpus.title_tagged(fileids=subset_fileids))
     #
     # """
     # options
@@ -307,8 +307,8 @@ if __name__ == '__main__':
     # model = SklearnTopicModels(n_topics=5, estimator='NMF',
     #                            vectorizor="tfidvec")
     #
-    # model.fit_transform(docs)
-    # topics = model.get_topics(n=10)
+    # model.fit_transform(observations)
+    # topics = model.get_topics(n_terms=10)
     # for topic, terms in topics.items():
     #     print("Topic #{} \t:".format(topic))
     #     print(terms)

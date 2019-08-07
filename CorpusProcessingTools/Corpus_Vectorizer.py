@@ -162,7 +162,18 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
     def fit(self, documents):
         return self
 
-    def transform(self, documents):
+    def transform(self, documents) -> list:
+        """
+        yields a list of normalized text for each document passed
+        Parameters
+        ----------
+        documents: list of documents, or generator returning documents as as
+        list of paragraps list of sents as (token, tag)
+
+        Returns
+        -------
+            list of lametized lowercase text with punctuation removed
+        """
         return [
             self.normalize(document)
             for document in documents
@@ -251,10 +262,8 @@ class CorpusSimpleNormalizer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
-
         for document in documents:
-            for term in self.normalize(document):
-                yield term
+            yield [term for term in self.normalize(document)]
 
 
 class TextSimpleTokenizer(BaseEstimator, TransformerMixin):
@@ -290,18 +299,21 @@ class Text2wordCountVector(CountVectorizer):
     """
     Wrapper for CountVectoriser that converts a corpus into a matrix of term
     occurrences per document. Requires the input data to be in the form of
-    one list of words per document. This can be done using
+    one list of words per document. does not make use of a preprocessor of
+    force lowercase
     """
     def __init__(self):
         # CountVectorizer.__init__(self, tokenizer=identity, preprocessor=None)
-        CountVectorizer.__init__(self, tokenizer=identity)
+        CountVectorizer.__init__(self, tokenizer=identity,
+                                 preprocessor=None,
+                                 lowercase=False)
 
 
 class Text2FrequencyVector(CountVectorizer):
     """
     Wrapper for CountVectoriser that converts a corpus into a matrix of term
     occurrences per document. Requires the input data to be in the form of
-    one list of words per document. This can be done using
+    one list of words per document.
     """
     def __init__(self):
         CountVectorizer.__init__(self, tokenizer=identity,
@@ -356,7 +368,7 @@ class Text2Doc2VecVector(BaseEstimator, TransformerMixin):
     @staticmethod
     def gensim_docs(documents) -> list:
         """
-        Convert the raw input docs to a tagged document list
+        Convert the raw input observations to a tagged document list
         Parameters
         ----------
         documents : list

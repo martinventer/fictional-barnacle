@@ -104,7 +104,7 @@ if __name__ == '__main__':
     #     ('clusters', Corpus_Cluster.HierarchicalClustering())
     # ])
     #
-    # clusters = model.fit_transform(docs)
+    # clusters = model.fit_transform(observations)
     # labels = model.named_steps['clusters'].labels
     # children = model.named_steps['clusters'].children
     #

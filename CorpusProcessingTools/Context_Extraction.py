@@ -26,10 +26,7 @@ from itertools import groupby
 from CorpusProcessingTools.Corpus_Vectorizer import is_punct
 from CorpusProcessingTools import Corpus_Vectorizer
 
-
-GRAMMAR = r'KT: {(<JJ>* <NN.*>+ <IN>)? <JJ>* <NN.*>+}'
 GOODTAGS = frozenset(['JJ', 'JJR', 'JJS', 'NN', 'NNP', 'NNS', 'NNPS'])
-GOODLABELS = frozenset(['PERSON', 'ORGANIZATION', 'FACILITY', 'GPE', 'GSP'])
 
 
 class KeyphraseExtractorL(BaseEstimator, TransformerMixin):
@@ -37,14 +34,19 @@ class KeyphraseExtractorL(BaseEstimator, TransformerMixin):
     Transformer for pos-tagged documents that outputs keyphrases. Converts a
     corpus into a bag of key phrases.
     """
-    def __init__(self, grammar=GRAMMAR):
+    GRAMMAR = r'KT: {(<JJ>* <NN.*>+ <IN>)? <JJ>* <NN.*>+}'
+
+    def __init__(self, grammar=None):
         """
         sets up he keyphrase extractor to have a grammer and parser
         Parameters
         ----------
         grammar
         """
-        self.grammar = GRAMMAR
+        if not grammar:
+            self.grammar = KeyphraseExtractorL.GRAMMAR
+        else:
+            self.grammar = grammar
         self.chunker = RegexpParser(self.grammar)
 
     def normalize(self, sent):
@@ -85,7 +87,7 @@ class KeyphraseExtractorL(BaseEstimator, TransformerMixin):
     def fit(self, documents, y=None):
         return self
 
-    def transform(self, documents):
+    def transform(self, documents) -> list:
         for document in documents:
             yield list(self.extract_keyphrases(document))
 
@@ -93,31 +95,70 @@ class KeyphraseExtractorL(BaseEstimator, TransformerMixin):
 class KeyphraseExtractorS(KeyphraseExtractorL):
     """
     Transformer for pos-tagged documents that outputs keyphrases. Converts a
-    corpus into a bag of key phrases.
+    corpus into a bag of key phrases. one list per doc
     """
     def __init__(self):
         """
         sets up he keyphrase extractor to have a grammer and parser
         Parameters
         ----------
-        grammar
         """
         KeyphraseExtractorL.__init__(self)
 
-    def transform(self, documents):
+    def process_keyphrase(self, document) -> list:
+        """
+        removes single word keyphrases and connects remaining phrases with "-"
+        Parameters
+        ----------
+        phrase: str
+            singel keyphrase
+        Returns
+        -------
+            str
+        """
+        phrase_list = list()
+        for phrase in self.extract_keyphrases(document):
+            phrase = phrase.replace(" ", "-")
+            if "-" in phrase:
+                phrase_list.append(phrase)
+
+        return phrase_list
+
+    def transform(self, documents) -> list:
         for document in documents:
-            for phrase in self.extract_keyphrases(document):
-                yield phrase.replace(" ", "X")
+            yield self.process_keyphrase(document)
 
 
 class EntityExtractor(BaseEstimator, TransformerMixin):
     """
     Extract entities from a sentance,Converts a corpus into a bag of entities.
     """
-    def __init__(self, labels=GOODLABELS, **kwargs):
-        self.labels = labels
+    GOODLABELS = frozenset(['PERSON', 'ORGANIZATION', 'FACILITY', 'GPE', 'GSP'])
+
+    def __init__(self, labels=None, **kwargs):
+        """
+        setup an entity extractor
+        Parameters
+        ----------
+        labels: a set of lable catagories to be extracted.
+        """
+        # Add the default labels if not passed into the class.
+        if not labels:
+            self.labels = EntityExtractor.GOODLABELS
+        else:
+            self.labels = labels
 
     def get_entities(self, document):
+        """
+        Converts each sentence in a document into a chunked tree structure
+        Parameters
+        ----------
+        document
+
+        Returns
+        -------
+
+        """
         entities = []
         # for paragraph in document:  # updated for title data
         for sentence in document:
@@ -158,19 +199,19 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
 #         self.scored_ = None
 #         self.tokenizer = Corpus_Vectorizer.TextSimpleTokenizer()
 #
-#     def fit(self, docs, target=None):
+#     def fit(self, observations, target=None):
 #         print("fit")
-#         docs = self.tokenizer.fit_transform(docs)
-#         ngrams = self.ngram_class.from_documents(docs)
+#         observations = self.tokenizer.fit_transform(observations)
+#         ngrams = self.ngram_class.from_documents(observations)
 #         self.scored_ = dict(ngrams.score_ngrams(self.metric))
 #
-#     def transforman(self, docs):
+#     def transforman(self, observations):
 #         print('transform')
-#         for doc in docs:
+#         for doc in observations:
 #             # print(doc)
 #             # doc = self.tokenizer.fit_transform(doc)
 #             print(doc)
-#             ngrams = self.ngram_class.from_words(docs)
+#             ngrams = self.ngram_class.from_words(observations)
 #             # print(ngrams)
 #             yield {
 #                 ngram: self.scored_.get(ngrams, 0.0)
@@ -194,7 +235,7 @@ class RankGrams(BaseEstimator, TransformerMixin):
             self.metric = QuadgramAssocMeasures.likelihood_ratio
             self.model = QuadgramCollocationFinder
         else:
-            print("error, order of n-gram not supported")
+            print("error, order of n_terms-gram not supported")
 
         self.grams = None
         self.scored = None
@@ -230,10 +271,10 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # KeyphraseExtractorL
     # --------------------------------------------------------------------------
-    # docs = corpus.title_tagged(fileids=subset_fileids)
+    # observations = corpus.title_tagged(fileids=subset_fileids)
     #
     # phrase_extractor = KeyphraseExtractorL()
-    # keyphrases = list(phrase_extractor.fit_transform(docs))
+    # keyphrases = list(phrase_extractor.fit_transform(observations))
     # print(keyphrases[:4])
 
     # --------------------------------------------------------------------------
@@ -243,23 +284,23 @@ if __name__ == '__main__':
 
     phrase_extractor = KeyphraseExtractorS()
     keyphrases = list(phrase_extractor.fit_transform(docs))
-    print(keyphrases[:4])
+    print(keyphrases[:20])
 
     # --------------------------------------------------------------------------
     # EntityExtractor
     # --------------------------------------------------------------------------
-    # docs = corpus.title_tagged(fileids=subset_fileids)
+    # observations = corpus.title_tagged(fileids=subset_fileids)
     #
     # entity_extractor = EntityExtractor()
-    # entities = list(entity_extractor.fit_transform(docs))
+    # entities = list(entity_extractor.fit_transform(observations))
     # print(entities[:4])
 
     # --------------------------------------------------------------------------
     # RankGrams
     # --------------------------------------------------------------------------
-    # docs = corpus.title_word(fileids=subset_fileids)
+    # observations = corpus.title_word(fileids=subset_fileids)
     #
-    # ranker = RankGrams(n=4)
-    # ranks = ranker.fit_transform(docs)
+    # ranker = RankGrams(n_terms=4)
+    # ranks = ranker.fit_transform(observations)
     # print(ranks[:4])
 

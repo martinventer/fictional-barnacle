@@ -68,7 +68,7 @@ class RawCorpusReader(CategorizedCorpusReader, CorpusReader):
         """
         Returns a list of fileids or categories depending on what is passed
         to each internal corpus reader function. This primarily bubbles up to
-        the high level ``docs`` method, but is implemented here similar to
+        the high level ``observations`` method, but is implemented here similar to
         the nltk ``CategorizedPlaintextCorpusReader``.
         Parameters
         ----------
@@ -1052,7 +1052,7 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
         Parameters
         ----------
         n : int
-            the number of words in the n-gram
+            the number of words in the n_terms-gram
 
         Returns
         -------
@@ -1134,7 +1134,7 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
         Parameters
         ----------
         n : int
-            the number of words in the n-gram
+            the number of words in the n_terms-gram
 
         Returns
         -------
