@@ -11,20 +11,18 @@ Tools for Visualizing Text related data
 from CorpusProcessingTools import Corpus_Vectorizer, Context_Extraction
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
 from yellowbrick.text.freqdist import FreqDistVisualizer
+from networkx.drawing.nx_agraph import graphviz_layout
+
 from sklearn.feature_extraction.text import CountVectorizer
 
 from collections import Counter
-
 import itertools
 import networkx as nx
 
 import numpy as np
-import matplotlib.pyplot as plt
-
-from matplotlib.colors import LogNorm
-
-from networkx.drawing.nx_agraph import graphviz_layout
+from scipy.sparse import csr_matrix
 
 
 def plot_term_frequency(corpus, n_terms=50) -> None:
@@ -244,70 +242,53 @@ def plot_term_coocurrance_network(docs,
     plt.show()
 
 
-def coocurrance_matrix(docs, terms, **kwargs) -> list:
+def create_co_occurences_matrix(allowed_words, documents):
     """
-    generate a co-occurance matrix for a given set of docs
+    creates a co-occurance matrix given a list off search terms and documents
     Parameters
     ----------
-    docs : generator
-        document text data in the form [paragraph[sentance(token, tag)]]
-    n_terms : int
-        the number of terms that should be included
+    allowed_words : List
+        list of terms to find
+    documents : List of lists
+        text from ducument corpus
 
     Returns
     -------
+        A fully dense numpy array for the co-occurance matrix
+        a list of word ids
 
     """
+    # make sure that the input text is in a flat list.
+    allowed_words = [i for i in iter_flatten(allowed_words)]
 
-
-    mtx = create_co_occurences_matrix(terms, docs)
-    return mtx
-
-    # generate a dictionary of coocurrances
-    # pairs = cooccurrence_dict(observations=normed,
-    #                           terms=frequent_terms,
-    #                           **kwargs)
-    # edge_width = []
-    # edge_scale = 0.1
-    # for pair, wgt in pairs.items():
-    #     g.add_edge(pair[0], pair[1])
-    #     edge_width.append(edge_scale * wgt)
-
-    # run through each document title and invriment coccurance of terms
-    # docs = corpus.title_tagged(fileids=fileids)
-    # normalizer = Corpus_Vectorizer.TextNormalizer()
-    # normed = normalizer.transform(docs)
-
-    # mtx = []
-    # for first in terms:
-    #     row = []
-    #     for second in terms:
-    #         count = 0
-    #         for doc in normed:
-    #             if first in doc and second in doc:
-    #                 count += 1
-    #         row.append(count)
-    #     mtx.append(row)
-    # return mtx
-
-import numpy as np
-import itertools
-from scipy.sparse import csr_matrix
-
-
-def create_co_occurences_matrix(allowed_words, documents):
-    # print(f"allowed_words:\n{allowed_words}")
-    # print(f"documents:\n{documents}")
+    # convert the word list to a distionary of terms with unique intiger ids
     word_to_id = dict(zip(allowed_words, list(range(len(allowed_words)))))
-    documents_as_ids = [np.sort([word_to_id[w] for w in doc if w in word_to_id]).astype('uint32') for doc in documents]
-    row_ind, col_ind = zip(*itertools.chain(*[[(i, w) for w in doc] for i, doc in enumerate(documents_as_ids)]))
-    data = np.ones(len(row_ind), dtype='uint32')  # use unsigned int for better memory utilization
+
+    # create a sorted document  lookup
+    documents_as_ids = [
+        np.sort([word_to_id[w]
+                 for w in doc if w in word_to_id]).astype('uint32')
+        for doc in documents]
+
+    # Create a 2D array of terms vs terms
+    row_ind, col_ind = zip(
+        *itertools.chain(*[[(i, w) for w in doc]
+                           for i, doc in enumerate(documents_as_ids)]))
+
+    # Generate an array of term counts per document
+    # use unsigned int for better memory utilization
+    data = np.ones(len(row_ind), dtype='uint32')
     max_word_id = max(itertools.chain(*documents_as_ids)) + 1
-    docs_words_matrix = csr_matrix((data, (row_ind, col_ind)), shape=(len(documents_as_ids), max_word_id))  # efficient arithmetic operations with CSR * CSR
-    words_cooc_matrix = docs_words_matrix.T * docs_words_matrix  # multiplying docs_words_matrix with its transpose matrix would generate the co-occurences matrix
+    docs_words_matrix = csr_matrix((data,
+                                    (row_ind, col_ind)),
+                                   shape=(len(documents_as_ids),
+                                          max_word_id))
+
+    # multiplying docs_words_matrix with its transpose matrix to generate the
+    # co-occurences matrix
+    words_cooc_matrix = docs_words_matrix.T * docs_words_matrix
     words_cooc_matrix.setdiag(0)
-    print(f"words_cooc_matrix:\n{words_cooc_matrix.todense()}")
-    return words_cooc_matrix, word_to_id
+    return words_cooc_matrix.toarray(), word_to_id
 
 
 def plot_term_coocurrance_matrix(docs, n_terms=30, **kwargs) -> None:
@@ -331,22 +312,23 @@ def plot_term_coocurrance_matrix(docs, n_terms=30, **kwargs) -> None:
     frequent_terms, term_count = most_common_terms(normed, n_terms=n_terms)
 
     # By frequency
-    mtx = coocurrance_matrix(frequent_terms, normed)
+    mtx, ids = create_co_occurences_matrix(frequent_terms, normed)
+    print(mtx, ids)
 
     # Now create the plots
     fig, ax = plt.subplots(figsize=(9, 6))
 
-    x_tick_marks = np.arange(n)
-    y_tick_marks = np.arange(n)
+    x_tick_marks = np.arange(n_terms)
+    y_tick_marks = np.arange(n_terms)
 
     ax.set_xticks(x_tick_marks)
     ax.set_yticks(y_tick_marks)
-    # ax.set_xticklabels(frequent_terms, fontsize=8, rotation=90)
-    # ax.set_yticklabels(frequent_terms, fontsize=8)
+    ax.set_xticklabels(frequent_terms, fontsize=8, rotation=90)
+    ax.set_yticklabels(frequent_terms, fontsize=8)
     ax.xaxis.tick_top()
     ax.set_xlabel("By Frequency")
-    plt.imshow(mtx, norm=LogNorm(), interpolation='nearest', cmap='YlOrBr')
-
+    plt.imshow(mtx.tolist(), norm=LogNorm(), interpolation='nearest',
+               cmap='YlOrBr')
     plt.show()
 
 
@@ -444,7 +426,7 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     plot_term_coocurrance_matrix(
         corpus.title_tagged(fileids=subset_fileids),
-        n_terms=30)
+        n_terms=10)
 
 
     # plot_term_occurance_over_time(corpus, n_terms=30, fileids=subset_fileids)
