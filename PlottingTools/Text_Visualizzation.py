@@ -332,17 +332,28 @@ def plot_term_coocurrance_matrix(docs, n_terms=30, **kwargs) -> None:
     plt.show()
 
 
-def plot_term_occurance_over_time(corpus, n=30, fileids=None):
-    # #############################################
-    # Plot mentions of characters through over time
-    # #############################################
-    frequent_terms, _ = most_common_terms(corpus, n_terms=n, fileids=fileids)
-    docs = corpus.title_tagged(fileids=subset)
+def plot_term_occurance_over_time(docs, dates, n_terms=30) -> None:
+    """
+    Plots a tick for each occurance of a term in a data set plotted over time
+    Parameters
+    ----------
+    docs : Corpus view
+        a corpus for a text field
+    dates : Corpus Vies
+        a view of the date of publication for each document
+    n_terms : int
+        The number of desired common terms.
 
+    Returns
+    -------
+
+    """
+    # preprocess text data
     normalizer = Corpus_Vectorizer.TextNormalizer()
     normed = normalizer.transform(docs)
 
-    dates = corpus.pub_date(form='year', fileids=subset)
+    # extract the most common terms in the documnet list
+    frequent_terms, term_count = most_common_terms(normed, n_terms=n_terms)
 
     x, y = [], []
     for doc, date in zip(normed, dates):
@@ -358,17 +369,25 @@ def plot_term_occurance_over_time(corpus, n=30, fileids=None):
 
     plt.yticks(list(range(len(frequent_terms))), frequent_terms, size=8)
     plt.ylim(-1, len(frequent_terms))
-    plt.title("Character Mentions in the Wizard of Oz")
+    plt.title("Occurance of the {0} most frequent terms".format(n_terms))
     plt.show()
 
 
-def plot_term_tsne_clusters(corpus, fileids=None, labels=None):
+def plot_term_tsne_clusters(docs, labels=None):
     from yellowbrick.text import TSNEVisualizer
     from sklearn.feature_extraction.text import TfidfVectorizer
 
-    words = corpus.title_tagged(fileids=fileids)
+    # words = corpus.title_tagged(fileids=fileids)
+    # normalizer = Corpus_Vectorizer.TextNormalizer()
+    # normed = (sent for title in normalizer.transform(words) for sent in title)
+
+    # preprocess text data
     normalizer = Corpus_Vectorizer.TextNormalizer()
-    normed = (sent for title in normalizer.transform(words) for sent in title)
+    normed = normalizer.transform(docs)
+
+    # unbundle sentences
+    normed = (sent for doc in normed for sent in doc)
+
     # normed = (dd for dd in normalizer.transform(observations))
     tfidf = TfidfVectorizer()
     procd = tfidf.fit_transform(normed)
@@ -424,10 +443,32 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # plot_term_coocurrance_matrix
     # --------------------------------------------------------------------------
-    plot_term_coocurrance_matrix(
-        corpus.title_tagged(fileids=subset_fileids),
-        n_terms=10)
+    # plot_term_coocurrance_matrix(
+    #     corpus.title_tagged(fileids=subset_fileids),
+    #     n_terms=30)
 
+    # plot_term_coocurrance_matrix(
+    #     corpus.description_tagged(fileids=subset_fileids),
+    #     n_terms=30)
+
+    # --------------------------------------------------------------------------
+    # plot_term_occurance_over_time
+    # --------------------------------------------------------------------------
+    # plot_term_occurance_over_time(
+    #     corpus.title_tagged(fileids=subset_fileids),
+    #     corpus.publication_date(fileids=subset_fileids),
+    #     n_terms=30)
+
+    # plot_term_occurance_over_time(
+    #     corpus.description_tagged(fileids=subset_fileids),
+    #     corpus.publication_date(fileids=subset_fileids),
+    #     n_terms=30)
+
+    # --------------------------------------------------------------------------
+    # plot_term_tsne_clusters
+    # --------------------------------------------------------------------------
+    plot_term_tsne_clusters(
+        corpus.title_tagged(fileids=subset_fileids))
 
     # plot_term_occurance_over_time(corpus, n_terms=30, fileids=subset_fileids)
     # plot_tsne_clusters(corpus, fileids=subset)
