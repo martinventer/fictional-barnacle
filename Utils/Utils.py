@@ -52,3 +52,24 @@ def make_folder(path) -> None:
         logging.info("file %s already exists" % path)
         pass
 
+
+def iter_flatten(iterable):
+    """
+    A recursive iterator to flatten nested lists
+    Parameters
+    ----------
+    iterable
+
+    Returns
+    -------
+        yields next item
+            to get a flat the nested list 'a'
+                a = [i for i in iter_flatten(a)]
+    """
+    it = iter(iterable)
+    for e in it:
+        if isinstance(e, (list, tuple)):
+            for f in iter_flatten(e):
+                yield f
+        else:
+            yield e

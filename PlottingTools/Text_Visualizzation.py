@@ -8,16 +8,13 @@ Text_Visualization.py
 Tools for Visualizing Text related data
 """
 
-from CorpusProcessingTools import Corpus_Vectorizer, Context_Extraction
+from CorpusProcessingTools import Context_Extraction
 
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 from yellowbrick.text.freqdist import FreqDistVisualizer
 from yellowbrick.text import TSNEVisualizer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from networkx.drawing.nx_agraph import graphviz_layout
-
-from sklearn.feature_extraction.text import CountVectorizer
 
 from collections import Counter
 import itertools
@@ -25,6 +22,8 @@ import networkx as nx
 
 import numpy as np
 from scipy.sparse import csr_matrix
+
+from Utils.Utils import iter_flatten
 
 
 def plot_term_frequency(corpus, n_terms=50) -> None:
@@ -82,28 +81,6 @@ def plot_keyphrase_frequency(corpus, n_terms=50) -> None:
     visualizer = FreqDistVisualizer(features=features, n=n_terms)
     visualizer.fit(docs)
     visualizer.poof()
-
-
-def iter_flatten(iterable):
-    """
-    A recursive iterator to flatten nested lists
-    Parameters
-    ----------
-    iterable
-
-    Returns
-    -------
-        yields next item
-            to get a flat the nested list 'a'
-                a = [i for i in iter_flatten(a)]
-    """
-    it = iter(iterable)
-    for e in it:
-        if isinstance(e, (list, tuple)):
-            for f in iter_flatten(e):
-                yield f
-        else:
-            yield e
 
 
 def most_common_terms(observations, n_terms=50):
@@ -451,9 +428,9 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # plot_term_coocurrance_matrix
     # --------------------------------------------------------------------------
-    # plot_term_coocurrance_matrix(
-    #     corpus.title_tagged(fileids=subset_fileids),
-    #     n_terms=30)
+    plot_term_coocurrance_matrix(
+        corpus.title_tagged(fileids=subset_fileids),
+        n_terms=30)
 
     # plot_term_coocurrance_matrix(
     #     corpus.description_tagged(fileids=subset_fileids),
@@ -484,14 +461,14 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # Cluster plot with labels
     # --------------------------------------------------------------------------
-    model = Pipeline([
-        ("norm", Corpus_Vectorizer.TextNormalizer()),
-        ("vect", Corpus_Vectorizer.Text2Doc2VecVector()),
-        ('clusters', Corpus_Cluster.KMeansClusters(k=10))
-    ])
-
-    observations = list(corpus.title_tagged(fileids=subset_fileids))
-    clusters = model.fit_transform(observations)
-
-    plot_term_tsne_clusters(corpus.title_tagged(fileids=subset_fileids),
-                            labels=clusters)
+    # model = Pipeline([
+    #     ("norm", Corpus_Vectorizer.TextNormalizer()),
+    #     ("vect", Corpus_Vectorizer.Text2Doc2VecVector()),
+    #     ('clusters', Corpus_Cluster.KMeansClusters(k=10))
+    # ])
+    #
+    # observations = list(corpus.title_tagged(fileids=subset_fileids))
+    # clusters = model.fit_transform(observations)
+    #
+    # plot_term_tsne_clusters(corpus.title_tagged(fileids=subset_fileids),
+    #                         labels=clusters)
