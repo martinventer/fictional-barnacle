@@ -434,7 +434,7 @@ if __name__ == '__main__':
                ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
                ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
                ('sensors', 'NNS')]]]
-    print(normal.transform(input))
+    print(normal.fit_transform(input))
 
     aa = normal.transform(corpus.title_tagged())
 

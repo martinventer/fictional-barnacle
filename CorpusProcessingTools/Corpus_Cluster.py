@@ -184,17 +184,18 @@ if __name__ == '__main__':
     # KMeansClusters
     # --------------------------------------------------------------------------
     docs = list(corpus.title_tagged(fileids=subset_fileids))
+    observations = list(corpus.title_tagged(fileids=subset_fileids))
 
     # Text2FrequencyVector
-    # prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
-    #                          ('vectorize',
-    #                           Corpus_Vectorizer.Text2FrequencyVector())])
-    # X = prepare_data.fit_transform(observations)
-    #
-    # model = KMeansClusters(k=10)
-    # labels = model.fit_transform(X)
-    #
-    # Cluster_Plotting.plot_clusters_2d(X, labels)
+    prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),
+                             ('vectorize',
+                              Corpus_Vectorizer.Text2FrequencyVector())])
+    X = prepare_data.fit_transform(observations)
+
+    model = KMeansClusters(k=10)
+    labels = model.fit_transform(X)
+
+    Cluster_Plotting.plot_clusters_2d(X, labels)
 
     # Text2OneHotVector
     # prepare_data = Pipeline([('normalize', Corpus_Vectorizer.TextNormalizer()),

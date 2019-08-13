@@ -13,6 +13,8 @@ from CorpusProcessingTools import Corpus_Vectorizer, Context_Extraction
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 from yellowbrick.text.freqdist import FreqDistVisualizer
+from yellowbrick.text import TSNEVisualizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from networkx.drawing.nx_agraph import graphviz_layout
 
 from sklearn.feature_extraction.text import CountVectorizer
@@ -374,21 +376,27 @@ def plot_term_occurance_over_time(docs, dates, n_terms=30) -> None:
 
 
 def plot_term_tsne_clusters(docs, labels=None):
-    from yellowbrick.text import TSNEVisualizer
-    from sklearn.feature_extraction.text import TfidfVectorizer
+    """
+    cluster and plot documents using tsne
+    Parameters
+    ----------
+    docs : corpus view
+        document text
+    labels
 
-    # words = corpus.title_tagged(fileids=fileids)
-    # normalizer = Corpus_Vectorizer.TextNormalizer()
-    # normed = (sent for title in normalizer.transform(words) for sent in title)
+    Returns
+    -------
+
+    """
+
 
     # preprocess text data
     normalizer = Corpus_Vectorizer.TextNormalizer()
     normed = normalizer.transform(docs)
 
-    # unbundle sentences
-    normed = (sent for doc in normed for sent in doc)
+    # flatten text within each document
+    normed = [i for doc in normed for i in iter_flatten(doc)]
 
-    # normed = (dd for dd in normalizer.transform(observations))
     tfidf = TfidfVectorizer()
     procd = tfidf.fit_transform(normed)
 
@@ -402,7 +410,7 @@ def plot_term_tsne_clusters(docs, labels=None):
 
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
-    # from CorpusProcessingTools import Corpus_Vectorizer, Corpus_Cluster
+    from CorpusProcessingTools import Corpus_Vectorizer, Corpus_Cluster
     from sklearn.pipeline import Pipeline
 
     root = "Tests/Test_Corpus/Processed_corpus/"
@@ -467,21 +475,23 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # plot_term_tsne_clusters
     # --------------------------------------------------------------------------
-    plot_term_tsne_clusters(
-        corpus.title_tagged(fileids=subset_fileids))
+    # plot_term_tsne_clusters(
+    #     corpus.title_tagged(fileids=subset_fileids))
 
-    # plot_term_occurance_over_time(corpus, n_terms=30, fileids=subset_fileids)
-    # plot_tsne_clusters(corpus, fileids=subset)
+    # plot_term_tsne_clusters(
+    #     corpus.description_tagged(fileids=subset_fileids))
 
-    # # with clusters
-    # model = Pipeline([A
-    #     ("norm", Corpus_Vectorizer.TitleNormalizer()),
-    #     ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-    #     ('clusters', Corpus_Cluster.MiniBatchKMeansClusters(k=3))
-    # ])
-    #
-    # observations = corpus.title_tagged(fileids=subset)
-    # clusters = model.fit_transform(observations)
-    #
-    # plot_tsne_clusters(corpus, fileids=subset, labels=clusters)
+    # --------------------------------------------------------------------------
+    # Cluster plot with labels
+    # --------------------------------------------------------------------------
+    model = Pipeline([
+        ("norm", Corpus_Vectorizer.TextNormalizer()),
+        ("vect", Corpus_Vectorizer.Text2Doc2VecVector()),
+        ('clusters', Corpus_Cluster.KMeansClusters(k=10))
+    ])
 
+    observations = list(corpus.title_tagged(fileids=subset_fileids))
+    clusters = model.fit_transform(observations)
+
+    plot_term_tsne_clusters(corpus.title_tagged(fileids=subset_fileids),
+                            labels=clusters)
