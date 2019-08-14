@@ -2944,3 +2944,48 @@
 2019-08-13 06:49:08,684 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
 2019-08-13 06:49:08,693 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
 2019-08-13 06:49:08,701 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:32:11,809 consider setting layer size to a multiple of 4 for greater performance
+2019-08-14 07:32:11,809 collecting all words and their counts
+2019-08-14 07:32:11,810 PROGRESS: at example #0, processed 0 words (0/s), 0 word types, 0 tags
+2019-08-14 07:32:11,819 collected 3683 word types and 1453 unique tags from a corpus of 1453 examples and 13192 words
+2019-08-14 07:32:11,819 Loading a fresh vocabulary
+2019-08-14 07:32:11,828 min_count=0 retains 3683 unique words (100% of original 3683, drops 0)
+2019-08-14 07:32:11,828 min_count=0 leaves 13192 word corpus (100% of original 13192, drops 0)
+2019-08-14 07:32:11,842 deleting the raw counts dictionary of 3683 items
+2019-08-14 07:32:11,842 sample=0.001 downsamples 40 most-common words
+2019-08-14 07:32:11,842 downsampling leaves estimated 11987 word corpus (90.9% of prior 13192)
+2019-08-14 07:32:11,852 estimated required memory for 3683 words and 50 dimensions: 3895900 bytes
+2019-08-14 07:32:11,853 resetting layer weights
+2019-08-14 07:32:11,906 training model with 3 workers on 3683 vocabulary and 50 features, using sg=0 hs=0 sample=0.001 negative=5 window=5
+2019-08-14 07:32:11,909 worker thread finished; awaiting finish of 2 more threads
+2019-08-14 07:32:11,941 worker thread finished; awaiting finish of 1 more threads
+2019-08-14 07:32:11,957 worker thread finished; awaiting finish of 0 more threads
+2019-08-14 07:32:11,957 EPOCH - 1 : training on 13192 raw words (13448 effective words) took 0.0s, 274925 effective words/s
+2019-08-14 07:32:11,960 worker thread finished; awaiting finish of 2 more threads
+2019-08-14 07:32:11,983 worker thread finished; awaiting finish of 1 more threads
+2019-08-14 07:32:12,006 worker thread finished; awaiting finish of 0 more threads
+2019-08-14 07:32:12,006 EPOCH - 2 : training on 13192 raw words (13484 effective words) took 0.0s, 286733 effective words/s
+2019-08-14 07:32:12,010 worker thread finished; awaiting finish of 2 more threads
+2019-08-14 07:32:12,028 worker thread finished; awaiting finish of 1 more threads
+2019-08-14 07:32:12,066 worker thread finished; awaiting finish of 0 more threads
+2019-08-14 07:32:12,066 EPOCH - 3 : training on 13192 raw words (13424 effective words) took 0.1s, 236384 effective words/s
+2019-08-14 07:32:12,068 worker thread finished; awaiting finish of 2 more threads
+2019-08-14 07:32:12,091 worker thread finished; awaiting finish of 1 more threads
+2019-08-14 07:32:12,123 worker thread finished; awaiting finish of 0 more threads
+2019-08-14 07:32:12,123 EPOCH - 4 : training on 13192 raw words (13458 effective words) took 0.1s, 241414 effective words/s
+2019-08-14 07:32:12,127 worker thread finished; awaiting finish of 2 more threads
+2019-08-14 07:32:12,151 worker thread finished; awaiting finish of 1 more threads
+2019-08-14 07:32:12,178 worker thread finished; awaiting finish of 0 more threads
+2019-08-14 07:32:12,178 EPOCH - 5 : training on 13192 raw words (13392 effective words) took 0.1s, 257374 effective words/s
+2019-08-14 07:32:12,179 training on a 65960 raw words (67206 effective words) took 0.3s, 246694 effective words/s
+2019-08-14 07:32:12,179 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-08-14 07:34:02,107 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,112 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,116 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,119 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,123 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,127 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,131 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,135 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,139 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.
+2019-08-14 07:34:02,142 'c' argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with 'x' & 'y'.  Please use a 2-D array with a single row if you really want to specify the same RGB or RGBA value for all points.

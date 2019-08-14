@@ -26,14 +26,15 @@ from scipy.sparse import csr_matrix
 from Utils.Utils import iter_flatten
 
 
-def plot_term_frequency(corpus, n_terms=50) -> None:
+def plot_term_frequency(docs,
+                        n_terms=50) -> None:
     """
     plot the term frequencies of the n_terms most common terms in a corpus. a raw
     corpus on [[(token, tag)]], is cleaned and plotted
     Parameters
     ----------
-    corpus
-        a coupus object or generator.
+    docs
+        list of documents containing list of words
     n_terms : int
         the number of terms you are interested in
 
@@ -41,15 +42,9 @@ def plot_term_frequency(corpus, n_terms=50) -> None:
     -------
 
     """
-    corpus_cleaner = Corpus_Vectorizer.TextNormalizer()
-    clean_corpus = corpus_cleaner.fit_transform(corpus)
-
     vectorizer = Corpus_Vectorizer.Text2FrequencyVector()
-    docs = vectorizer.fit_transform(clean_corpus)
+    docs = vectorizer.fit_transform(docs)
     features = vectorizer.get_feature_names()
-    print(docs.shape)
-    print(len(features))
-    print(features[:4])
 
     visualizer = FreqDistVisualizer(features=features, n=n_terms)
     visualizer.fit(docs)
@@ -158,9 +153,6 @@ def plot_term_coocurrance_network(docs,
     -------
 
     """
-    normalizer = Corpus_Vectorizer.TextNormalizer()
-    normed = normalizer.transform(docs)
-
     fig, ax = plt.subplots(1, figsize=(15, 12))
     g = nx.Graph()
 
@@ -399,10 +391,23 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # plot_term_frequency
     # --------------------------------------------------------------------------
+    # normalizer = Corpus_Vectorizer.TextNormalizer()
+    # normed = normalizer.transform(
+    #     corpus.title_tagged(fileids=subset_fileids)
+    # )
+    #
     # plot_term_frequency(
-    #     corpus.title_tagged(fileids=subset_fileids))
-    # plot_term_frequency(
-    #     corpus.description_tagged(fileids=subset_fileids))
+    #     normed,
+    # )
+
+    normalizer = Corpus_Vectorizer.TextNormalizer()
+    normed = normalizer.transform(
+        corpus.description_tagged(fileids=subset_fileids)
+    )
+
+    plot_term_frequency(
+        normed,
+    )
 
     # --------------------------------------------------------------------------
     # plot_keyphrase_frequency
@@ -415,10 +420,15 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # plot_term_coocurrance_network
     # --------------------------------------------------------------------------
+    # normalizer = Corpus_Vectorizer.TextNormalizer()
+    # normed = normalizer.transform(
+    #     corpus.title_tagged(fileids=subset_fileids)
+    # )
     # plot_term_coocurrance_network(
-    #     corpus.title_tagged(fileids=subset_fileids),
+    #     normed,
     #     n_terms=50,
-    #     minimum_occurance=10)
+    #     minimum_occurance=10
+    # )
 
     # plot_term_coocurrance_network(
     #     corpus.description_tagged(fileids=subset_fileids),
@@ -428,9 +438,9 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------
     # plot_term_coocurrance_matrix
     # --------------------------------------------------------------------------
-    plot_term_coocurrance_matrix(
-        corpus.title_tagged(fileids=subset_fileids),
-        n_terms=30)
+    # plot_term_coocurrance_matrix(
+    #     corpus.title_tagged(fileids=subset_fileids),
+    #     n_terms=30)
 
     # plot_term_coocurrance_matrix(
     #     corpus.description_tagged(fileids=subset_fileids),
