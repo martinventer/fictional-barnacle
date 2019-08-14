@@ -148,7 +148,7 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
         else:
             self.labels = labels
 
-    def get_entities(self, document):
+    def get_entities(self, document) -> list:
         """
         Converts each sentence in a document into a chunked tree structure
         Parameters
@@ -176,8 +176,9 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
-        for document in documents:
-            yield self.get_entities(document)
+        return [self.get_entities(document) for document in documents]
+        # for document in documents:
+        #     yield self.get_entities(document)
 #
 #
 # class SignificantCollocations(BaseEstimator, TransformerMixin):

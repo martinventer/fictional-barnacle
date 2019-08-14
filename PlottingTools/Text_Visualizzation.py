@@ -51,31 +51,33 @@ def plot_term_frequency(docs,
     visualizer.poof()
 
 
-def plot_keyphrase_frequency(corpus, n_terms=50) -> None:
-    """
-    plot the keyphrase frequencies of the n_terms most common terms in a corpus. a raw
-    corpus on [[(token, tag)]], is cleaned and plotted
-    Parameters
-    ----------
-    corpus
-        a coupus object or generator.
-    n_terms : int
-        the number of terms you are interested in
-
-    Returns
-    -------
-
-    """
-    entity_extractor = Context_Extraction.KeyphraseExtractorS()
-    entities = list(entity_extractor.fit_transform(corpus))
-
-    vectorizer = Corpus_Vectorizer.Text2wordCountVector()
-    docs = vectorizer.fit_transform(entities)
-    features = vectorizer.get_feature_names()
-
-    visualizer = FreqDistVisualizer(features=features, n=n_terms)
-    visualizer.fit(docs)
-    visualizer.poof()
+# def plot_keyphrase_frequency(docs, n_terms=50) -> None:
+#     """
+#     plot the keyphrase frequencies of the n_terms most common terms in a corpus. a raw
+#     corpus on [[(token, tag)]], is cleaned and plotted
+#     Parameters
+#     ----------
+#     corpus
+#         a coupus object or generator.
+#     n_terms : int
+#         the number of terms you are interested in
+#
+#     Returns
+#     -------
+#
+#     """
+#     # entity_extractor = Context_Extraction.KeyphraseExtractorS()
+#     # entities = list(entity_extractor.fit_transform(corpus))
+#     # entities = entity_extractor.fit_transform(corpus)
+#
+#     # vectorizer = Corpus_Vectorizer.Text2wordCountVector()
+#     vectorizer = Corpus_Vectorizer.Text2FrequencyVector()
+#     docs = vectorizer.fit_transform(entities)
+#     features = vectorizer.get_feature_names()
+#
+#     visualizer = FreqDistVisualizer(features=features, n=n_terms)
+#     visualizer.fit(docs)
+#     visualizer.poof()
 
 
 def most_common_terms(observations, n_terms=50):
@@ -400,18 +402,31 @@ if __name__ == '__main__':
     #     normed,
     # )
 
-    normalizer = Corpus_Vectorizer.TextNormalizer()
-    normed = normalizer.transform(
-        corpus.description_tagged(fileids=subset_fileids)
-    )
-
-    plot_term_frequency(
-        normed,
-    )
+    # normalizer = Corpus_Vectorizer.TextNormalizer()
+    # normed = normalizer.transform(
+    #     corpus.description_tagged(fileids=subset_fileids)
+    # )
+    #
+    # plot_term_frequency(
+    #     normed,
+    # )
 
     # --------------------------------------------------------------------------
     # plot_keyphrase_frequency
     # --------------------------------------------------------------------------
+    preprocessor = Pipeline([
+        ("phrases", Context_Extraction.KeyphraseExtractorS())
+    ])
+
+    processed_input = preprocessor.fit_transform(
+        corpus.title_tagged(fileids=subset_fileids)
+    )
+
+    plot_term_frequency(
+        processed_input,
+    )
+
+
     # plot_keyphrase_frequency(
     #     corpus.title_tagged(fileids=subset_fileids))
     # plot_keyphrase_frequency(
