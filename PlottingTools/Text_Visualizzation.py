@@ -278,14 +278,11 @@ def plot_term_coocurrance_matrix(docs, n_terms=30, **kwargs) -> None:
     -------
 
     """
-    normalizer = Corpus_Vectorizer.TextNormalizer()
-    normed = normalizer.transform(docs)
-
     # create nodes for each term
-    frequent_terms, term_count = most_common_terms(normed, n_terms=n_terms)
+    frequent_terms, term_count = most_common_terms(docs, n_terms=n_terms)
 
     # By frequency
-    mtx, ids = create_co_occurences_matrix(frequent_terms, normed)
+    mtx, ids = create_co_occurences_matrix(frequent_terms, docs)
     print(mtx, ids)
 
     # Now create the plots
@@ -390,9 +387,9 @@ if __name__ == '__main__':
     loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
     subset_fileids = next(loader.fileids(test=True))
 
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # plot_term_frequency
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # normalizer = Corpus_Vectorizer.TextNormalizer()
     # normed = normalizer.transform(
     #     corpus.title_tagged(fileids=subset_fileids)
@@ -401,7 +398,7 @@ if __name__ == '__main__':
     # plot_term_frequency(
     #     normed,
     # )
-
+    # --------------------------------------------------------------------------
     # normalizer = Corpus_Vectorizer.TextNormalizer()
     # normed = normalizer.transform(
     #     corpus.description_tagged(fileids=subset_fileids)
@@ -410,31 +407,70 @@ if __name__ == '__main__':
     # plot_term_frequency(
     #     normed,
     # )
-
     # --------------------------------------------------------------------------
-    # plot_keyphrase_frequency
-    # --------------------------------------------------------------------------
-    preprocessor = Pipeline([
-        ("phrases", Context_Extraction.KeyphraseExtractorS())
-    ])
-
-    processed_input = preprocessor.fit_transform(
-        corpus.title_tagged(fileids=subset_fileids)
-    )
-
-    plot_term_frequency(
-        processed_input,
-    )
-
-
-    # plot_keyphrase_frequency(
+    # preprocessor = Pipeline([
+    #     ("phrases", Context_Extraction.KeyphraseExtractorS())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
     #     corpus.title_tagged(fileids=subset_fileids))
-    # plot_keyphrase_frequency(
+    #
+    # plot_term_frequency(
+    #     processed_input)
+    # --------------------------------------------------------------------------
+    # preprocessor = Pipeline([
+    #     ("phrases", Context_Extraction.KeyphraseExtractorS())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
     #     corpus.description_tagged(fileids=subset_fileids))
+    #
+    # plot_term_frequency(
+    #     processed_input)
+    # --------------------------------------------------------------------------
+    # preprocessor = Pipeline([
+    #     ("phrases", Context_Extraction.KeyphraseExtractorL())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
+    #     corpus.title_tagged(fileids=subset_fileids))
+    #
+    # plot_term_frequency(
+    #     processed_input)
+    # --------------------------------------------------------------------------
+    # preprocessor = Pipeline([
+    #     ("phrases", Context_Extraction.KeyphraseExtractorL())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
+    #     corpus.description_tagged(fileids=subset_fileids))
+    #
+    # plot_term_frequency(
+    #     processed_input)
+    # --------------------------------------------------------------------------
+    # preprocessor = Pipeline([
+    #     ("phrases", Context_Extraction.EntityExtractor())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
+    #     corpus.title_tagged(fileids=subset_fileids))
+    #
+    # plot_term_frequency(
+    #     processed_input)
+    # --------------------------------------------------------------------------
+    # preprocessor = Pipeline([
+    #     ("phrases", Context_Extraction.EntityExtractor())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
+    #     corpus.description_tagged(fileids=subset_fileids))
+    #
+    # plot_term_frequency(
+    #     processed_input)
 
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # plot_term_coocurrance_network
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # normalizer = Corpus_Vectorizer.TextNormalizer()
     # normed = normalizer.transform(
     #     corpus.title_tagged(fileids=subset_fileids)
@@ -444,26 +480,37 @@ if __name__ == '__main__':
     #     n_terms=50,
     #     minimum_occurance=10
     # )
-
+    # --------------------------------------------------------------------------
+    # normalizer = Corpus_Vectorizer.TextNormalizer()
+    # normed = normalizer.transform(
+    #     corpus.description_tagged(fileids=subset_fileids)
+    # )
     # plot_term_coocurrance_network(
-    #     corpus.description_tagged(fileids=subset_fileids),
+    #     normed,
     #     n_terms=50,
-    #     minimum_occurance=10)
+    #     minimum_occurance=10
+    # )
 
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # plot_term_coocurrance_matrix
+    # ==========================================================================
+    normalizer = Corpus_Vectorizer.TextNormalizer()
+    normed = normalizer.transform(
+        corpus.description_tagged(fileids=subset_fileids)
+    )
+
+    plot_term_coocurrance_matrix(
+        normed,
+        n_terms=30)
     # --------------------------------------------------------------------------
-    # plot_term_coocurrance_matrix(
-    #     corpus.title_tagged(fileids=subset_fileids),
-    #     n_terms=30)
 
     # plot_term_coocurrance_matrix(
     #     corpus.description_tagged(fileids=subset_fileids),
     #     n_terms=30)
 
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # plot_term_occurance_over_time
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # plot_term_occurance_over_time(
     #     corpus.title_tagged(fileids=subset_fileids),
     #     corpus.publication_date(fileids=subset_fileids),
@@ -474,18 +521,18 @@ if __name__ == '__main__':
     #     corpus.publication_date(fileids=subset_fileids),
     #     n_terms=30)
 
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # plot_term_tsne_clusters
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # plot_term_tsne_clusters(
     #     corpus.title_tagged(fileids=subset_fileids))
 
     # plot_term_tsne_clusters(
     #     corpus.description_tagged(fileids=subset_fileids))
 
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # Cluster plot with labels
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # model = Pipeline([
     #     ("norm", Corpus_Vectorizer.TextNormalizer()),
     #     ("vect", Corpus_Vectorizer.Text2Doc2VecVector()),
