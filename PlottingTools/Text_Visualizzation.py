@@ -159,12 +159,12 @@ def plot_term_coocurrance_network(docs,
     g = nx.Graph()
 
     # create nodes for each term
-    frequent_terms, term_count = most_common_terms(normed, n_terms=n_terms)
+    frequent_terms, term_count = most_common_terms(docs, n_terms=n_terms)
     term_counts = dict(zip(frequent_terms, term_count))
     g.add_nodes_from(list(set(frequent_terms)))
 
     # create edges for each pair of connected terms
-    pairs = cooccurrence_dict(observations=normed,
+    pairs = cooccurrence_dict(observations=docs,
                               terms=frequent_terms,
                               **kwargs)
     edge_width = []
@@ -318,15 +318,11 @@ def plot_term_occurance_over_time(docs, dates, n_terms=30) -> None:
     -------
 
     """
-    # preprocess text data
-    normalizer = Corpus_Vectorizer.TextNormalizer()
-    normed = normalizer.transform(docs)
-
     # extract the most common terms in the documnet list
-    frequent_terms, term_count = most_common_terms(normed, n_terms=n_terms)
+    frequent_terms, term_count = most_common_terms(docs, n_terms=n_terms)
 
     x, y = [], []
-    for doc, date in zip(normed, dates):
+    for doc, date in zip(docs, dates):
         for i, term in enumerate(frequent_terms):
             if term in doc:
                 x.append(date)
@@ -356,14 +352,8 @@ def plot_term_tsne_clusters(docs, labels=None):
     -------
 
     """
-
-
-    # preprocess text data
-    normalizer = Corpus_Vectorizer.TextNormalizer()
-    normed = normalizer.transform(docs)
-
     # flatten text within each document
-    normed = [i for doc in normed for i in iter_flatten(doc)]
+    normed = [i for doc in docs for i in iter_flatten(doc)]
 
     tfidf = TfidfVectorizer()
     procd = tfidf.fit_transform(normed)
@@ -490,42 +480,89 @@ if __name__ == '__main__':
     #     n_terms=50,
     #     minimum_occurance=10
     # )
+    # --------------------------------------------------------------------------
+    preprocessor = Pipeline([
+        ("phrases", Context_Extraction.EntityExtractor())
+    ])
 
+    processed_input = preprocessor.fit_transform(
+        corpus.title_tagged(fileids=subset_fileids))
+
+    plot_term_coocurrance_network(
+        processed_input,
+        n_terms=50,
+        minimum_occurance=1
+    )
     # ==========================================================================
     # plot_term_coocurrance_matrix
     # ==========================================================================
-    normalizer = Corpus_Vectorizer.TextNormalizer()
-    normed = normalizer.transform(
-        corpus.description_tagged(fileids=subset_fileids)
-    )
-
-    plot_term_coocurrance_matrix(
-        normed,
-        n_terms=30)
-    # --------------------------------------------------------------------------
-
+    # normalizer = Corpus_Vectorizer.TextNormalizer()
+    # normed = normalizer.transform(
+    #     corpus.title_tagged(fileids=subset_fileids)
+    # )
+    #
     # plot_term_coocurrance_matrix(
-    #     corpus.description_tagged(fileids=subset_fileids),
+    #     normed,
+    #     n_terms=30)
+    # --------------------------------------------------------------------------
+    # normalizer = Corpus_Vectorizer.TextNormalizer()
+    # normed = normalizer.transform(
+    #     corpus.description_tagged(fileids=subset_fileids)
+    # )
+    #
+    # plot_term_coocurrance_matrix(
+    #     normed,
     #     n_terms=30)
 
     # ==========================================================================
     # plot_term_occurance_over_time
     # ==========================================================================
+    # preprocessor = Pipeline([
+    #     ("norm", Corpus_Vectorizer.TextNormalizer())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
+    #     corpus.title_tagged(fileids=subset_fileids))
+    #
     # plot_term_occurance_over_time(
-    #     corpus.title_tagged(fileids=subset_fileids),
+    #     processed_input,
     #     corpus.publication_date(fileids=subset_fileids),
     #     n_terms=30)
-
+    # --------------------------------------------------------------------------
+    # preprocessor = Pipeline([
+    #     ("norm", Corpus_Vectorizer.TextNormalizer())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
+    #     corpus.title_tagged(fileids=subset_fileids))
     # plot_term_occurance_over_time(
-    #     corpus.description_tagged(fileids=subset_fileids),
+    #     processed_input,
     #     corpus.publication_date(fileids=subset_fileids),
     #     n_terms=30)
-
+    # --------------------------------------------------------------------------
+    # preprocessor = Pipeline([
+    #     ("phrases", Context_Extraction.KeyphraseExtractorS())
+    # ])
+    #
+    # processed_input = preprocessor.fit_transform(
+    #     corpus.title_tagged(fileids=subset_fileids))
+    #
+    # plot_term_occurance_over_time(
+    #     processed_input,
+    #     corpus.publication_date(fileids=subset_fileids),
+    #     n_terms=30)
+    # --------------------------------------------------------------------------
     # ==========================================================================
     # plot_term_tsne_clusters
     # ==========================================================================
-    # plot_term_tsne_clusters(
+    # preprocessor = Pipeline([
+    #         ("norm", Corpus_Vectorizer.TextNormalizer())
+    #     ])
+    # processed_input = preprocessor.fit_transform(
     #     corpus.title_tagged(fileids=subset_fileids))
+    #
+    # plot_term_tsne_clusters(
+    #     processed_input)
 
     # plot_term_tsne_clusters(
     #     corpus.description_tagged(fileids=subset_fileids))
