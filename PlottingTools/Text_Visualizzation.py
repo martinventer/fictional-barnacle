@@ -7,7 +7,7 @@ Text_Visualization.py
 
 Tools for Visualizing Text related data
 """
-
+import Transformers.Transformers
 from CorpusProcessingTools import Context_Extraction
 
 import matplotlib.pyplot as plt
@@ -42,7 +42,7 @@ def plot_term_frequency(docs,
     -------
 
     """
-    vectorizer = Corpus_Vectorizer.Text2FrequencyVector()
+    vectorizer = Transformers.Transformers.Text2FrequencyVector()
     docs = vectorizer.fit_transform(docs)
     features = vectorizer.get_feature_names()
 

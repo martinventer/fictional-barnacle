@@ -9,6 +9,7 @@ Miscellaneous utilities to Corpus processing
 """
 import logging
 import os
+import unicodedata
 
 
 def get_key() -> str:
@@ -73,3 +74,25 @@ def iter_flatten(iterable):
                 yield f
         else:
             yield e
+
+
+def identity(words):
+    return words
+
+
+def is_punct(token) -> bool:
+    """
+    given a token, determines whether it contains punctuation
+    Parameters
+    ----------
+    token : str
+        string token
+
+    Returns
+    -------
+        Bool
+
+    """
+    return all(
+        unicodedata.category(char).startswith('P') for char in token
+    )

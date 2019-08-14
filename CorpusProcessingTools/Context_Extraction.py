@@ -23,7 +23,7 @@ from unicodedata import category as unicat
 from sklearn.base import BaseEstimator, TransformerMixin
 from itertools import groupby
 
-from CorpusProcessingTools.Corpus_Vectorizer import is_punct
+from Utils.Utils import is_punct
 from CorpusProcessingTools import Corpus_Vectorizer
 
 GOODTAGS = frozenset(['JJ', 'JJR', 'JJS', 'NN', 'NNP', 'NNS', 'NNPS'])
