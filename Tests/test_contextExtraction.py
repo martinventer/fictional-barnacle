@@ -1,8 +1,7 @@
 from unittest import TestCase
 
-from CorpusProcessingTools import Context_Extraction
+from Depricated import Context_Extraction
 from CorpusReaders import Elsevier_Corpus_Reader
-from CorpusProcessingTools import Corpus_Vectorizer
 
 
 class TestKeyphraseExtractor(TestCase):

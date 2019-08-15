@@ -9,22 +9,17 @@ Tools for feature extraction using context aware features
 """
 
 from nltk import ne_chunk
-from nltk.corpus import wordnet as wn
 from nltk.chunk import tree2conlltags
-from nltk.probability import FreqDist
 from nltk.chunk.regexp import RegexpParser
-from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.collocations import QuadgramCollocationFinder, \
     TrigramCollocationFinder, BigramCollocationFinder
 from nltk.metrics.association import QuadgramAssocMeasures, \
     TrigramAssocMeasures, BigramAssocMeasures
 
-from unicodedata import category as unicat
 from sklearn.base import BaseEstimator, TransformerMixin
 from itertools import groupby
 
 from Utils.Utils import is_punct
-from CorpusProcessingTools import Corpus_Vectorizer
 
 GOODTAGS = frozenset(['JJ', 'JJR', 'JJS', 'NN', 'NNP', 'NNS', 'NNPS'])
 

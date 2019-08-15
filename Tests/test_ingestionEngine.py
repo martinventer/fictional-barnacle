@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from Ingestor import Elsivier_Ingestor
+from CorpusReaders import Elsivier_Ingestor
 
 
 class TestScopusIngestionEngine(TestCase):

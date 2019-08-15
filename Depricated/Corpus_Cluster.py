@@ -10,8 +10,8 @@ Tools Clustering corpus
 
 from sklearn.pipeline import Pipeline
 
-import Transformers.Transformers
-from Transformers.Transformers import KMeansClusters, HierarchicalClustering
+import TextTools.Transformers
+from TextTools.Transformers import KMeansClusters, HierarchicalClustering
 
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
@@ -31,9 +31,9 @@ if __name__ == '__main__':
     observations = list(corpus.title_tagged(fileids=subset_fileids))
 
     # Text2FrequencyVector
-    prepare_data = Pipeline([('normalize', Transformers.Transformers.TextNormalizer()),
+    prepare_data = Pipeline([('normalize', TextTools.Transformers.TextNormalizer()),
                              ('vectorize',
-                              Transformers.Transformers.Text2FrequencyVector())])
+                              TextTools.Transformers.Text2FrequencyVector())])
     X = prepare_data.fit_transform(observations)
 
     model = KMeansClusters(k=10)

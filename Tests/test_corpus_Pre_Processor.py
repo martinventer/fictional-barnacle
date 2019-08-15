@@ -1,7 +1,6 @@
 from unittest import TestCase
 
-from Ingestor import Corpus_Pre_Processor
-from CorpusReaders import Elsevier_Corpus_Reader
+from CorpusReaders import Elsevier_Corpus_Reader, Corpus_Pre_Processor
 
 
 class TestSplitCorpus(TestCase):

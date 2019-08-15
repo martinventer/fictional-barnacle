@@ -7,8 +7,8 @@ Text_Visualization.py
 
 Tools for Visualizing Text related data
 """
-import Transformers.Transformers
-from CorpusProcessingTools import Context_Extraction
+import TextTools.Transformers
+from Depricated import Context_Extraction
 
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
@@ -42,7 +42,7 @@ def plot_term_frequency(docs,
     -------
 
     """
-    vectorizer = Transformers.Transformers.Text2FrequencyVector()
+    vectorizer = TextTools.Transformers.Text2FrequencyVector()
     docs = vectorizer.fit_transform(docs)
     features = vectorizer.get_feature_names()
 
@@ -368,7 +368,6 @@ def plot_term_tsne_clusters(docs, labels=None):
 
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
-    from CorpusProcessingTools import Corpus_Vectorizer, Corpus_Cluster
     from sklearn.pipeline import Pipeline
 
     root = "Tests/Test_Corpus/Processed_corpus/"

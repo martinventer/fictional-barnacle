@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-import Transformers.Transformers
+import TextTools.Transformers
 import Utils.Utils
-from CorpusProcessingTools import Corpus_Vectorizer
+from Depricated import Corpus_Vectorizer
 from CorpusReaders import Elsevier_Corpus_Reader
 
 import nltk
@@ -16,7 +16,7 @@ class TestTextStemTokenize(TestCase):
             "Test_Corpus/Processed_corpus/")
 
     def test_stem(self):
-        stemmed = Transformers.Transformers.TextStemTokenize()
+        stemmed = TextTools.Transformers.TextStemTokenize()
         input_data = [
             [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
               ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
@@ -31,7 +31,7 @@ class TestTextStemTokenize(TestCase):
             self.assertEqual(list, type(result))
 
     def test_transform(self):
-        stemmed = Transformers.Transformers.TextStemTokenize()
+        stemmed = TextTools.Transformers.TextStemTokenize()
         # check the that text is normalized
         input_data = [
             [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
@@ -73,7 +73,7 @@ class TestTextNormalizer(TestCase):
             self.assertEqual(bool, type(result))
 
     def test_is_stopword(self):
-        normal = Transformers.Transformers.TextNormalizer()
+        normal = TextTools.Transformers.TextNormalizer()
         input_data = ['.', ',', 'i', '?', 't.', '.t', 'the', 'Steven']
         targets = [False, False, True, False, False, False, True, False]
         for target, text in zip(targets, input_data):
@@ -82,7 +82,7 @@ class TestTextNormalizer(TestCase):
             self.assertEqual(bool, type(result))
 
     def test_lemmatize(self):
-        normal = Transformers.Transformers.TextNormalizer()
+        normal = TextTools.Transformers.TextNormalizer()
         targets = ['garden']
         input_data = [('gardening', 'V')]
         for target, text in zip(targets, input_data):
@@ -91,7 +91,7 @@ class TestTextNormalizer(TestCase):
             self.assertEqual(str, type(result))
 
     def test_normalize(self):
-        normal = Transformers.Transformers.TextNormalizer()
+        normal = TextTools.Transformers.TextNormalizer()
         targets = [['study', 'laundry', 'tidiness', 'laundry', 'state',
                     'determination', 'use', 'video', '3d', 'sensor']]
         input_data = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'),
@@ -106,7 +106,7 @@ class TestTextNormalizer(TestCase):
             self.assertEqual(str, type(result[0]))
 
     def test_transform(self):
-        normal = Transformers.Transformers.TextNormalizer()
+        normal = TextTools.Transformers.TextNormalizer()
         # check the that text is normalized
         targets = [['study', 'laundry', 'tidiness', 'laundry', 'state',
                     'determination', 'use', 'video', '3d', 'sensor']]
@@ -138,7 +138,7 @@ class TestTextSimpleTokenizer(TestCase):
             "Test_Corpus/Processed_corpus/")
 
     def test_get_words(self):
-        simple = Transformers.Transformers.TextSimpleTokenizer()
+        simple = TextTools.Transformers.TextSimpleTokenizer()
         input_data = [
             [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
               ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
@@ -154,7 +154,7 @@ class TestTextSimpleTokenizer(TestCase):
             self.assertEqual(list, type(result))
 
     def test_transform(self):
-        simple = Transformers.Transformers.TextSimpleTokenizer()
+        simple = TextTools.Transformers.TextSimpleTokenizer()
         # check the that text is normalized
         input_data = [
             [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
@@ -186,11 +186,11 @@ class TestCorpus2FrequencyVector(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Test_Corpus/Processed_corpus/")
-        self.simple = Transformers.Transformers.TextSimpleTokenizer()
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
         self.input_text = self.simple.transform(self.corpus.title_tagged())
 
     def test_transform(self):
-        vectorizer = Transformers.Transformers.Text2FrequencyVector()
+        vectorizer = TextTools.Transformers.Text2FrequencyVector()
         matrix = vectorizer.fit_transform(self.input_text)
         self.assertEqual(sparse.csr.csr_matrix, type(matrix))
         results = []
@@ -213,11 +213,11 @@ class TestText2OneHotVector(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Test_Corpus/Processed_corpus/")
-        self.simple = Transformers.Transformers.TextSimpleTokenizer()
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
         self.input_text = self.simple.transform(self.corpus.title_tagged())
 
     def test_transform(self):
-        vectorizer = Transformers.Transformers.Text2OneHotVector()
+        vectorizer = TextTools.Transformers.Text2OneHotVector()
         matrix = vectorizer.fit_transform(self.input_text)
         self.assertEqual(sparse.csr.csr_matrix, type(matrix))
         results = []
@@ -240,7 +240,7 @@ class TestText2TFIDVector(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Test_Corpus/Processed_corpus/")
-        self.simple = Transformers.Transformers.TextSimpleTokenizer()
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
         self.tfidf = TfidfVectorizer(tokenizer=self._identity,
                                      preprocessor=None,
                                      lowercase=False)
@@ -251,7 +251,7 @@ class TestText2TFIDVector(TestCase):
         return words
 
     def test_transform(self):
-        vectorizer = Transformers.Transformers.Text2TFIDVector()
+        vectorizer = TextTools.Transformers.Text2TFIDVector()
         matrix = vectorizer.fit_transform(self.input_text)
         self.assertEqual(sparse.csr.csr_matrix, type(matrix))
         results = []
@@ -272,10 +272,10 @@ class TestText2Doc2VecVector(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Test_Corpus/Processed_corpus/")
-        self.simple = Transformers.Transformers.TextSimpleTokenizer()
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
         self.input_text = self.simple.transform(self.corpus.title_tagged())
 
     def test_transform(self):
-        vectorizer = Transformers.Transformers.Text2Doc2VecVector()
+        vectorizer = TextTools.Transformers.Text2Doc2VecVector()
         matrix = vectorizer.fit_transform(self.input_text)
         self.assertEqual(sparse.csr.csr_matrix, type(matrix))

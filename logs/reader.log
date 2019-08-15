@@ -3130,3 +3130,6 @@
 2019-08-14 18:54:32,304 EPOCH - 5 : training on 13192 raw words (13410 effective words) took 0.0s, 404987 effective words/s
 2019-08-14 18:54:32,304 training on a 65960 raw words (67246 effective words) took 0.2s, 362994 effective words/s
 2019-08-14 18:54:32,304 under 10 jobs per worker: consider setting a smaller `batch_words' for smoother alpha decay
+2019-08-15 06:51:36,312 'pattern' package not found; tag filters are not available for English
+2019-08-15 06:59:53,483 'pattern' package not found; tag filters are not available for English
+2019-08-15 07:01:44,295 'pattern' package not found; tag filters are not available for English

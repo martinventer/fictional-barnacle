@@ -1,9 +1,8 @@
 from unittest import TestCase
 
-import Transformers.Transformers
-from CorpusProcessingTools import Corpus_Cluster
+import TextTools.Transformers
+from Depricated import Corpus_Cluster, Corpus_Vectorizer
 from CorpusReaders import Elsevier_Corpus_Reader
-from CorpusProcessingTools import Corpus_Vectorizer
 
 from sklearn.pipeline import Pipeline
 
@@ -19,7 +18,7 @@ class TestKMeansClusters(TestCase):
         self.model = Pipeline([
             ("norm", Corpus_Vectorizer.TitleNormalizer()),
             ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-            ('clusters', Transformers.Transformers.KMeansClusters(k=7))
+            ('clusters', TextTools.Transformers.KMeansClusters(k=7))
         ])
 
     def test_KMeansClusters(self):
@@ -63,7 +62,7 @@ class TestHierarchicalClustering(TestCase):
         self.model = Pipeline([
             ("norm", Corpus_Vectorizer.TitleNormalizer()),
             ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-            ('clusters', Transformers.Transformers.HierarchicalClustering())
+            ('clusters', TextTools.Transformers.HierarchicalClustering())
         ])
 
     def test_HierarchicalClustering(self):
@@ -85,8 +84,8 @@ class TestSklearnTopicModels(TestCase):
 
     def test_transform(self):
         docs = list(self.corpus.title_tagged(fileids=self.subset))
-        skmodel = Transformers.Transformers.SklearnTopicModels(n_components=3,
-                                                               estimator='LDA')
+        skmodel = TextTools.Transformers.SklearnTopicModels(n_components=3,
+                                                            estimator='LDA')
         skmodel.fit_transform(docs)
         topics = skmodel.get_topics(n=5)
         target = 3

@@ -1,11 +1,11 @@
 #! envs/fictional-barnacle/bin/python3.6
 """
-Transformers.py
+TextTools.py
 
 @author: martinventer
 @date: 2019-08-14
 
-Transformers
+Tools for processing text fields extracted from a corpus
 """
 import string
 
@@ -430,6 +430,7 @@ class HierarchicalClustering(BaseEstimator, TransformerMixin):
 
     def __init__(self, **kwargs):
         self.model = AgglomerativeClustering(**kwargs)
+        self.children = None
 
     def fit(self, text_vector):
         return self
@@ -451,7 +452,10 @@ class HierarchicalClustering(BaseEstimator, TransformerMixin):
         if type(text_vector) is sparse.csr.csr_matrix:
             text_vector = text_vector.toarray()
 
-        return np.array(self.model.fit_predict(text_vector))
+        out = self.model.fit_predict(text_vector)
+        self.children = self.model.children_
+
+        return np.array(out)
 
 
 class SklearnTopicModels(BaseEstimator, TransformerMixin):
@@ -530,7 +534,6 @@ if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
     from PlottingTools import Cluster_Plotting
     from time import time
-
 
     root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
@@ -823,17 +826,17 @@ if __name__ == '__main__':
     # ==========================================================================
     # SklearnTopicModels
     # ==========================================================================
-    """
-    options
-    LDA , LSA,  NMF
-    'freqvec','tfidvec','onehotvec'
-    """
-    observations = list(corpus.title_tagged(fileids=subset_fileids))
-    model = SklearnTopicModels(n_topics=5, estimator='NMF',
-                               vectorizor="tfidvec")
-
-    model.fit_transform(observations)
-    topics = model.get_topics(n_term=10)
-    for topic, terms in topics.items():
-        print("Topic #{} \t:".format(topic))
-        print(terms)
+    # """
+    # options
+    # LDA , LSA,  NMF
+    # 'freqvec','tfidvec','onehotvec'
+    # """
+    # observations = list(corpus.title_tagged(fileids=subset_fileids))
+    # model = SklearnTopicModels(n_topics=5, estimator='NMF',
+    #                            vectorizor="tfidvec")
+    #
+    # model.fit_transform(observations)
+    # topics = model.get_topics(n_term=10)
+    # for topic, terms in topics.items():
+    #     print("Topic #{} \t:".format(topic))
+    #     print(terms)
