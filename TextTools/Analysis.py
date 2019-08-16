@@ -291,6 +291,8 @@ if __name__ == '__main__':
             [('normalize', Transformers.TextNormalizer())
              ])
 
+        titles = list(corpus.title_tagged(fileids=subset_fileids))
+        descriptions = list(corpus.description_tagged(fileids=subset_fileids))
         data = prepare_data.fit_transform(titles)
 
         freq_plotter = TermFrequencyPlot(
@@ -300,10 +302,13 @@ if __name__ == '__main__':
         )
         freq_plotter.plot()
     # --------------------------------------------------------------------------
+    if False:
         prepare_data = Pipeline(
             [('phrases', Transformers.KeyphraseExtractorS())
              ])
 
+        titles = list(corpus.title_tagged(fileids=subset_fileids))
+        descriptions = list(corpus.description_tagged(fileids=subset_fileids))
         data = prepare_data.fit_transform(titles)
 
         freq_plotter = TermFrequencyPlot(
@@ -313,8 +318,25 @@ if __name__ == '__main__':
         )
         freq_plotter.plot()
     # --------------------------------------------------------------------------
+    if False:
         prepare_data = Pipeline(
             [('phrases', Transformers.KeyphraseExtractorL())
+             ])
+
+        titles = list(corpus.title_tagged(fileids=subset_fileids))
+        descriptions = list(corpus.description_tagged(fileids=subset_fileids))
+        data = prepare_data.fit_transform(titles)
+
+        freq_plotter = TermFrequencyPlot(
+            data,
+            occurrence=False,
+            n_terms=100
+        )
+        freq_plotter.plot()
+    # --------------------------------------------------------------------------
+    if False:
+        prepare_data = Pipeline(
+            [('entities', Transformers.EntityExtractor())
              ])
 
         data = prepare_data.fit_transform(titles)
@@ -326,16 +348,19 @@ if __name__ == '__main__':
         )
         freq_plotter.plot()
     # --------------------------------------------------------------------------
-    prepare_data = Pipeline(
-        [('phrases', Transformers.EntityExtractor())
-         ])
+    if False:
+        prepare_data = Pipeline(
+            [('grams', Transformers.RankGrams(n_terms=3))
+             ])
 
-    data = prepare_data.fit_transform(titles)
+        title_words = corpus.title_word(fileids=subset_fileids)
+        description_words = corpus.description_tagged(fileids=subset_fileids)
+        data = prepare_data.fit_transform(title_words)
 
-    freq_plotter = TermFrequencyPlot(
-        data,
-        occurrence=False,
-        n_terms=100
-    )
-    freq_plotter.plot()
-# --------------------------------------------------------------------------
+        freq_plotter = TermFrequencyPlot(
+            data,
+            occurrence=False,
+            n_terms=100
+        )
+        freq_plotter.plot()
+    # --------------------------------------------------------------------------
