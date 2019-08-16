@@ -26,29 +26,29 @@ from scipy.sparse import csr_matrix
 from Utils.Utils import iter_flatten
 
 
-def plot_term_frequency(docs,
-                        n_terms=50) -> None:
-    """
-    plot the term frequencies of the n_terms most common terms in a corpus. a raw
-    corpus on [[(token, tag)]], is cleaned and plotted
-    Parameters
-    ----------
-    docs
-        list of documents containing list of words
-    n_terms : int
-        the number of terms you are interested in
-
-    Returns
-    -------
-
-    """
-    vectorizer = TextTools.Transformers.Text2FrequencyVector()
-    docs = vectorizer.fit_transform(docs)
-    features = vectorizer.get_feature_names()
-
-    visualizer = FreqDistVisualizer(features=features, n=n_terms)
-    visualizer.fit(docs)
-    visualizer.poof()
+# def plot_term_frequency(docs,
+#                         n_terms=50) -> None:
+#     """
+#     plot the term frequencies of the n_terms most common terms in a corpus. a raw
+#     corpus on [[(token, tag)]], is cleaned and plotted
+#     Parameters
+#     ----------
+#     docs
+#         list of documents containing list of words
+#     n_terms : int
+#         the number of terms you are interested in
+#
+#     Returns
+#     -------
+#
+#     """
+#     vectorizer = TextTools.Transformers.Text2FrequencyVector()
+#     docs = vectorizer.fit_transform(docs)
+#     features = vectorizer.get_feature_names()
+#
+#     visualizer = FreqDistVisualizer(features=features, n=n_terms)
+#     visualizer.fit(docs)
+#     visualizer.poof()
 
 
 # def plot_keyphrase_frequency(docs, n_terms=50) -> None:
@@ -481,7 +481,7 @@ if __name__ == '__main__':
     # )
     # --------------------------------------------------------------------------
     preprocessor = Pipeline([
-        ("phrases", Context_Extraction.EntityExtractor())
+        ("phrases", TextTools.Transformers.EntityExtractor())
     ])
 
     processed_input = preprocessor.fit_transform(

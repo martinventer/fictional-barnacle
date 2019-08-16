@@ -151,7 +151,8 @@ class ClusterPlot2D:
 
 class TermFrequencyPlot:
     """
-    plotting term frequency given a list of terms per document
+    plotting term frequency given a list of terms per document. Works for
+    terms, keyphrases and entities
     """
 
     def __init__(self, docs, occurrence=False, n_terms=100) -> None:
@@ -220,7 +221,8 @@ if __name__ == '__main__':
     loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
     subset_fileids = next(loader.fileids(test=True))
 
-    observations = list(corpus.title_tagged(fileids=subset_fileids))
+    titles = list(corpus.title_tagged(fileids=subset_fileids))
+    descriptions = list(corpus.description_tagged(fileids=subset_fileids))
 
     # ==========================================================================
     # DendrogramPlot
@@ -232,7 +234,7 @@ if __name__ == '__main__':
             ('clusters', Transformers.HierarchicalClustering())
         ])
 
-        clusters = model.fit_transform(observations)
+        clusters = model.fit_transform(titles)
         children = model.named_steps['clusters'].children
 
         tree_plotter = DendrogramPlot(children)
@@ -249,7 +251,7 @@ if __name__ == '__main__':
             ('pca', TruncatedSVD(n_components=2))
         ])
 
-        X2d = reduce.fit_transform(observations)
+        X2d = reduce.fit_transform(titles)
 
         # plot Kmeans
         model = Pipeline([
@@ -258,7 +260,7 @@ if __name__ == '__main__':
             ('clusters', Transformers.KMeansClusters(k=3))
         ])
 
-        clusters = model.fit_transform(observations)
+        clusters = model.fit_transform(titles)
 
         plot_clusters(X2d, clusters)
         # plot_clusters_2d
@@ -274,7 +276,7 @@ if __name__ == '__main__':
 
         cluster_data = Transformers.KMeansClusters(k=5)
 
-        data = prepare_data.fit_transform(observations)
+        data = prepare_data.fit_transform(titles)
         labels = cluster_data.fit_transform((data))
 
         cluster_plotter = ClusterPlot2D(data, labels, method="NMF")
@@ -289,11 +291,38 @@ if __name__ == '__main__':
             [('normalize', Transformers.TextNormalizer())
              ])
 
-        data = prepare_data.fit_transform(observations)
+        data = prepare_data.fit_transform(titles)
 
         freq_plotter = TermFrequencyPlot(
             data,
-            occurrence=True,
+            occurrence=False,
             n_terms=100
         )
         freq_plotter.plot()
+    # --------------------------------------------------------------------------
+        prepare_data = Pipeline(
+            [('phrases', Transformers.KeyphraseExtractorS())
+             ])
+
+        data = prepare_data.fit_transform(titles)
+
+        freq_plotter = TermFrequencyPlot(
+            data,
+            occurrence=False,
+            n_terms=100
+        )
+        freq_plotter.plot()
+    # --------------------------------------------------------------------------
+        prepare_data = Pipeline(
+            [('phrases', Transformers.KeyphraseExtractorL())
+             ])
+
+        data = prepare_data.fit_transform(titles)
+
+        freq_plotter = TermFrequencyPlot(
+            data,
+            occurrence=False,
+            n_terms=100
+        )
+        freq_plotter.plot()
+    # --------------------------------------------------------------------------
