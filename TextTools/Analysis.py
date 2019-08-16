@@ -326,3 +326,16 @@ if __name__ == '__main__':
         )
         freq_plotter.plot()
     # --------------------------------------------------------------------------
+    prepare_data = Pipeline(
+        [('phrases', Transformers.EntityExtractor())
+         ])
+
+    data = prepare_data.fit_transform(titles)
+
+    freq_plotter = TermFrequencyPlot(
+        data,
+        occurrence=False,
+        n_terms=100
+    )
+    freq_plotter.plot()
+# --------------------------------------------------------------------------

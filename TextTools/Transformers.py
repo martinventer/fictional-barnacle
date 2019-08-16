@@ -680,7 +680,7 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
-        return [self.get_entities(document) for document in documents]
+        return [" ".join(self.get_entities(document)) for document in documents]
         # for document in documents:
         #     yield self.get_entities(document)
 
@@ -722,7 +722,9 @@ class RankGrams(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, docs, **kwargs):
-        return self.rank_grams(docs, **kwargs)
+        # return self.rank_grams(docs, **kwargs)
+        ranks = self.rank_grams(docs)
+        return [" ".join(list(document[0])) for document in ranks]
 
 
 if __name__ == '__main__':
@@ -733,9 +735,6 @@ if __name__ == '__main__':
         root=root)
     loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
     subset_fileids = next(loader.fileids(test=True))
-
-    titles = corpus.title_tagged(fileids=subset_fileids)
-    descriptions = corpus.description_tagged(fileids=subset_fileids)
 
     # ==========================================================================
     # TextNormalizer
@@ -1040,7 +1039,9 @@ if __name__ == '__main__':
     # ==========================================================================
     # KeyphraseExtractorL
     # ==========================================================================
-    if False:
+    if True:
+        titles = corpus.title_tagged(fileids=subset_fileids)
+        descriptions = corpus.description_tagged(fileids=subset_fileids)
         phrase_extractor = KeyphraseExtractorL()
         keyphrases = list(phrase_extractor.fit_transform(titles))
         print(keyphrases[:4])
@@ -1049,6 +1050,8 @@ if __name__ == '__main__':
     # KeyphraseExtractorS
     # ==========================================================================
     if False:
+        titles = corpus.title_tagged(fileids=subset_fileids)
+        descriptions = corpus.description_tagged(fileids=subset_fileids)
         phrase_extractor = KeyphraseExtractorS()
         keyphrases = list(phrase_extractor.fit_transform(titles))
         print(keyphrases[:4])
@@ -1057,6 +1060,8 @@ if __name__ == '__main__':
     # EntityExtractor
     # --------------------------------------------------------------------------
     if True:
+        titles = corpus.title_tagged(fileids=subset_fileids)
+        descriptions = corpus.description_tagged(fileids=subset_fileids)
         entity_extractor = EntityExtractor()
         entities = list(entity_extractor.fit_transform(titles))
         print(entities[:4])
@@ -1064,7 +1069,7 @@ if __name__ == '__main__':
     # ==========================================================================
     # RankGrams
     # ==========================================================================
-    if False:
+    if True:
         ranker = RankGrams(n_terms=3)
         ranks = ranker.fit_transform(corpus.title_word(fileids=subset_fileids))
         print(ranks[:4])
