@@ -532,8 +532,6 @@ class SklearnTopicModels(BaseEstimator, TransformerMixin):
 
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
-    from PlottingTools import Cluster_Plotting
-    from time import time
 
     root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(

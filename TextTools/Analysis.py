@@ -10,15 +10,19 @@ Tools for analysinig text data
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+from yellowbrick.text.freqdist import FreqDistVisualizer
+
+
 from scipy import sparse
 from scipy.cluster.hierarchy import dendrogram
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from sklearn.manifold import TSNE, SpectralEmbedding
-
 from sklearn.decomposition import TruncatedSVD, PCA, \
     LatentDirichletAllocation, NMF
+
+from TextTools import Transformers
 
 
 class DendrogramPlot:
@@ -145,9 +149,68 @@ class ClusterPlot2D:
         plt.show()
 
 
+class TermFrequencyPlot:
+    """
+    plotting term frequency given a list of terms per document
+    """
+
+    def __init__(self, docs, occurrence=False, n_terms=100) -> None:
+        """
+        Initialize a term frequency plotter
+        Parameters
+        ----------
+        occurrence : bool
+            flag to switch output from term frequency in courpus to term
+            occurrence per document in the corpus
+        docs : List of lists
+            a list of documents containing a list of terms per document
+        n_terms : int
+            the 'n' most common terms to be included in the plot
+        """
+        self.docs = docs
+        self.features = None
+        self.occurrence = occurrence
+        self.n_terms = n_terms
+        self.visualizer = None
+        self.data_process()
+
+    def data_process(self) -> None:
+        """
+        vectorizes the imput documents
+        Returns
+        -------
+            None
+        """
+        if not self.occurrence:
+            vectorizer = Transformers.Text2FrequencyVector()
+            self.docs = vectorizer.fit_transform(self.docs)
+            self.features = vectorizer.get_feature_names()
+        else:
+            vectorizer = Transformers.Text2OneHotVector()
+            self.docs = vectorizer.fit_transform(self.docs)
+            self.features = vectorizer.get_feature_names()
+
+        self.visualizer = FreqDistVisualizer(features=self.features,
+                                             n=self.n_terms)
+        self.visualizer.fit(self.docs)
+
+    def plot(self, **kwargs) -> None:
+        """
+        Plot the term frequency of a collection of documents
+        Parameters
+        ----------
+        kwargs
+            additional plotting arguements
+
+        Returns
+        -------
+            None
+        """
+        self.visualizer.poof(**kwargs)
+
+
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
-    from TextTools import Transformers
     from sklearn.pipeline import Pipeline
     from sklearn.decomposition import TruncatedSVD
 
@@ -217,3 +280,20 @@ if __name__ == '__main__':
         cluster_plotter = ClusterPlot2D(data, labels, method="NMF")
         cluster_plotter.plot()
         cluster_plotter.simple_plot()
+
+    # ==========================================================================
+    # TermFrequencyPlot
+    # ==========================================================================
+    if True:
+        prepare_data = Pipeline(
+            [('normalize', Transformers.TextNormalizer())
+             ])
+
+        data = prepare_data.fit_transform(observations)
+
+        freq_plotter = TermFrequencyPlot(
+            data,
+            occurrence=True,
+            n_terms=100
+        )
+        freq_plotter.plot()
