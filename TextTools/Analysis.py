@@ -155,7 +155,11 @@ class TermFrequencyPlot:
     terms, keyphrases and entities
     """
 
-    def __init__(self, docs, occurrence=False, n_terms=100) -> None:
+    def __init__(self,
+                 docs,
+                 occurrence=False,
+                 features=None,
+                 n_terms=100) -> None:
         """
         Initialize a term frequency plotter
         Parameters
@@ -169,7 +173,7 @@ class TermFrequencyPlot:
             the 'n' most common terms to be included in the plot
         """
         self.docs = docs
-        self.features = None
+        self.features = features
         self.occurrence = occurrence
         self.n_terms = n_terms
         self.visualizer = None
@@ -182,14 +186,15 @@ class TermFrequencyPlot:
         -------
             None
         """
-        if not self.occurrence:
-            vectorizer = Transformers.Text2FrequencyVector()
-            self.docs = vectorizer.fit_transform(self.docs)
-            self.features = vectorizer.get_feature_names()
-        else:
-            vectorizer = Transformers.Text2OneHotVector()
-            self.docs = vectorizer.fit_transform(self.docs)
-            self.features = vectorizer.get_feature_names()
+        if not self.features:
+            if not self.occurrence:
+                vectorizer = Transformers.Text2FrequencyVector()
+                self.docs = vectorizer.fit_transform(self.docs)
+                self.features = vectorizer.get_feature_names()
+            else:
+                vectorizer = Transformers.Text2OneHotVector()
+                self.docs = vectorizer.fit_transform(self.docs)
+                self.features = vectorizer.get_feature_names()
 
         self.visualizer = FreqDistVisualizer(features=self.features,
                                              n=self.n_terms)
@@ -286,7 +291,7 @@ if __name__ == '__main__':
     # ==========================================================================
     # TermFrequencyPlot
     # ==========================================================================
-    if True:
+    if False:
         prepare_data = Pipeline(
             [('normalize', Transformers.TextNormalizer())
              ])
@@ -339,28 +344,15 @@ if __name__ == '__main__':
             [('entities', Transformers.EntityExtractor())
              ])
 
+        titles = list(corpus.title_tagged(fileids=subset_fileids))
+        descriptions = list(corpus.description_tagged(fileids=subset_fileids))
         data = prepare_data.fit_transform(titles)
 
         freq_plotter = TermFrequencyPlot(
             data,
             occurrence=False,
-            n_terms=100
+            n_terms=50
         )
         freq_plotter.plot()
     # --------------------------------------------------------------------------
-    if False:
-        prepare_data = Pipeline(
-            [('grams', Transformers.RankGrams(n_terms=3))
-             ])
 
-        title_words = corpus.title_word(fileids=subset_fileids)
-        description_words = corpus.description_tagged(fileids=subset_fileids)
-        data = prepare_data.fit_transform(title_words)
-
-        freq_plotter = TermFrequencyPlot(
-            data,
-            occurrence=False,
-            n_terms=100
-        )
-        freq_plotter.plot()
-    # --------------------------------------------------------------------------
