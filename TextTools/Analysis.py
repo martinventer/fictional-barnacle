@@ -647,7 +647,7 @@ if __name__ == '__main__':
         network_plotter.details()
         network_plotter.plot()
     # --------------------------------------------------------------------------
-    if False:
+    if True:
         prepare_data = Pipeline(
             [('normalize', Transformers.TextNormalizer())
              ])
@@ -738,7 +738,7 @@ if __name__ == '__main__':
     # ==========================================================================
     # TermTemporal
     # ==========================================================================
-    if True:
+    if False:
         prepare_data = Pipeline(
             [('normalize', Transformers.TextNormalizer())
              ])
