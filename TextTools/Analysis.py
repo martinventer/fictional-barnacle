@@ -18,6 +18,9 @@ from scipy import sparse
 from scipy.cluster.hierarchy import dendrogram
 from collections import Counter
 import itertools
+import heapq
+from operator import itemgetter
+from tabulate import tabulate
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
@@ -348,21 +351,26 @@ class TermCoocNetwork:
                 node_size.append(node_scale * term_counts[node])
             self.node_options["node_size"] = node_size
 
-    def plot(self) -> None:
+    def plot(self, term=None) -> None:
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+
         fig, ax = plt.subplots(1, figsize=(15, 12))
         # draw the nodes
-        nx.draw_networkx_nodes(self.g, pos=self.pos, **self.node_options)
+        nx.draw_networkx_nodes(graph, pos=self.pos, **self.node_options)
 
         if True:
             node_names = {}
-            for node in self.g:
+            for node in graph:
                 node_names[node] = node  # .split()[-1]
-            nx.draw_networkx_labels(self.g, self.pos,
+            nx.draw_networkx_labels(graph, self.pos,
                                     labels=node_names,
                                     font_size=8)
 
         # draw in the edges
-        nx.draw_networkx_edges(self.g, pos=self.pos,
+        nx.draw_networkx_edges(graph, pos=self.pos,
                                alpha=0.2,
                                width=self.edge_width)
 
@@ -371,8 +379,92 @@ class TermCoocNetwork:
         fig.tight_layout()
         plt.show()
 
-    def details(self) -> None:
-        print(nx.info(self.g))
+    def info(self, term=None) -> None:
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+        print(nx.info(graph))
+
+    def nbest_centrality(self, graph, metrics, n=10):
+        # computer centrallity score
+        nbest = {}
+        for name, metric in metrics.items():
+            scores = metric(graph)
+
+            # ser the score as a property oon each node
+            nx.set_node_attributes(graph, name=name, values=scores)
+
+            # Find the top n scores and print them along with their index
+            topn = heapq.nlargest(n, scores.items(), key=itemgetter(1))
+            nbest[name] = topn
+
+        return nbest
+
+    def print_centralities(self, term=None):
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+
+        centralities = {"Degree Centrality": nx.degree_centrality,
+                        "Betweenness Centrality": nx.betweenness_centrality,
+                        "Closeness": nx.closeness_centrality,
+                        "eigenvector": nx.eigenvector_centrality,
+                        "katz": nx.katz_centrality_numpy,
+                        "pagerank": nx.pagerank_numpy}
+
+        centrality = self.nbest_centrality(graph, centralities, 10)
+
+        for measure, scores in centrality.items():
+            print("Ranks for {}:".format(measure))
+            print(tabulate(scores,headers=["Top Terms", "Socre"]))
+            print("")
+
+    def plot_distributions(self, term=None):
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+
+        sns.distplot([graph.degree(v) for v in graph.nodes()], norm_hist=True)
+        plt.show()
+
+    def print_structure(self, term=None):
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+
+        print("Average clustering coefficient: {}".format(
+            nx.average_clustering(graph)
+        ))
+        print("Transistivity: {}".format(
+            nx.transitivity(graph)
+        ))
+        print("Number of cliques: {}".format(
+            nx.graph_number_of_cliques(graph)
+        ))
+
+    def pairwise_comparisons(self, term=None):
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+
+        return itertools.combinations(graph.nodes(), 2)
+
+    def edge_blocked_comparison(self, term=None):
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+
+        for n1, n2 in self.pairwise_comparisons(graph):
+            hood1 = frozenset(graph.neighbors(n1))
+            hood2 = frozenset(graph.neighbors(n2))
+            if hood1 & hood2:
+                yield n1, n2
 
 
 class TermCoocMatrix:
@@ -635,7 +727,7 @@ if __name__ == '__main__':
     # ==========================================================================
     # TermCoocNetwork
     # ==========================================================================
-    if False:
+    if True:
         prepare_data = Pipeline(
             [('normalize', Transformers.TextNormalizer())
              ])
@@ -644,10 +736,19 @@ if __name__ == '__main__':
 
         network_plotter = TermCoocNetwork(data, n_terms=50)
         network_plotter.create_network()
-        network_plotter.details()
-        network_plotter.plot()
+        # network_plotter.info()
+        # network_plotter.info("hand")
+        # network_plotter.print_centralities()
+        # network_plotter.print_centralities("hand")
+        # network_plotter.plot()
+        # network_plotter.plot("hand")
+        # network_plotter.plot_distributions()
+        # network_plotter.plot_distributions("hand")
+        # network_plotter.print_structure()
+        # network_plotter.print_structure("hand")
+        network_plotter.edge_blocked_comparison()
     # --------------------------------------------------------------------------
-    if True:
+    if False:
         prepare_data = Pipeline(
             [('normalize', Transformers.TextNormalizer())
              ])
@@ -657,8 +758,11 @@ if __name__ == '__main__':
 
         network_plotter = TermCoocNetwork(data, n_terms=100)
         network_plotter.create_network()
-        network_plotter.details()
-        network_plotter.plot()
+        # network_plotter.info()
+        # network_plotter.print_centralities()
+        # network_plotter.plot()
+        # network_plotter.plot_ego("2")
+        network_plotter.plot_distributions()
     # --------------------------------------------------------------------------
     if False:
         prepare_data = Pipeline(
