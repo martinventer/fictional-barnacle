@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt
 from matplotlib.colors import LogNorm
 from yellowbrick.text.freqdist import FreqDistVisualizer
 import networkx as nx
+from fuzzywuzzy import fuzz
 
 from scipy import sparse
 from scipy.cluster.hierarchy import dendrogram
@@ -446,25 +447,63 @@ class TermCoocNetwork:
             nx.graph_number_of_cliques(graph)
         ))
 
-    def pairwise_comparisons(self, term=None):
-        if not term:
-            graph = self.g
-        else:
-            graph = nx.ego_graph(self.g, term)
-
+    def pairwise_comparisons(self, graph):
         return itertools.combinations(graph.nodes(), 2)
 
-    def edge_blocked_comparison(self, term=None):
-        if not term:
-            graph = self.g
-        else:
-            graph = nx.ego_graph(self.g, term)
-
+    def edge_blocked_comparisons(self, graph):
         for n1, n2 in self.pairwise_comparisons(graph):
             hood1 = frozenset(graph.neighbors(n1))
             hood2 = frozenset(graph.neighbors(n2))
             if hood1 & hood2:
                 yield n1, n2
+
+    def similarity(self, G,  n1, n2):
+        """
+        Returns the mean of the partial_ratio score for each field in the two
+        entities. Note that if they don't have fields that match, the score will
+        be zero.
+        """
+        scores = [
+            fuzz.partial_ratio(n1, n2),
+            fuzz.partial_ratio(G.node[n1]['type'], G.node[n2]['type'])
+        ]
+
+        return float(sum(s for s in scores)) / float(len(scores))
+
+    def fuzzy_blocked_comparisons(self, G, threshold=65):
+        """
+        A generator of pairwise comparisons, that highlights comparisons between
+        nodes that have an edge to the same entity, but filters out comparisons
+        if the similarity of n1 and n2 is below the threshold.
+        """
+        for n1, n2 in self.pairwise_comparisons(G):
+            hood1 = frozenset(G.neighbors(n1))
+            hood2 = frozenset(G.neighbors(n2))
+            if hood1 & hood2:
+                if self.similarity(G, n1, n2) > threshold:
+                    yield n1, n2
+
+    def info_extend(self, term=None):
+        """
+        Wrapper for nx.info with some other helpers.
+        """
+        if not term:
+            graph = self.g
+        else:
+            graph = nx.ego_graph(self.g, term)
+
+        pairwise = len(list(self.pairwise_comparisons(graph)))
+        edge_blocked = len(list(self.edge_blocked_comparisons(graph)))
+        fuzz_blocked = len(list(self.fuzzy_blocked_comparisons(graph)))
+
+        output = [""]
+        output.append("Number of Pairwise Comparisons: {}".format(pairwise))
+        output.append(
+            "Number of Edge Blocked Comparisons: {}".format(edge_blocked))
+        output.append(
+            "Number of Fuzzy Blocked Comparisons: {}".format(fuzz_blocked))
+
+        print(output)
 
 
 class TermCoocMatrix:
@@ -746,7 +785,8 @@ if __name__ == '__main__':
         # network_plotter.plot_distributions("hand")
         # network_plotter.print_structure()
         # network_plotter.print_structure("hand")
-        network_plotter.edge_blocked_comparison()
+        # network_plotter.edge_blocked_comparison()
+        network_plotter.info_extend()
     # --------------------------------------------------------------------------
     if False:
         prepare_data = Pipeline(
