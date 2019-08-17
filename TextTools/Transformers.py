@@ -592,6 +592,8 @@ class KeyphraseExtractorL(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents) -> list:
+        # return [list(self.extract_keyphrases(document))
+        #         for document in documents]
         for document in documents:
             yield list(self.extract_keyphrases(document))
 
@@ -680,9 +682,10 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, documents):
-        # return [" ".join(self.get_entities(document)) for document in documents]
-        for document in documents:
-            yield list(self.get_entities(document))
+        return [list(self.get_entities(document))
+                for document in documents]
+        # for document in documents:
+        #     yield list(self.get_entities(document))
 
 
 class RankGrams(BaseEstimator, TransformerMixin):
