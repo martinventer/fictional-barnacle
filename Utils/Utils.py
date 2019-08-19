@@ -10,6 +10,7 @@ Miscellaneous utilities to Corpus processing
 import logging
 import os
 import unicodedata
+import csv
 
 
 def get_key() -> str:
@@ -96,3 +97,20 @@ def is_punct(token) -> bool:
     return all(
         unicodedata.category(char).startswith('P') for char in token
     )
+
+
+def academic_stopwords(existing_list=None) -> list:
+    with open('Utils/stopwords.csv', 'r') as f:
+        reader = csv.reader(f)
+        word_list = list(reader)
+
+    flat_word_list = [i for i in iter_flatten(word_list)]
+
+    if existing_list:
+        flat_word_list = flat_word_list + list(existing_list)
+
+    return flat_word_list
+
+
+if __name__ == '__main__':
+    print(academic_stopwords())

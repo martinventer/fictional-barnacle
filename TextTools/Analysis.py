@@ -494,14 +494,14 @@ class TermCoocNetwork:
 
         pairwise = len(list(self.pairwise_comparisons(graph)))
         edge_blocked = len(list(self.edge_blocked_comparisons(graph)))
-        fuzz_blocked = len(list(self.fuzzy_blocked_comparisons(graph)))
+        # fuzz_blocked = len(list(self.fuzzy_blocked_comparisons(graph)))
 
         output = [""]
-        output.append("Number of Pairwise Comparisons: {}".format(pairwise))
+        output.append("Number of Pairwise Comparisons: {} ".format(pairwise))
         output.append(
             "Number of Edge Blocked Comparisons: {}".format(edge_blocked))
-        output.append(
-            "Number of Fuzzy Blocked Comparisons: {}".format(fuzz_blocked))
+        # output.append(
+        #     "Number of Fuzzy Blocked Comparisons: {}".format(fuzz_blocked))
 
         print(output)
 
@@ -706,7 +706,7 @@ if __name__ == '__main__':
 
         titles = list(corpus.title_tagged(fileids=subset_fileids))
         descriptions = list(corpus.description_tagged(fileids=subset_fileids))
-        data = prepare_data.fit_transform(titles)
+        data = prepare_data.fit_transform(descriptions)
 
         freq_plotter = TermFrequencyPlot(
             data,
@@ -754,7 +754,7 @@ if __name__ == '__main__':
 
         titles = list(corpus.title_tagged(fileids=subset_fileids))
         descriptions = list(corpus.description_tagged(fileids=subset_fileids))
-        data = prepare_data.fit_transform(titles)
+        data = prepare_data.fit_transform(descriptions)
 
         freq_plotter = TermFrequencyPlot(
             data,
@@ -779,14 +779,14 @@ if __name__ == '__main__':
         # network_plotter.info("hand")
         # network_plotter.print_centralities()
         # network_plotter.print_centralities("hand")
-        # network_plotter.plot()
+        network_plotter.plot()
         # network_plotter.plot("hand")
         # network_plotter.plot_distributions()
         # network_plotter.plot_distributions("hand")
         # network_plotter.print_structure()
         # network_plotter.print_structure("hand")
         # network_plotter.edge_blocked_comparison()
-        network_plotter.info_extend()
+        # network_plotter.info_extend()
     # --------------------------------------------------------------------------
     if False:
         prepare_data = Pipeline(
@@ -802,7 +802,7 @@ if __name__ == '__main__':
         # network_plotter.print_centralities()
         # network_plotter.plot()
         # network_plotter.plot_ego("2")
-        network_plotter.plot_distributions()
+        # network_plotter.plot_distributions()
     # --------------------------------------------------------------------------
     if False:
         prepare_data = Pipeline(

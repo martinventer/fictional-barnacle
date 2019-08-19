@@ -26,7 +26,7 @@ from sklearn.decomposition import TruncatedSVD, NMF, LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.pipeline import Pipeline
 
-from Utils.Utils import is_punct, identity
+from Utils.Utils import is_punct, identity, academic_stopwords
 
 
 class TextStemTokenize(BaseEstimator, TransformerMixin):
@@ -83,6 +83,7 @@ class TextNormalizer(BaseEstimator, TransformerMixin):
             string indication of the language
         """
         self.stopwords = set(nltk.corpus.stopwords.words(language))
+        self.stopwords = academic_stopwords(self.stopwords)
         self.lemmatizer = WordNetLemmatizer()
 
     def is_stopword(self, token) -> bool:
@@ -639,7 +640,8 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
     """
     Converts a corpus into a bag of entities.
     """
-    GOODLABELS = frozenset(['PERSON', 'ORGANIZATION', 'FACILITY', 'GPE', 'GSP'])
+    # GOODLABELS = frozenset(['PERSON', 'ORGANIZATION', 'FACILITY', 'GPE', 'GSP'])
+    GOODLABELS = frozenset(['PERSON', 'ORGANIZATION', 'FACILITY', 'GPE'])
 
     def __init__(self, labels=None, **kwargs):
         """
@@ -653,6 +655,8 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
             self.labels = EntityExtractor.GOODLABELS
         else:
             self.labels = labels
+
+        self.stopwords = academic_stopwords()
 
     def get_entities(self, document) -> list:
         """
@@ -676,6 +680,10 @@ class EntityExtractor(BaseEstimator, TransformerMixin):
                             entities.append(
                                 ' '.join([child[0].lower() for child in tree])
                                 )
+        # remove stopwords from entities
+        entities = [entity
+                    for entity in entities
+                    if entity not in self.stopwords]
         return entities
 
     def fit(self, documents):
