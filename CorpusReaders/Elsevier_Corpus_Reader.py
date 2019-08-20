@@ -11,6 +11,7 @@ Reads the raw data from Elsivier Ingestor and refactors it into a per article
 import pickle
 import os
 import time
+import inspect
 
 from functools import partial
 from collections import defaultdict
@@ -1205,6 +1206,13 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
             'secs':   time.time() - started,
         }
 
+    def list_methods(self) -> list:
+        methods = []
+        for method in inspect.getmembers(self, predicate=inspect.ismethod):
+            methods.append(method[0])
+        return methods
+
+
 
 if __name__ == '__main__':
     from pprint import PrettyPrinter
@@ -1230,5 +1238,7 @@ if __name__ == '__main__':
     root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = ScopusProcessedCorpusReader(root=root)
     pp.pprint(corpus.describe())
+
+    print(corpus.list_methods())
 
 
