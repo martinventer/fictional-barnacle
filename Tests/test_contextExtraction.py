@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+import CorpusReaders.Corpus_filters
 import TextTools.Transformers
 from Depricated import Context_Extraction
 from CorpusReaders import Elsevier_Corpus_Reader
@@ -21,9 +22,9 @@ class TestEntityExtractor(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
 
     def test_transform(self):
@@ -39,9 +40,9 @@ class TestRankGrams(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
 
     def test_transform_n2(self):

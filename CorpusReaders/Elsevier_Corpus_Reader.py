@@ -15,8 +15,6 @@ import time
 from functools import partial
 from collections import defaultdict
 
-from sklearn.model_selection import KFold
-
 from nltk.corpus.reader.api import CorpusReader
 from nltk.corpus.reader.api import CategorizedCorpusReader
 from nltk import wordpunct_tokenize
@@ -1206,42 +1204,6 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
             'd_wptit': float(counts['d_words']) / float(counts['description']),
             'secs':   time.time() - started,
         }
-
-
-class CorpuKfoldLoader(object):
-    """
-    A wrapper for a corpus that splits the corpus using k-fold method.
-    """
-    def __init__(self, corpus, n_folds=None, shuffle=True):
-        self.n_folds = len(corpus.fileids())
-        self.corpus = corpus
-
-        if n_folds is not None:
-            # Generate the KFold cross validation for the loader.
-            kf = KFold(n_splits=n_folds, shuffle=shuffle)
-            self.folds = kf.split(corpus.fileids())
-
-    def fileids(self, train=False, test=False):
-
-        if self.n_folds is None:
-            # If no fold is specified, return all the fileids.
-            return self.corpus.fileids()
-
-        # determine if we're in train or test mode.
-        if not (test or train) or (test and train):
-            raise ValueError(
-                "Please specify either train or test flag"
-            )
-
-        # get the next test and train set
-        for train_idx, test_idx in self.folds:
-
-            # Select only the indices to filter upon.
-            indices = train_idx if train else test_idx
-            yield [
-                fileid for doc_idx, fileid in enumerate(self.corpus.fileids())
-                if doc_idx in indices
-            ]
 
 
 if __name__ == '__main__':

@@ -26,6 +26,7 @@ from sklearn.decomposition import TruncatedSVD, NMF, LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.pipeline import Pipeline
 
+import CorpusReaders.Corpus_filters
 from Utils.Utils import is_punct, identity, academic_stopwords
 
 
@@ -745,7 +746,7 @@ if __name__ == '__main__':
     root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         root=root)
-    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
+    loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(corpus, 10, shuffle=False)
     subset_fileids = next(loader.fileids(test=True))
 
     # ==========================================================================

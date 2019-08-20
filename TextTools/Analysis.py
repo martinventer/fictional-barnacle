@@ -29,6 +29,7 @@ from sklearn.manifold import TSNE, SpectralEmbedding
 from sklearn.decomposition import TruncatedSVD, PCA, \
     LatentDirichletAllocation, NMF
 
+import CorpusReaders.Corpus_filters
 from TextTools import Transformers
 from Utils.Utils import iter_flatten
 
@@ -656,7 +657,7 @@ if __name__ == '__main__':
     root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
         root=root)
-    loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(corpus, 10, shuffle=False)
+    loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(corpus, 10, shuffle=False)
     subset_fileids = next(loader.fileids(test=True))
 
     titles = list(corpus.title_tagged(fileids=subset_fileids))
@@ -770,7 +771,8 @@ if __name__ == '__main__':
         prepare_data = Pipeline(
             [('normalize', Transformers.TextNormalizer())
              ])
-        titles = list(corpus.title_tagged(fileids=subset_fileids))
+        # titles = list(corpus.title_tagged(fileids=subset_fileids))
+        titles = list(corpus.title_tagged())
         data = prepare_data.fit_transform(titles)
 
         network_plotter = TermCoocNetwork(data, n_terms=50)
