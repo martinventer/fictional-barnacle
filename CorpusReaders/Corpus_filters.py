@@ -8,62 +8,85 @@ Tools for filtering and grouping a corpus.These filters perform a single run
 through the data update the subset that meets the focus
 """
 from sklearn.model_selection import KFold
+import copy
 
 
 class FilteredCorpus(object):
     """
-    a wraper for the ScopusProcessedCorpusReader has its own fileids subset.
-    The object also keeps track of what filtered have been applied and in
-    what order.
+    A warpper for a corpus object that can return a subset view of the corpus.
     """
     def __init__(self, corpus):
         """
-        Wrap an existing corpus reader
         Parameters
         ----------
         corpus
             ScopusProcessedCorpusReader
         """
         self._corpus = corpus
-        self.subset = corpus.fileids()
+        self._view = copy.copy(self._corpus)
+        self.subset_ids = corpus.fileids()
         self.filters = []
 
-    def reset_subset(self, **kwargs):
-        self.subset = corpus.fileids(**kwargs)
+    def reset_subset(self):
+        """
+        reset the corpus view, subset_ids and filters
+        """
+        self._view = copy.copy(self._corpus)
+        self.subset_ids = self._corpus.fileids()
+        self.filters = []
 
-    def filter_by(self):
+    def view(self) -> object:
+        """
+        returns the filtered subset object
+        Returns
+        -------
+            current filtered corpus
+        """
+        return self._view
 
-        include_subset, exclude_subset = self._by_publication()
+    def filter(self,
+               how=None,
+               include_list=None
+               ) -> list:
+        """
+        applies a simple filter to the corpus. A generator object for one
+        corpus component is created. the method iterates over each component
+        and compairs the resultd to the desired list. In this process a list
+        of fileids meeting the filter criteria is created. Once complete the
+        method updates the view such that it only contains the subset fileids.
+        Parameters
+        ----------
+        how : str
+            a string pertaining to which generator should be used
+            for example :
+                'publication_year'
+                'publication_type'
+        include_list : list
+            a list of desired atributes that will be kept during filtering
+        Returns
+        -------
+            a list of fileids meeting the filter criteria
+        """
 
-        print("initial {} included {} excluded {}".format(
-            len(self.subset), len(include_subset), len(exclude_subset)))
+        # add current filter to the list of filters applied
+        self.filters.append(
+            {"method": how,
+             "include": include_list})
 
-        if len(include_subset) is 0 and len(exclude_subset) is not 0:
-            new_subset = list(set(self.subset) - set(exclude_subset))
-            self.subset = new_subset
+        # create the filter method
+        filter_field = getattr(self._view, how)
 
-        elif len(exclude_subset) is 0 and len(include_subset) is not 0:
-            self.subset = include_subset
+        # create a subset list that applies the filter to the current corpus
+        # view
+        self.subset_ids = [
+            filen for filen, year
+            in zip(self._view._fileids, filter_field())
+            if year in list_of_dates]
 
-        else:
-            new_subset = list(set(include_subset) - set(exclude_subset))
-            self.subset = new_subset
+        # update the current view of the corpus
+        self._view._fileids = self.subset_ids
 
-        return self.subset
-
-    def _by_publication(self,
-                        include_list=None,
-                        exclude_list=None,
-                        method="year"):
-        self.filters.append({
-            'publication': {
-                "method": method,
-                "include": include_list,
-                "exclude": exclude_list}})
-
-
-
-        return include_subset, exclude_subset
+        return self.subset_ids
 
 
 class CorpuKfoldLoader(object):
@@ -104,6 +127,9 @@ class CorpuKfoldLoader(object):
 
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
+    from pprint import PrettyPrinter
+
+    pp = PrettyPrinter(indent=4)
 
     root = "Tests/Test_Corpus/Processed_corpus/"
     corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
@@ -116,5 +142,29 @@ if __name__ == '__main__':
     # ==========================================================================
     if True:
         filtered_corpus = FilteredCorpus(corpus)
-        subset = filtered_corpus.filter_by()
+        # # pp.pprint(filtered_corpus._corpus.describe())
+        # # pp.pprint(filtered_corpus.view().describe())
 
+        list_of_dates = [1800, 2015]
+        temp = filtered_corpus.filter(
+            how='publication_year',
+            include_list=list_of_dates)
+        print(len(temp))
+
+        list_of_dates = ['Conference Paper', "Article"]
+        temp = filtered_corpus.filter(
+            how='publication_subtype',
+            include_list=list_of_dates)
+        print(len(temp))
+
+        list_of_dates = ['Conference Paper', "Article"]
+        filtered_corpus.reset_subset()
+        temp = filtered_corpus.filter(
+            how='publication_subtype',
+            include_list=list_of_dates)
+        print(len(temp))
+
+
+        #
+        gen = filtered_corpus.view().publication_subtype()
+        print(set(gen))
