@@ -81,7 +81,7 @@ class FilteredCorpus(object):
         self.subset_ids = [
             filen for filen, year
             in zip(self._view._fileids, filter_field())
-            if year in list_of_dates]
+            if year in include_list]
 
         # update the current view of the corpus
         self._view._fileids = self.subset_ids
