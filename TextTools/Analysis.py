@@ -14,6 +14,9 @@ from matplotlib.colors import LogNorm
 from yellowbrick.text.freqdist import FreqDistVisualizer
 import networkx as nx
 from fuzzywuzzy import fuzz
+from gensim.summarization.summarizer import summarize, summarize_corpus
+from gensim.summarization import keywords
+from gensim.corpora import Dictionary
 
 from scipy import sparse
 from scipy.cluster.hierarchy import dendrogram
@@ -649,6 +652,30 @@ class TermTemporal:
         plt.show()
 
 
+class Summary:
+    def __init__(self):
+        pass
+
+    def text_summary(self, text):
+        return summarize(text, ratio=0.01)
+
+    def text_keywords(self, text):
+        return keywords(text)
+
+    def corpus_summary(self, docs):
+        tokens = [str(i) for i in iter_flatten(data)]
+        dictionary = Dictionary(docs)
+        corpus = [dictionary.doc2bow(doc) for doc in
+                  docs]
+        selected_docs = summarize_corpus(corpus, ratio=0.001)
+        sumsum = []
+        for doc_number, document in enumerate(selected_docs):
+            # Retrieves all words from the document.
+            words = [dictionary[token_id] for (token_id, count) in document]
+            sumsum.append(words)
+        return selected_docs
+
+
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
     from sklearn.pipeline import Pipeline
@@ -767,7 +794,7 @@ if __name__ == '__main__':
     # ==========================================================================
     # TermCoocNetwork
     # ==========================================================================
-    if True:
+    if False:
         prepare_data = Pipeline(
             [('normalize', Transformers.TextNormalizer())
              ])
@@ -897,5 +924,29 @@ if __name__ == '__main__':
             n_terms=50)
         network_plotter.create_connections()
         network_plotter.plot()
+    # ==========================================================================
+    # Summary
+    # ==========================================================================
+    if True:
+        prepare_data = Pipeline(
+            [('normalize', Transformers.TextNormalizer())
+             ])
+        titles = list(corpus.description_tagged(fileids=subset_fileids))
+        data = prepare_data.fit_transform(titles)
+
+        # summary = Summary()
+        # print(summary.corpus_summary(data))
+
+        # tokens = [str(i) for i in iter_flatten(data)]
+        dictionary = Dictionary(data)
+        corpus = [dictionary.doc2bow(doc) for doc in
+                  data]
+        selected_docs = summarize_corpus(corpus, ratio=0.001)
+        sumsum = []
+        # for doc_number, document in enumerate(selected_docs):
+        #     # Retrieves all words from the document.
+        #     words = [dictionary[token_id] for (token_id, count) in document]
+        #     sumsum.append(words)
+
     # --------------------------------------------------------------------------
 
