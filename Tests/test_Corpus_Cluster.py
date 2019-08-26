@@ -1,26 +1,25 @@
 from unittest import TestCase
 
-from CorpusProcessingTools import Corpus_Cluster
-from CorpusReader import Elsevier_Corpus_Reader
-from CorpusProcessingTools import Corpus_Vectorizer
+import CorpusReaders.Corpus_filters
+import TextTools.Transformers
+from Depricated import Corpus_Cluster, Corpus_Vectorizer
+from CorpusReaders import Elsevier_Corpus_Reader
 
 from sklearn.pipeline import Pipeline
-
-import warnings
 
 
 class TestKMeansClusters(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+            "Test_Corpus/Processed_corpus/")
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
         self.model = Pipeline([
             ("norm", Corpus_Vectorizer.TitleNormalizer()),
             ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-            ('clusters', Corpus_Cluster.KMeansClusters(k=7))
+            ('clusters', TextTools.Transformers.KMeansClusters(k=7))
         ])
 
     def test_KMeansClusters(self):
@@ -34,10 +33,10 @@ class TestKMeansClusters(TestCase):
 class TestMiniBatchKMeansClusters(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+            "Test_Corpus/Processed_corpus/")
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
         self.model = Pipeline([
             ("norm", Corpus_Vectorizer.TitleNormalizer()),
@@ -56,15 +55,15 @@ class TestMiniBatchKMeansClusters(TestCase):
 class TestHierarchicalClustering(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+            "Test_Corpus/Processed_corpus/")
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
         self.model = Pipeline([
             ("norm", Corpus_Vectorizer.TitleNormalizer()),
             ("vect", Corpus_Vectorizer.OneHotVectorizer()),
-            ('clusters', Corpus_Cluster.HierarchicalClustering())
+            ('clusters', TextTools.Transformers.HierarchicalClustering())
         ])
 
     def test_HierarchicalClustering(self):
@@ -78,16 +77,16 @@ class TestHierarchicalClustering(TestCase):
 class TestSklearnTopicModels(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+            "Test_Corpus/Processed_corpus/")
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
 
     def test_transform(self):
         docs = list(self.corpus.title_tagged(fileids=self.subset))
-        skmodel = Corpus_Cluster.SklearnTopicModels(n_components=3,
-                                                    estimator='LDA')
+        skmodel = TextTools.Transformers.SklearnTopicModels(n_components=3,
+                                                            estimator='LDA')
         skmodel.fit_transform(docs)
         topics = skmodel.get_topics(n=5)
         target = 3

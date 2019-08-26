@@ -1,154 +1,281 @@
 from unittest import TestCase
 
-from CorpusProcessingTools import Corpus_Vectorizer
-from CorpusReader import Elsevier_Corpus_Reader
+import TextTools.Transformers
+import Utils.Utils
+from Depricated import Corpus_Vectorizer
+from CorpusReaders import Elsevier_Corpus_Reader
+
+import nltk
+from sklearn.feature_extraction.text import TfidfVectorizer
+from scipy import sparse
 
 
-class TestTokenize(TestCase):
-    def setUp(self) -> None:
-        self.corpus = [
-                "The elephant sneezed at the sight of potatoes.",
-                "Bats can see via echolocation. SDee the bat sneeze!",
-                "Wondering, she opened the door to the studio."
-            ]
-
-    def test_tokenize(self):
-        target = ['the', 'eleph', 'sneez', 'at', 'the', 'sight', 'of', 'potato']
-        result = [word for word in Corpus_Vectorizer.tokenize(self.corpus[0])]
-        self.assertEqual(result, target)
-        self.assertEqual(len(result), len(target))
-
-
-class TestTitleNormalizer(TestCase):
+class TestTextStemTokenize(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+            "Test_Corpus/Processed_corpus/")
 
-    def test_titleNormalizer(self):
-        target = 'histologic evaluation implant follow flapless flap surgery ' \
-                 'study canine'
-        docs = list(self.corpus.title_tagged(fileids=self.subset))
-        labels = [
-            self.corpus.categories(fileids=fileid)[0]
-            for fileid in self.subset
-        ]
-        normal = Corpus_Vectorizer.TitleNormalizer()
-        normal.fit(docs, labels)
-        result = list(normal.transform(docs))[0]
+    def test_stem(self):
+        stemmed = TextTools.Transformers.TextStemTokenize()
+        input_data = [
+            [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
+              ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
+              ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
+              ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
+              ('sensors', 'NNS')]]]
+        targets = [['a', 'studi', 'of', 'laundri', 'tidi', 'laundri', 'state',
+                    'determin', 'use', 'video', 'and', '3d', 'sensor']]
+        for target, text in zip(targets, input_data):
+            result = stemmed.stem(text)
+            self.assertEqual(target, result)
+            self.assertEqual(list, type(result))
 
-        self.assertEqual(result, target)
+    def test_transform(self):
+        stemmed = TextTools.Transformers.TextStemTokenize()
+        # check the that text is normalized
+        input_data = [
+            [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
+              ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
+              ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
+              ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
+              ('sensors', 'NNS')]]]
+        targets = [['a', 'studi', 'of', 'laundri', 'tidi', 'laundri', 'state',
+                    'determin', 'use', 'video', 'and', '3d', 'sensor']]
+        result = stemmed.transform(input_data)
+        self.assertEqual(targets, result)
+
+        # test that the output from the transformer works for all test titles
+        result2 = stemmed.transform(self.corpus.title_tagged())
+        self.assertEqual(list, type(result2))
+        self.assertEqual(list, type(result2[0]))
+        self.assertEqual(str, type(result2[0][0]))
+
+        # test that the output from the transformer works for all test
+        # descritions
+        result3 = stemmed.transform(self.corpus.description_tagged())
+        self.assertEqual(list, type(result3))
+        self.assertEqual(list, type(result3[0]))
+        self.assertEqual(str, type(result3[0][0]))
 
 
 class TestTextNormalizer(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+            "Test_Corpus/Processed_corpus/")
+
+    def test_is_punct(self):
+        normal = Corpus_Vectorizer
+        input_data = ['.', ',', 'i', '?', 't.', '.t']
+        targets = [True, True, False, True, False, False]
+        for target, text in zip(targets, input_data):
+            result = Utils.Utils.is_punct(text)
+            self.assertEqual(target, result)
+            self.assertEqual(bool, type(result))
+
+    def test_is_stopword(self):
+        normal = TextTools.Transformers.TextNormalizer()
+        input_data = ['.', ',', 'i', '?', 't.', '.t', 'the', 'Steven']
+        targets = [False, False, True, False, False, False, True, False]
+        for target, text in zip(targets, input_data):
+            result = normal.is_stopword(text)
+            self.assertEqual(target, result)
+            self.assertEqual(bool, type(result))
+
+    def test_lemmatize(self):
+        normal = TextTools.Transformers.TextNormalizer()
+        targets = ['garden']
+        input_data = [('gardening', 'V')]
+        for target, text in zip(targets, input_data):
+            result = normal.lemmatize(text[0], text[1])
+            self.assertEqual(target, result)
+            self.assertEqual(str, type(result))
+
+    def test_normalize(self):
+        normal = TextTools.Transformers.TextNormalizer()
+        targets = [['study', 'laundry', 'tidiness', 'laundry', 'state',
+                    'determination', 'use', 'video', '3d', 'sensor']]
+        input_data = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'),
+                   ('laundry', 'JJ'), ('tidiness', 'NN'), (':', ':'),
+                   ('Laundry', 'JJ'), ('state', 'NN'), ('determination', 'NN'),
+                   ('using', 'VBG'), ('video', 'NN'), ('and', 'CC'),
+                   ('3D', 'CD'), ('sensors', 'NNS')]]]
+        for target, text in zip(targets, input_data):
+            result = normal.normalize(text)
+            self.assertEqual(target, result)
+            self.assertEqual(list, type(result))
+            self.assertEqual(str, type(result[0]))
 
     def test_transform(self):
-        target = ['histologic', 'evaluation', 'implant', 'follow', 'flapless',
-                  'flap', 'surgery', 'study', 'canine']
-        docs = list(self.corpus.title_tagged(fileids=self.subset))
-        labels = [
-            self.corpus.categories(fileids=fileid)[0]
-            for fileid in self.subset
-        ]
-        normal = Corpus_Vectorizer.TextNormalizer()
-        normal.fit(docs, labels)
-        result = list(normal.transform(docs))[0]
+        normal = TextTools.Transformers.TextNormalizer()
+        # check the that text is normalized
+        targets = [['study', 'laundry', 'tidiness', 'laundry', 'state',
+                    'determination', 'use', 'video', '3d', 'sensor']]
+        input_data = [[[('A', 'DT'), ('study', 'NN'), ('of', 'IN'),
+                   ('laundry', 'JJ'), ('tidiness', 'NN'), (':', ':'),
+                   ('Laundry', 'JJ'), ('state', 'NN'), ('determination', 'NN'),
+                   ('using', 'VBG'), ('video', 'NN'), ('and', 'CC'),
+                   ('3D', 'CD'), ('sensors', 'NNS')]]]
+        result = normal.transform(input_data)
+        self.assertEqual(targets, result)
 
-        self.assertEqual(result, target)
+        # test that the output from the transformer works for all test titles
+        result2 = normal.transform(self.corpus.title_tagged())
+        self.assertEqual(list, type(result2))
+        self.assertEqual(list, type(result2[0]))
+        self.assertEqual(str, type(result2[0][0]))
+
+        # test that the output from the transformer works for all test
+        # descritions
+        result3 = normal.transform(self.corpus.description_tagged())
+        self.assertEqual(list, type(result3))
+        self.assertEqual(list, type(result3[0]))
+        self.assertEqual(str, type(result3[0][0]))
 
 
-class TestCorpusFrequencyVector(TestCase):
+class TestTextSimpleTokenizer(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+            "Test_Corpus/Processed_corpus/")
+
+    def test_get_words(self):
+        simple = TextTools.Transformers.TextSimpleTokenizer()
+        input_data = [
+            [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
+              ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
+              ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
+              ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
+              ('sensors', 'NNS')]]]
+        targets = [['A', 'study', 'of', 'laundry', 'tidiness', ':', 'Laundry',
+                    'state', 'determination', 'using', 'video', 'and', '3D',
+                    'sensors']]
+        for target, text in zip(targets, input_data):
+            result = simple.get_words(text)
+            self.assertEqual(target, result)
+            self.assertEqual(list, type(result))
 
     def test_transform(self):
-        target = 9
+        simple = TextTools.Transformers.TextSimpleTokenizer()
+        # check the that text is normalized
+        input_data = [
+            [[('A', 'DT'), ('study', 'NN'), ('of', 'IN'), ('laundry', 'JJ'),
+              ('tidiness', 'NN'), (':', ':'), ('Laundry', 'JJ'),
+              ('state', 'NN'), ('determination', 'NN'), ('using', 'VBG'),
+              ('video', 'NN'), ('and', 'CC'), ('3D', 'CD'),
+              ('sensors', 'NNS')]]]
+        targets = [['A', 'study', 'of', 'laundry', 'tidiness', ':', 'Laundry',
+                    'state', 'determination', 'using', 'video', 'and', '3D',
+                    'sensors']]
+        result = simple.transform(input_data)
+        self.assertEqual(targets, result)
 
-        docs = list(self.corpus.title_tagged(fileids=self.subset))
-        labels = [
-            self.corpus.categories(fileids=fileid)[0]
-            for fileid in self.subset
-        ]
-        normal = Corpus_Vectorizer.TextNormalizer()
-        normal.fit(docs, labels)
-        normed = normal.transform(docs)
+        # test that the output from the transformer works for all test titles
+        result2 = simple.transform(self.corpus.title_tagged())
+        self.assertEqual(list, type(result2))
+        self.assertEqual(list, type(result2[0]))
+        self.assertEqual(str, type(result2[0][0]))
 
-        vec = Corpus_Vectorizer.CorpusFrequencyVector()
-        vector = vec.fit_transform(normed)
-
-        result = list(vector)[0].toarray().sum()
-
-        self.assertEqual(result, target)
+        # test that the output from the transformer works for all test
+        # descritions
+        result3 = simple.transform(self.corpus.description_tagged())
+        self.assertEqual(list, type(result3))
+        self.assertEqual(list, type(result3[0]))
+        self.assertEqual(str, type(result3[0][0]))
 
 
-class TestCorpusTFIDVector(TestCase):
+class TestCorpus2FrequencyVector(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+            "Test_Corpus/Processed_corpus/")
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
+        self.input_text = self.simple.transform(self.corpus.title_tagged())
 
     def test_transform(self):
-        target = 2.9273075918083933
+        vectorizer = TextTools.Transformers.Text2FrequencyVector()
+        matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))
+        results = []
+        for document in matrix:
+            results.append(document.sum())
 
-        docs = list(self.corpus.title_tagged(fileids=self.subset))
-        labels = [
-            self.corpus.categories(fileids=fileid)[0]
-            for fileid in self.subset
-        ]
-        normal = Corpus_Vectorizer.TextNormalizer()
-        normal.fit(docs, labels)
-        normed = normal.transform(docs)
+        targets = []
+        for doc in self.corpus.document_title():
+            tokens = [nltk.wordpunct_tokenize(sent)
+                      for sent in nltk.sent_tokenize(doc)]
+            tokens_flat = [item for sublist in tokens for item in sublist]
+            targets.append(len(tokens_flat))
 
-        vec = Corpus_Vectorizer.CorpusTFIDVector()
-        vector = vec.fit_transform(normed)
-
-        result = list(vector)[0].toarray().sum()
-
-        self.assertEqual(result, target)
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
 
 
-class TestCorpusTFIDVector(TestCase):
+class TestText2OneHotVector(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+            "Test_Corpus/Processed_corpus/")
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
+        self.input_text = self.simple.transform(self.corpus.title_tagged())
 
     def test_transform(self):
-        target = 9
+        vectorizer = TextTools.Transformers.Text2OneHotVector()
+        matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))
+        results = []
+        for document in matrix:
+            results.append(document.sum())
 
-        docs = list(self.corpus.title_tagged(fileids=self.subset))
-        labels = [
-            self.corpus.categories(fileids=fileid)[0]
-            for fileid in self.subset
-        ]
-        normal = Corpus_Vectorizer.TextNormalizer()
-        normal.fit(docs, labels)
-        normed = normal.transform(docs)
+        targets = []
+        for doc in self.corpus.document_title():
+            tokens = [nltk.wordpunct_tokenize(sent)
+                      for sent in nltk.sent_tokenize(doc)]
+            tokens_flat = set([item for sublist in tokens for item in sublist])
+            targets.append(len(tokens_flat))
 
-        vec = Corpus_Vectorizer.CorpusOneHotVector()
-        vector = vec.fit_transform(normed)
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
 
-        result = list(vector)[0].toarray().sum()
 
-        self.assertEqual(result, target)
+class TestText2TFIDVector(TestCase):
+    def setUp(self) -> None:
+        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Test_Corpus/Processed_corpus/")
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
+        self.tfidf = TfidfVectorizer(tokenizer=self._identity,
+                                     preprocessor=None,
+                                     lowercase=False)
+        self.input_text = self.simple.transform(self.corpus.title_tagged())
+
+    @staticmethod
+    def _identity(words):
+        return words
+
+    def test_transform(self):
+        vectorizer = TextTools.Transformers.Text2TFIDVector()
+        matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))
+        results = []
+        for document in matrix:
+            results.append(document.sum())
+
+        matrix = self.tfidf.fit_transform(self.input_text)
+        targets = []
+        for document in matrix:
+            targets.append(document.sum())
+
+        self.assertEqual(len(targets), len(results))
+        for result, target in zip(results, targets):
+            self.assertEqual(target, result)
+
+
+class TestText2Doc2VecVector(TestCase):
+    def setUp(self) -> None:
+        self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+            "Test_Corpus/Processed_corpus/")
+        self.simple = TextTools.Transformers.TextSimpleTokenizer()
+        self.input_text = self.simple.transform(self.corpus.title_tagged())
+
+    def test_transform(self):
+        vectorizer = TextTools.Transformers.Text2Doc2VecVector()
+        matrix = vectorizer.fit_transform(self.input_text)
+        self.assertEqual(sparse.csr.csr_matrix, type(matrix))

@@ -1,41 +1,35 @@
 from unittest import TestCase
 
-from CorpusProcessingTools import Context_Extraction
-from CorpusReader import Elsevier_Corpus_Reader
-from CorpusProcessingTools import Corpus_Vectorizer
+import CorpusReaders.Corpus_filters
+import TextTools.Transformers
+from Depricated import Context_Extraction
+from CorpusReaders import Elsevier_Corpus_Reader
 
 
 class TestKeyphraseExtractor(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-            "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
-        self.subset = next(self.loader.fileids(test=True))
+            "Test_Corpus/Processed_corpus/")
 
     def test_transform(self):
-        docs = list(self.corpus.title_tagged(fileids=self.subset))
-        phrase_extractor = Context_Extraction.KeyphraseExtractor()
-        keyphrases = list(phrase_extractor.fit_transform(docs))
-        result = keyphrases[0]
-        target = ['histologic evaluation of implants', 'flapless', 'surgery',
-                  'study in canines']
-        self.assertEqual(target, result)
+        phrase_extractor = TextTools.Transformers.KeyphraseExtractorL()
+        phrases = phrase_extractor.fit_transform(self.corpus.title_tagged())
+        for doc in phrases:
+            self.assertEqual(list, type(doc))
 
 
 class TestEntityExtractor(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
 
     def test_transform(self):
         docs = list(self.corpus.title_tagged(fileids=self.subset))
-        phrase_extractor = Context_Extraction.EntityExtractor()
+        phrase_extractor = TextTools.Transformers.EntityExtractor()
         keyphrases = list(phrase_extractor.fit_transform(docs))
         result = keyphrases[0]
         target = ['histologic']
@@ -46,14 +40,14 @@ class TestRankGrams(TestCase):
     def setUp(self) -> None:
         self.corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             "Corpus/Processed_corpus/")
-        self.loader = Elsevier_Corpus_Reader.CorpuKfoldLoader(self.corpus,
-                                                              n_folds=12,
-                                                              shuffle=False)
+        self.loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(self.corpus,
+                                                                    n_folds=12,
+                                                                    shuffle=False)
         self.subset = next(self.loader.fileids(test=True))
 
     def test_transform_n2(self):
         docs = list(self.corpus.title_words(fileids=self.subset))
-        ranker = Context_Extraction.RankGrams(n=2)
+        ranker = TextTools.Transformers.RankGrams(n=2)
         ranked = list(ranker.transform(docs))
         result = ranked[0][0]
         target = ('based', 'on')
@@ -64,7 +58,7 @@ class TestRankGrams(TestCase):
 
     def test_transform_n3(self):
         docs = list(self.corpus.title_words(fileids=self.subset))
-        ranker = Context_Extraction.RankGrams(n=3)
+        ranker = TextTools.Transformers.RankGrams(n=3)
         ranked = list(ranker.transform(docs))
         result = ranked[0][0]
         target = ('based', 'on', 'the')
@@ -75,7 +69,7 @@ class TestRankGrams(TestCase):
 
     def test_transform_n4(self):
         docs = list(self.corpus.title_words(fileids=self.subset))
-        ranker = Context_Extraction.RankGrams(n=4)
+        ranker = TextTools.Transformers.RankGrams(n=4)
         ranked = list(ranker.transform(docs))
         result = ranked[0][0]
         target = ('based', 'on', 'multi', '-')

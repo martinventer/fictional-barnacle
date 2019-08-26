@@ -727,3 +727,109 @@
 2019-07-01 17:46:15,099 file Corpus/Processed_corpus/soft robot/ already exists
 2019-07-01 17:46:15,755 file Corpus/Processed_corpus/soft robot/ already exists
 2019-07-01 17:46:15,776 End
+2019-07-09 15:34:18,405 Corpus Builder Initialised
+2019-07-09 15:34:18,405 Start building corpus
+2019-07-09 15:34:18,405 file Corpus/Raw_corpus already exists
+2019-07-09 15:35:48,518 Corpus Builder Initialised
+2019-07-09 15:35:48,518 Start building corpus
+2019-07-09 15:35:48,519 file Corpus/Raw_corpus already exists
+2019-07-09 15:35:48,519 searching for shoes
+2019-07-09 15:35:48,519 Start retrieving shoes in year 1998
+2019-07-09 15:36:53,073 searching for socks
+2019-07-09 15:36:53,073 Start retrieving socks in year 1998
+2019-07-09 15:37:14,103 End
+2019-07-13 14:52:39,418 Start splitting raw corpus files
+2019-07-13 14:52:39,548 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,548 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,549 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,549 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,549 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,550 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,550 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,550 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,551 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,551 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,553 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,554 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,555 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,557 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,559 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,560 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,562 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,564 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,568 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,572 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,578 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,587 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,599 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,614 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,640 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,673 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,705 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,742 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,788 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,853 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:39,934 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:40,029 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:40,192 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:40,342 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:40,553 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:40,833 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:41,082 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:41,431 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:41,854 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:42,257 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:42,783 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:44,146 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:45,993 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:48,600 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:49,107 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:52:49,126 End
+2019-07-13 14:53:14,893 Start splitting raw corpus files
+2019-07-13 14:53:14,895 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,895 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,896 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,896 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,897 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,898 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,898 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,899 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,900 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,901 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,904 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,906 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,909 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,912 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,919 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,922 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,925 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,929 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,935 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,940 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,948 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,958 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,972 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:14,987 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,011 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,050 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,097 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,138 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,186 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,250 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,329 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,424 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,552 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,743 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:15,931 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:16,207 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:16,453 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:16,819 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:17,162 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:17,634 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:18,157 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:19,566 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:21,198 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:23,720 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:24,230 file Corpus/Split_corpus/soft robot/ already exists
+2019-07-13 14:53:24,250 End
+2019-07-13 14:54:30,867 file /home/martin/Documents/RESEARCH/fictional-barnacle/Corpus/Split_corpus/soft robot already exists

@@ -8,7 +8,7 @@ Author_Networks.py
 Reads the pre-processed Corpus data and generates bibliometric plots
 """
 
-from CorpusReader import Elsevier_Corpus_Reader
+from CorpusReaders import Elsevier_Corpus_Reader
 
 from itertools import combinations
 from collections import Counter
@@ -41,7 +41,7 @@ class AuthorNetworks():
 
         """
         self.path = path
-        self.corpus = Elsevier_Corpus_Reader.ScopusRawCorpusReader(path)
+        self.corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(path)
 
     def build_co_author_network(self, **kwargs) -> list:
         """

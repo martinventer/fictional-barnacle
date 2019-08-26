@@ -1,7 +1,5 @@
-
-from Ingestor import Elsivier_Ingestor
-from CorpusProcessingTools import Elsivier_Corpus_Pre_Processor
-from CorpusReader import Elsevier_Corpus_Reader
+from CorpusReaders import Elsevier_Corpus_Reader, Corpus_Pre_Processor, \
+    Elsivier_Ingestor
 from PlottingTools import Author_Networks
 
 
@@ -12,33 +10,29 @@ def download_corpus():
     -------
 
     """
-    search_terms = ['soft robot']
-    dates = (1950, 2021)
-
     builder = Elsivier_Ingestor.ScopusIngestionEngine(
-        search_terms=search_terms,
         file_path="Corpus/Raw_corpus/",
-        dates=dates,
         home=False,
         batch_size=25)
 
-    builder.build_corpus()
+    builder.build_corpus(search_terms=['soft robot'],
+                         dates=(1998, 1999))
 
 
 def reformat_corpus():
     root = "Corpus/Raw_corpus/"
-    target = "Corpus/Processed_corpus/"
+    target = "Corpus/Split_corpus/"
 
-    corpus = Elsivier_Corpus_Pre_Processor.PickledCorpusRefactor(root=root,
-                                                                 target=target)
-    corpus.refactor_corpus()
+    corpus = Elsevier_Corpus_Reader.RawCorpusReader(root=root)
+
+    Corpus_Pre_Processor.split_corpus(corpus=corpus, target=target)
 
 
 def process_corpus():
-    corp = Elsevier_Corpus_Reader.ScopusRawCorpusReader(
-            "Corpus/Processed_corpus/")
+    corp = Elsevier_Corpus_Reader.ScopusCorpusReader(
+            "Corpus/Split_corpus/")
 
-    formatter = Elsivier_Corpus_Pre_Processor.PickledCorpusPreProcessor(corp)
+    formatter = Corpus_Pre_Processor.ScopusCorpusProcessor(corp)
 
     formatter.transform()
 
@@ -62,8 +56,8 @@ if __name__ == '__main__':
     process_corpus()
 
     # step 4: load the corpus reader
-    corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
-        "Corpus/Processed_corpus/")
+    # corp = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
+    #     "Corpus/Processed_corpus/")
 
     # step 5: plot author connectivity
     # plot_features()
