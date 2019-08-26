@@ -687,9 +687,6 @@ if __name__ == '__main__':
     loader = CorpusReaders.Corpus_filters.CorpuKfoldLoader(corpus, 10, shuffle=False)
     subset_fileids = next(loader.fileids(test=True))
 
-    titles = list(corpus.title_tagged(fileids=subset_fileids))
-    descriptions = list(corpus.description_tagged(fileids=subset_fileids))
-
     # ==========================================================================
     # DendrogramPlot
     # ==========================================================================
@@ -929,10 +926,12 @@ if __name__ == '__main__':
     # ==========================================================================
     if True:
         prepare_data = Pipeline(
-            [('normalize', Transformers.TextNormalizer())
+            # [('normalize', Transformers.TextNormalizer())
+            [('normalize', Transformers.TextSimpleTokenizer())
              ])
-        titles = list(corpus.description_tagged(fileids=subset_fileids))
-        data = prepare_data.fit_transform(titles)
+        titles = list(corpus.title_tagged(fileids=subset_fileids))
+        descriptions = list(corpus.description_tagged(fileids=subset_fileids))
+        data = prepare_data.fit_transform(descriptions)
 
         # summary = Summary()
         # print(summary.corpus_summary(data))
@@ -941,12 +940,14 @@ if __name__ == '__main__':
         dictionary = Dictionary(data)
         corpus = [dictionary.doc2bow(doc) for doc in
                   data]
-        selected_docs = summarize_corpus(corpus, ratio=0.001)
+        selected_docs = summarize_corpus(corpus, ratio=0.01)
         sumsum = []
-        # for doc_number, document in enumerate(selected_docs):
-        #     # Retrieves all words from the document.
-        #     words = [dictionary[token_id] for (token_id, count) in document]
-        #     sumsum.append(words)
+        for doc_number, document in enumerate(selected_docs):
+            # Retrieves all words from the document.
+            # words = [dictionary[token_id] for (token_id, count) in document]
+            # sumsum.append(words)
+            words = [dictionary[token_id] for (token_id, count) in document]
+            print(" ".join(words) + "\n \n")
 
     # --------------------------------------------------------------------------
 
