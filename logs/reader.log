@@ -3486,3 +3486,240 @@
 2019-08-22 08:03:24,245 built Dictionary(16469 unique tokens: ["'", '(', ')', ').', ',']...) from 1453 documents (total 294281 corpus positions)
 2019-08-22 08:07:25,910 adding document #0 to Dictionary(0 unique tokens: [])
 2019-08-22 08:07:26,129 built Dictionary(16469 unique tokens: ["'", '(', ')', ').', ',']...) from 1453 documents (total 294281 corpus positions)
+2019-08-26 08:59:43,126 Corpus Builder Initialised
+2019-08-26 08:59:43,126 Start building corpus
+2019-08-26 08:59:43,126 searching for soft robot
+2019-08-26 08:59:43,126 Start retrieving soft robot in year 1950
+2019-08-26 08:59:44,869  soft robot in year 1950 contains no results
+2019-08-26 08:59:44,870 Start retrieving soft robot in year 1951
+2019-08-26 08:59:46,176  soft robot in year 1951 contains no results
+2019-08-26 08:59:46,177 Start retrieving soft robot in year 1952
+2019-08-26 08:59:47,749  soft robot in year 1952 contains no results
+2019-08-26 08:59:47,749 Start retrieving soft robot in year 1953
+2019-08-26 08:59:49,097  soft robot in year 1953 contains no results
+2019-08-26 08:59:49,098 Start retrieving soft robot in year 1954
+2019-08-26 08:59:50,537  soft robot in year 1954 contains no results
+2019-08-26 08:59:50,537 Start retrieving soft robot in year 1955
+2019-08-26 08:59:51,887  soft robot in year 1955 contains no results
+2019-08-26 08:59:51,887 Start retrieving soft robot in year 1956
+2019-08-26 08:59:53,234  soft robot in year 1956 contains no results
+2019-08-26 08:59:53,235 Start retrieving soft robot in year 1957
+2019-08-26 08:59:54,675  soft robot in year 1957 contains no results
+2019-08-26 08:59:54,675 Start retrieving soft robot in year 1958
+2019-08-26 08:59:56,025  soft robot in year 1958 contains no results
+2019-08-26 08:59:56,025 Start retrieving soft robot in year 1959
+2019-08-26 08:59:57,557  soft robot in year 1959 contains no results
+2019-08-26 08:59:57,557 Start retrieving soft robot in year 1960
+2019-08-26 08:59:58,995  soft robot in year 1960 contains no results
+2019-08-26 08:59:58,995 Start retrieving soft robot in year 1961
+2019-08-26 09:00:00,707  soft robot in year 1961 contains no results
+2019-08-26 09:00:00,707 Start retrieving soft robot in year 1962
+2019-08-26 09:00:04,875  soft robot in year 1962 contains no results
+2019-08-26 09:00:04,876 Start retrieving soft robot in year 1963
+2019-08-26 09:00:06,656  soft robot in year 1963 contains no results
+2019-08-26 09:00:06,656 Start retrieving soft robot in year 1964
+2019-08-26 09:00:08,175  soft robot in year 1964 contains no results
+2019-08-26 09:00:08,176 Start retrieving soft robot in year 1965
+2019-08-26 09:00:09,797  soft robot in year 1965 contains no results
+2019-08-26 09:00:09,797 Start retrieving soft robot in year 1966
+2019-08-26 09:00:11,142  soft robot in year 1966 contains no results
+2019-08-26 09:00:11,142 Start retrieving soft robot in year 1967
+2019-08-26 09:00:12,800  soft robot in year 1967 contains no results
+2019-08-26 09:00:12,800 Start retrieving soft robot in year 1968
+2019-08-26 09:00:14,207  soft robot in year 1968 contains no results
+2019-08-26 09:00:14,207 Start retrieving soft robot in year 1969
+2019-08-26 09:00:15,679  soft robot in year 1969 contains no results
+2019-08-26 09:00:15,679 Start retrieving soft robot in year 1970
+2019-08-26 09:00:17,357  soft robot in year 1970 contains no results
+2019-08-26 09:00:17,358 Start retrieving soft robot in year 1971
+2019-08-26 09:00:18,701  soft robot in year 1971 contains no results
+2019-08-26 09:00:18,701 Start retrieving soft robot in year 1972
+2019-08-26 09:00:22,319 Start retrieving soft robot in year 1973
+2019-08-26 09:00:24,070  soft robot in year 1973 contains no results
+2019-08-26 09:00:24,070 Start retrieving soft robot in year 1974
+2019-08-26 09:00:25,636  soft robot in year 1974 contains no results
+2019-08-26 09:00:25,637 Start retrieving soft robot in year 1975
+2019-08-26 09:00:28,980 Start retrieving soft robot in year 1976
+2019-08-26 09:00:30,588  soft robot in year 1976 contains no results
+2019-08-26 09:00:30,588 Start retrieving soft robot in year 1977
+2019-08-26 09:00:33,912 Start retrieving soft robot in year 1978
+2019-08-26 09:00:37,270 Start retrieving soft robot in year 1979
+2019-08-26 09:00:40,306 Start retrieving soft robot in year 1980
+2019-08-26 09:00:43,566 Start retrieving soft robot in year 1981
+2019-08-26 09:00:47,775 Start retrieving soft robot in year 1982
+2019-08-26 09:00:50,783 Start retrieving soft robot in year 1983
+2019-08-26 09:00:53,655 Start retrieving soft robot in year 1984
+2019-08-26 09:00:56,957 Start retrieving soft robot in year 1985
+2019-08-26 09:01:00,521 Start retrieving soft robot in year 1986
+2019-08-26 09:01:04,516 Start retrieving soft robot in year 1987
+2019-08-26 09:01:08,401 Start retrieving soft robot in year 1988
+2019-08-26 09:01:12,262 Start retrieving soft robot in year 1989
+2019-08-26 09:01:16,490 Start retrieving soft robot in year 1990
+2019-08-26 09:01:19,996 Start retrieving soft robot in year 1991
+2019-08-26 09:01:23,562 Start retrieving soft robot in year 1992
+2019-08-26 09:01:29,499 Start retrieving soft robot in year 1993
+2019-08-26 09:01:36,025 Start retrieving soft robot in year 1994
+2019-08-26 09:01:42,323 Start retrieving soft robot in year 1995
+2019-08-26 09:01:50,686 Start retrieving soft robot in year 1996
+2019-08-26 09:02:02,992 Start retrieving soft robot in year 1997
+2019-08-26 09:02:19,491 Start retrieving soft robot in year 1998
+2019-08-26 09:02:36,850 Start retrieving soft robot in year 1999
+2019-08-26 09:02:56,953 Start retrieving soft robot in year 2000
+2019-08-26 09:03:31,097 Corpus Builder Initialised
+2019-08-26 09:03:31,097 Start building corpus
+2019-08-26 09:03:31,100 file Corpus/Raw_corpus already exists
+2019-08-26 09:03:31,100 file Corpus/Raw_corpus/soft robot already exists
+2019-08-26 09:03:31,100 searching for soft robot
+2019-08-26 09:03:31,100 Start retrieving soft robot in year 1950
+2019-08-26 09:03:32,483  soft robot in year 1950 contains no results
+2019-08-26 09:03:32,484 Start retrieving soft robot in year 1951
+2019-08-26 09:03:34,327  soft robot in year 1951 contains no results
+2019-08-26 09:03:34,327 Start retrieving soft robot in year 1952
+2019-08-26 09:03:35,630  soft robot in year 1952 contains no results
+2019-08-26 09:03:35,630 Start retrieving soft robot in year 1953
+2019-08-26 09:03:37,069  soft robot in year 1953 contains no results
+2019-08-26 09:03:37,069 Start retrieving soft robot in year 1954
+2019-08-26 09:03:38,416  soft robot in year 1954 contains no results
+2019-08-26 09:03:38,416 Start retrieving soft robot in year 1955
+2019-08-26 09:03:39,769  soft robot in year 1955 contains no results
+2019-08-26 09:03:39,769 Start retrieving soft robot in year 1956
+2019-08-26 09:03:41,296  soft robot in year 1956 contains no results
+2019-08-26 09:03:41,296 Start retrieving soft robot in year 1957
+2019-08-26 09:03:42,739  soft robot in year 1957 contains no results
+2019-08-26 09:03:42,739 Start retrieving soft robot in year 1958
+2019-08-26 09:03:44,089  soft robot in year 1958 contains no results
+2019-08-26 09:03:44,089 Start retrieving soft robot in year 1959
+2019-08-26 09:03:45,485  soft robot in year 1959 contains no results
+2019-08-26 09:03:45,486 Start retrieving soft robot in year 1960
+2019-08-26 09:03:46,916  soft robot in year 1960 contains no results
+2019-08-26 09:03:46,916 Start retrieving soft robot in year 1961
+2019-08-26 09:03:48,319  soft robot in year 1961 contains no results
+2019-08-26 09:03:48,319 Start retrieving soft robot in year 1962
+2019-08-26 09:03:49,663  soft robot in year 1962 contains no results
+2019-08-26 09:03:49,663 Start retrieving soft robot in year 1963
+2019-08-26 09:03:51,018  soft robot in year 1963 contains no results
+2019-08-26 09:03:51,019 Start retrieving soft robot in year 1964
+2019-08-26 09:03:52,636  soft robot in year 1964 contains no results
+2019-08-26 09:03:52,636 Start retrieving soft robot in year 1965
+2019-08-26 09:03:54,079  soft robot in year 1965 contains no results
+2019-08-26 09:03:54,080 Start retrieving soft robot in year 1966
+2019-08-26 09:03:55,516  soft robot in year 1966 contains no results
+2019-08-26 09:03:55,516 Start retrieving soft robot in year 1967
+2019-08-26 09:03:56,904  soft robot in year 1967 contains no results
+2019-08-26 09:03:56,904 Start retrieving soft robot in year 1968
+2019-08-26 09:03:58,125  soft robot in year 1968 contains no results
+2019-08-26 09:03:58,125 Start retrieving soft robot in year 1969
+2019-08-26 09:03:59,613  soft robot in year 1969 contains no results
+2019-08-26 09:03:59,613 Start retrieving soft robot in year 1970
+2019-08-26 09:04:00,969  soft robot in year 1970 contains no results
+2019-08-26 09:04:00,970 Start retrieving soft robot in year 1971
+2019-08-26 09:04:02,400  soft robot in year 1971 contains no results
+2019-08-26 09:04:02,400 Start retrieving soft robot in year 1972
+2019-08-26 09:04:05,295 Start retrieving soft robot in year 1973
+2019-08-26 09:04:06,498  soft robot in year 1973 contains no results
+2019-08-26 09:04:06,498 Start retrieving soft robot in year 1974
+2019-08-26 09:04:07,757  soft robot in year 1974 contains no results
+2019-08-26 09:04:07,757 Start retrieving soft robot in year 1975
+2019-08-26 09:04:10,635 Start retrieving soft robot in year 1976
+2019-08-26 09:04:11,987  soft robot in year 1976 contains no results
+2019-08-26 09:04:11,988 Start retrieving soft robot in year 1977
+2019-08-26 09:04:15,135 Start retrieving soft robot in year 1978
+2019-08-26 09:04:18,049 Start retrieving soft robot in year 1979
+2019-08-26 09:04:20,894 Start retrieving soft robot in year 1980
+2019-08-26 09:04:24,044 Start retrieving soft robot in year 1981
+2019-08-26 09:04:27,159 Start retrieving soft robot in year 1982
+2019-08-26 09:04:30,441 Start retrieving soft robot in year 1983
+2019-08-26 09:04:33,502 Start retrieving soft robot in year 1984
+2019-08-26 09:04:36,651 Start retrieving soft robot in year 1985
+2019-08-26 09:04:40,248 Start retrieving soft robot in year 1986
+2019-08-26 09:04:43,672 Start retrieving soft robot in year 1987
+2019-08-26 09:04:47,452 Start retrieving soft robot in year 1988
+2019-08-26 09:04:50,823 Start retrieving soft robot in year 1989
+2019-08-26 09:04:55,101 Start retrieving soft robot in year 1990
+2019-08-26 09:04:59,060 Start retrieving soft robot in year 1991
+2019-08-26 09:05:03,312 Start retrieving soft robot in year 1992
+2019-08-26 09:05:09,148 Start retrieving soft robot in year 1993
+2019-08-26 09:05:15,348 Start retrieving soft robot in year 1994
+2019-08-26 09:05:20,893 Start retrieving soft robot in year 1995
+2019-08-26 09:05:29,030 Start retrieving soft robot in year 1996
+2019-08-26 09:05:41,372 Start retrieving soft robot in year 1997
+2019-08-26 09:05:57,797 Start retrieving soft robot in year 1998
+2019-08-26 09:06:14,810 Start retrieving soft robot in year 1999
+2019-08-26 09:06:35,096 Start retrieving soft robot in year 2000
+2019-08-26 09:07:03,987 Start retrieving soft robot in year 2001
+2019-08-26 09:07:37,225 Start retrieving soft robot in year 2002
+2019-08-26 09:08:15,901 Start retrieving soft robot in year 2003
+2019-08-26 09:09:03,679 Start retrieving soft robot in year 2004
+2019-08-26 09:10:21,712 Start retrieving soft robot in year 2005
+2019-08-26 09:11:47,411 Start retrieving soft robot in year 2006
+2019-08-26 09:13:29,207 Start retrieving soft robot in year 2007
+2019-08-26 09:15:32,428 Start retrieving soft robot in year 2008
+2019-08-26 09:18:04,900 Start retrieving soft robot in year 2009
+2019-08-26 09:21:13,278 Start retrieving soft robot in year 2010
+2019-08-26 09:25:01,166 Start retrieving soft robot in year 2011
+2019-08-26 09:29:06,519 Start retrieving soft robot in year 2012
+2019-08-26 09:34:18,118 Start retrieving soft robot in year 2013
+2019-08-26 09:40:06,305 Start retrieving soft robot in year 2014
+2019-08-26 09:46:51,454 Start retrieving soft robot in year 2015
+2019-08-26 09:54:39,623 Start retrieving soft robot in year 2016
+2019-08-26 09:54:42,039 more than 5000 entries expected for  soft robot in year 2016
+2019-08-26 10:13:38,345 Start retrieving soft robot in year 2017
+2019-08-26 10:13:40,648 more than 5000 entries expected for  soft robot in year 2017
+2019-08-26 10:36:53,740 Start retrieving soft robot in year 2018
+2019-08-26 10:36:55,929 more than 5000 entries expected for  soft robot in year 2018
+2019-08-26 10:56:38,095 connection fails with status 400
+2019-08-26 10:56:38,096 	 search term soft robot starting at 5000
+2019-08-26 10:56:38,096 no data to retrieve soft robot in year 2018
+2019-08-26 11:07:46,921 Start retrieving soft robot in year 2019
+2019-08-26 11:07:49,221 more than 5000 entries expected for  soft robot in year 2019
+2019-08-26 11:14:05,599  soft robot in year 2019 contains no results
+2019-08-26 11:31:50,541 Start retrieving soft robot in year 2020
+2019-08-26 11:31:59,189 End
+2019-08-27 08:39:27,316 Start splitting raw corpus files
+2019-08-27 08:39:27,317 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,318 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,318 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,318 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,319 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,319 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,319 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,320 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,320 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,321 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,322 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,323 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,325 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,326 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,328 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,330 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,331 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,334 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,337 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,340 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,346 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,355 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,367 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,382 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,400 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,432 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,499 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,549 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,598 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,664 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,745 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:27,841 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:28,013 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:28,170 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:28,361 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:28,634 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:28,901 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:29,266 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:29,668 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:30,083 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:30,603 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:32,116 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:34,042 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:36,354 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:38,311 file Corpus/Split_corpus/soft robot/ already exists
+2019-08-27 08:39:38,369 End
+2019-08-27 08:45:13,916 file /home/martin/Documents/RESEARCH/fictional-barnacle/Corpus/Split_corpus/soft robot already exists

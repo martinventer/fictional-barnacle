@@ -1191,19 +1191,24 @@ class ScopusProcessedCorpusReader(ScopusCorpusReader):
         return {
             'files':  n_fileids,
             'topics': n_topics,
-            'titles':  counts['titles'],
-            't_words':  counts['t_words'],
-            't_vocab':  len(t_tokens),
-            't_lexdiv': float(counts['t_words']) / float(len(t_tokens)),
-            't_tpdoc':  float(counts['titles']) / float(n_fileids),
-            't_wptit':  float(counts['t_words']) / float(counts['titles']),
-            'description': counts['description'],
-            'd_words': counts['d_words'],
-            'd_vocab': len(t_tokens),
-            'd_lexdiv': float(counts['d_words']) / float(len(t_tokens)),
-            'd_tpdoc': float(counts['description']) / float(n_fileids),
-            'd_wptit': float(counts['d_words']) / float(counts['description']),
-            'secs':   time.time() - started,
+            'title_num':  counts['titles'],
+            'title_word_count':  counts['t_words'],
+            'title_vocab':  len(t_tokens),
+            'title_lexical_diversity':
+                float(counts['t_words']) / float(len(t_tokens)),
+            'titles_per_doc':  float(counts['titles']) / float(n_fileids),
+            'title_words_per_title':
+                float(counts['t_words']) / float(counts['titles']),
+            'description_num': counts['description'],
+            'description_word_count': counts['d_words'],
+            'description_vocab': len(d_tokens),
+            'description_lexical_diversity':
+                float(counts['d_words']) / float(len(t_tokens)),
+            'descriptions_per_doc':
+                float(counts['description']) / float(n_fileids),
+            'description_words_per_description':
+                float(counts['d_words']) / float(counts['description']),
+            'time_to_process':   time.time() - started,
         }
 
     def list_methods(self) -> list:
