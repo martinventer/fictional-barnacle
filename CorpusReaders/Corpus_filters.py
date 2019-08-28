@@ -8,8 +8,9 @@ Tools for filtering and grouping a corpus.These filters perform a single run
 through the data update the subset that meets the focus
 """
 from sklearn.model_selection import KFold
+import pandas as pd
 import copy
-
+from CorpusReaders import Elsevier_Corpus_Reader
 
 class FilteredCorpus(object):
     """
@@ -125,6 +126,7 @@ class CorpuKfoldLoader(object):
             ]
 
 
+
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
     from pprint import PrettyPrinter
@@ -140,7 +142,7 @@ if __name__ == '__main__':
     # ==========================================================================
     # FilteredCorpus
     # ==========================================================================
-    if True:
+    if False:
         filtered_corpus = FilteredCorpus(corpus)
         # # pp.pprint(filtered_corpus._corpus.describe())
         # # pp.pprint(filtered_corpus.view().describe())
@@ -168,3 +170,6 @@ if __name__ == '__main__':
         #
         gen = filtered_corpus.view().publication_subtype()
         print(set(gen))
+
+
+

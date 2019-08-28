@@ -1,6 +1,5 @@
 from CorpusReaders import Elsevier_Corpus_Reader, Corpus_Pre_Processor, \
     Elsivier_Ingestor
-from PlottingTools import Author_Networks
 
 
 def download_corpus() -> None:
