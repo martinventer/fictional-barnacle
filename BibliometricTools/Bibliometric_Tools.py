@@ -26,6 +26,21 @@ class CorpusFrameGenerator:
             self.corpus_frame["file_name"], inplace=True)
         return self.corpus_frame
 
+    @staticmethod
+    def _fixer_dict_in_list_to_str(cell):
+        if type(cell) is not list:
+            return cell
+        else:
+            return cell[-1]['$']
+
+    def pre_process(self):
+        """
+
+        Returns
+        -------
+
+        """
+
 
 def extract_data_from_dict_cell(dict_cell, dict_key) -> str:
     """
@@ -46,6 +61,7 @@ def extract_data_from_dict_cell(dict_cell, dict_key) -> str:
     else:
         return dict_cell
 
+
 class AuthorInfo:
     """
     wrapper for corpus for presenting author metrics
@@ -60,32 +76,32 @@ class AuthorInfo:
         corpus_frame_generator = CorpusFrameGenerator(corpus)
         self.corpus_frame = corpus_frame_generator.generate_frame()
 
-    def papers_per_author(self):
-        column_of_interest = 'author'
-        dict_key_of_interest = 'authid'
-
-        # extract a list cell from the the data fram and create a new fram
-        # with the list items in their own columns
-        a = corpus_frame.loc[:, column_of_interest].apply(pd.Series)
-
-        # extract just the desired item from the separated dictionaries
-        b = a.applymap(
-            lambda x: extract_data_from_dict_cell(
-                x, dict_key=dict_key_of_interest)
-        )
-        b.reset_index(level=0, inplace=True)
-
-        # reshape the frame into the long form for further processing
-        c = pd.melt(
-            b,
-            id_vars=['file_name'],
-            value_name=dict_key_of_interest)
-        c.drop(['variable'], axis=1, inplace=True)
-        # remove missing data
-        c.dropna(subset=[dict_key_of_interest], inplace=True)
-
-        d = c.groupby([dict_key_of_interest]).count()
-        d.columns = ['count']
+    # def papers_per_author(self):
+    #     column_of_interest = 'author'
+    #     dict_key_of_interest = 'authid'
+    #
+    #     # extract a list cell from the the data fram and create a new fram
+    #     # with the list items in their own columns
+    #     a = corpus_frame.loc[:, column_of_interest].apply(pd.Series)
+    #
+    #     # extract just the desired item from the separated dictionaries
+    #     b = a.applymap(
+    #         lambda x: extract_data_from_dict_cell(
+    #             x, dict_key=dict_key_of_interest)
+    #     )
+    #     b.reset_index(level=0, inplace=True)
+    #
+    #     # reshape the frame into the long form for further processing
+    #     c = pd.melt(
+    #         b,
+    #         id_vars=['file_name'],
+    #         value_name=dict_key_of_interest)
+    #     c.drop(['variable'], axis=1, inplace=True)
+    #     # remove missing data
+    #     c.dropna(subset=[dict_key_of_interest], inplace=True)
+    #
+    #     d = c.groupby([dict_key_of_interest]).count()
+    #     d.columns = ['count']
 
 
 class PublicationInfo:
@@ -121,9 +137,10 @@ class PublicationInfo:
             None
         """
         self._totals()
-        self._publication_distribution('subtypeDescription')
-        # self._publication_distribution('prism:publicationName')
+        # self._publication_distribution('subtypeDescription')
+        self._publication_distribution('prism:publicationName')
         # self._distribution_publication()
+
 
 
     def _totals(self) -> None:
@@ -230,8 +247,6 @@ if __name__ == '__main__':
     # PublicationInfo
     # ==========================================================================
     if True:
-
-
         root = "Corpus/Split_corpus/"
         corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(
             root=root)

@@ -14,10 +14,10 @@ import hashlib
 import time
 import logging
 
+import numpy as np
+
 from nltk import pos_tag, sent_tokenize, wordpunct_tokenize
-
 from tqdm import tqdm
-
 from Utils import Utils
 
 try:
@@ -222,7 +222,6 @@ class ScopusCorpusProcessor(object):
         # serial file processing
 
         # create the target folders
-
         for cat in self.corpus.categories():
             Utils.make_folder('{}/{}'.format(self.target, cat))
 
@@ -234,29 +233,158 @@ class ScopusCorpusProcessor(object):
         print("Time to process {}seconds".format(end - start))
 
 
+class ScopusCorpusProcessor2(object):
+    """
+    wrapper for a SplitCorpusReader that pre-processes a newly downloaded and
+    split corpus. Each document in the corpus is opened and processed item by
+    item to ensure that there is a standard output for each item.
+    """
+
+    def __init__(self, corpus, target=None) -> None:
+        """
+        Wrap an existing split courpus.
+        Parameters
+        ----------
+        corpus : ScopusCorpusReader - object that can read a corpus
+        target : str -path to store new files
+        """
+        self.corpus = corpus
+        if target is not None:
+            self.target = target
+        else:
+            self.target = self.corpus.root
+
+    def fileids(self, **kwargs):
+        """
+        Helper function access the fileids of the corpus. Allows the use of
+        fileids on the wrapped corpus without needing to access the
+        underlying corpus.
+        """
+        if not any(key.startswith('fileids') for key in kwargs.keys()):
+            kwargs['fileids'] = None
+
+        if not any(key.startswith('categories') for key in kwargs.keys()):
+            kwargs['categories'] = None
+
+        fileids = self.corpus.resolve(**kwargs)
+        if fileids:
+            return fileids
+        return self.corpus.fileids()
+
+    def process_affiliation(self, data):
+        return data
+
+    def process(self, fileid, fields=None) -> None:
+        """a single for each of the processes to be applied to the data. The
+        data for a single document is read in as a dictionary. The data in
+        each dictionary item is then processed and returned. with the
+        updated dictionary replaceing the old one."""
+
+        # 1. Get the location to store file
+        file_path = os.path.join(self.target, fileid)
+
+        # 2 load the document into memory as a dictionary, and test that it is
+        document_old = self.corpus.read_single(fileid)
+
+        # 3 create an empty dict to represent the new document
+        document_new = dict()
+
+        # 4 process one part of the document
+        field = 'affiliation'
+
+        try:
+            data_old = document_old[field]
+        except KeyError:
+            data_old = None
+
+        data_new = self.process_affiliation(data_old)
+
+        # 5 Append new data to the new document
+        # new_field = "processed:{}".format(field)
+        document_new[field] = data_new
+
+        # 6. Append filename to document
+        document_new['file_name'] = fileid
+
+        # 7. Writes the document as a pickle to the target location.
+        with open(file_path, 'wb') as f:
+            pickle.dump(document_new, f, pickle.HIGHEST_PROTOCOL)
+
+        # 8. Clean the documents from memory
+        del document_old
+        del document_new
+
+
+
+    def transform(self, **kwargs) -> None:
+        """
+        Open each Document in an existing corpus Process each item and
+        generate a new processed_corpus
+        Parameters
+        ----------
+        Returns
+        -------
+            None
+        """
+        start = time.time()
+        # create the target folders
+        for cat in self.corpus.categories():
+            Utils.make_folder('{}/{}'.format(self.target, cat))
+
+        for filename in tqdm(self.fileids(**kwargs),
+                         desc="Processing corpus"):
+            self.process(filename, fields=None)
+
+        end = time.time()
+        print("Time to process {}seconds".format(end - start))
+
+
+
 if __name__ == '__main__':
     from CorpusReaders import Elsevier_Corpus_Reader
     from pprint import PrettyPrinter
 
-    root = "Corpus/Split_corpus/"
-    corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(root=root)
-    target = "Corpus/Processed_corpus/"
+    # ==========================================================================
+    # ScopusCorpusProcessor
+    # ==========================================================================
+    if False:
+        root = "Corpus/Split_corpus/"
+        corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(root=root)
+        target = "Corpus/Processed_corpus/"
 
-    # gen = corpus.observations()
-    # aa = next(gen)
-    # pp = PrettyPrinter(indent=4)
-    # pp.pprint(aa['dc:title'])
-    #
-    # text = aa['dc:title']
-    # bb = [pos_tag(wordpunct_tokenize(sent)) for sent in sent_tokenize(text)]
+        # gen = corpus.observations()
+        # aa = next(gen)
+        # pp = PrettyPrinter(indent=4)
+        # pp.pprint(aa['dc:title'])
+        #
+        # text = aa['dc:title']
+        # bb = [pos_tag(wordpunct_tokenize(sent)) for sent in sent_tokenize(text)]
 
-    processor = ScopusCorpusProcessor(corpus=corpus, target=target)
-    processor.transform()
+        processor = ScopusCorpusProcessor(corpus=corpus, target=target)
+        processor.transform()
 
-    corpus2 = Elsevier_Corpus_Reader.ScopusCorpusReader(root=target)
-    gen2 = corpus2.docs()
-    aa2 = next(gen2)
-    pp = PrettyPrinter(indent=4)
-    pp.pprint(aa2['processed:dc:title'])
-    pp.pprint(aa2['processed:dc:description'])
-    pp.pprint(aa2['file_name'])
+        corpus2 = Elsevier_Corpus_Reader.ScopusCorpusReader(root=target)
+        gen2 = corpus2.docs()
+        aa2 = next(gen2)
+        pp = PrettyPrinter(indent=4)
+        pp.pprint(aa2['processed:dc:title'])
+        pp.pprint(aa2['processed:dc:description'])
+        pp.pprint(aa2['file_name'])
+
+    # ==========================================================================
+    # ScopusCorpusProcessor2
+    # ==========================================================================
+    if True:
+        root = "Corpus/Split_corpus/"
+        corpus = Elsevier_Corpus_Reader.ScopusCorpusReader(root=root)
+        target = "Corpus/Processed_corpus/"
+
+        processor = ScopusCorpusProcessor2(corpus=corpus, target=target)
+        processor.transform()
+
+        pp = PrettyPrinter(indent=4)
+
+        corpus2 = Elsevier_Corpus_Reader.ScopusCorpusReader(root=target)
+        gen = corpus2.docs()
+        single = next(gen)
+        pp.pprint(single)

@@ -44,7 +44,8 @@ def preprocess_corpus() -> None:
     corp = Elsevier_Corpus_Reader.ScopusCorpusReader(
             "Corpus/Split_corpus/")
 
-    formatter = Corpus_Pre_Processor.ScopusCorpusProcessor(corp)
+    # formatter = Corpus_Pre_Processor.ScopusCorpusProcessor(corp)
+    formatter = Corpus_Pre_Processor.ScopusCorpusProcessorV2(corp)
 
     formatter.transform()
 
@@ -73,17 +74,17 @@ if __name__ == '__main__':
     # ==========================================================================
     # step 3: Pre process the corpus to clean and format the data.
     #   tokenize text fields
-    #   tokenize metadata fields
+    #   ensure consistent type in fields
     #   add file name to metadata
     # ==========================================================================
-    if False:
+    if True:
         preprocess_corpus()
 
     # ==========================================================================
     # step 4: Preliminary exploration
     #   How many documents does the corpus contain
     # ==========================================================================
-    if True:
+    if False:
         root = "Corpus/Split_corpus/"
         corpus = Elsevier_Corpus_Reader.ScopusProcessedCorpusReader(root)
         pp.pprint(corpus.describe())
