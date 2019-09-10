@@ -294,10 +294,9 @@ class ScopusCorpusProcessor2(object):
 
         try:
             data_old = document_old[field]
+            data_new = self.process_affiliation(data_old)
         except KeyError:
-            data_old = None
-
-        data_new = self.process_affiliation(data_old)
+            data_new = None
 
         # 5 Append new data to the new document
         # new_field = "processed:{}".format(field)
@@ -388,3 +387,7 @@ if __name__ == '__main__':
         gen = corpus2.docs()
         single = next(gen)
         pp.pprint(single)
+
+        for i in gen:
+            if type(i['affiliation']) is not list:
+                pp.pprint(i)
